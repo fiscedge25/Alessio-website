@@ -9,7 +9,7 @@ export default function Contact() {
     const t = useTranslations("contact");
 
     // Replace with your actual WhatsApp number including country code (e.g., 39 for Italy)
-    const whatsappNumber = "393278564175"; // Example: +39 327 856 4175. Replace with actual number
+    const whatsappNumber = "393451251902"; // Example: +39 327 856 4175. Replace with actual number
     const whatsappMessage = encodeURIComponent("Ciao Alessio, vorrei parlarti di un progetto!");
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
