@@ -131,19 +131,27 @@
     "contact": {
         "label": "Contact",
         "title": "Get In Touch",
-        "subtitle": "Have a project in mind or want to collaborate? I'd love to hear from you.",
-        "name_placeholder": "Your Name",
-        "email_placeholder": "Your Email",
-        "message_placeholder": "Your Message",
-        "send": "Send Message",
-        "sending": "Sending",
-        "sent": "Sent!",
-        "error": "Error — Try Again",
-        "validation_name": "Name must be at least 2 characters",
-        "validation_email": "Please enter a valid email",
-        "validation_message": "Message must be at least 10 characters"
+        "subtitle": "Have a project in mind or want to collaborate? Click the button below to message me directly on WhatsApp.",
+        "whatsapp_btn": "Message me on WhatsApp",
+        "email_label": "Or send me an email",
+        "gdpr_title": "Privacy Policy & Cookies",
+        "gdpr_text": "We use technical cookies to ensure the website functions correctly. We do not use third-party tracking or profiling cookies without your consent.",
+        "gdpr_accept": "Accept"
     },
     "footer": {
-        "rights": "All rights reserved."
+        "rights": "All rights reserved.",
+        "privacy": "Privacy Policy",
+        "cookie": "Cookie Policy"
+    },
+    "privacy": {
+        "title": "Privacy Policy & Cookie Policy",
+        "section_1_title": "1. Data Collection",
+        "section_1_text": "This website uses only technical cookies strictly necessary for its operation. We do not collect personal data for profiling or marketing purposes via third-party cookies without your explicit consent.",
+        "section_2_title": "2. Contact & WhatsApp",
+        "section_2_text": "Data submitted voluntarily via email or by clicking the WhatsApp link will be used exclusively to respond to your inquiries and will not be shared with third parties.",
+        "section_3_title": "3. Analytics & Tracking",
+        "section_3_text": "The hosting infrastructure (Vercel) may collect anonymous access logs for security and technical performance purposes. This data is not associated with specific identities.",
+        "section_4_title": "4. Your Rights",
+        "section_4_text": "Under the GDPR (EU Regulation 2016/679), you have the right to request access, rectification, or deletion of any personal data we hold by contacting us via email."
     }
 }

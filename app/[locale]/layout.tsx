@@ -3,6 +3,7 @@ import { Space_Grotesk, DM_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import GDPRConsent from "@/components/GDPRConsent";
 import "../globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -150,6 +151,7 @@ export default async function LocaleLayout({
             <body className="antialiased">
                 <NextIntlClientProvider messages={messages}>
                     {children}
+                    <GDPRConsent />
                 </NextIntlClientProvider>
             </body>
         </html>

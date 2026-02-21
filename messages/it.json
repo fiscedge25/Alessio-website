@@ -131,19 +131,27 @@
     "contact": {
         "label": "Contatti",
         "title": "Contattami",
-        "subtitle": "Hai un progetto in mente o vuoi collaborare? Mi piacerebbe sentirti.",
-        "name_placeholder": "Il Tuo Nome",
-        "email_placeholder": "La Tua Email",
-        "message_placeholder": "Il Tuo Messaggio",
-        "send": "Invia Messaggio",
-        "sending": "Invio in corso",
-        "sent": "Inviato!",
-        "error": "Errore — Riprova",
-        "validation_name": "Il nome deve avere almeno 2 caratteri",
-        "validation_email": "Inserisci un indirizzo email valido",
-        "validation_message": "Il messaggio deve avere almeno 10 caratteri"
+        "subtitle": "Hai un progetto in mente o vuoi collaborare? Clicca sul pulsante qui sotto per scrivermi direttamente su WhatsApp.",
+        "whatsapp_btn": "Scrivimi su WhatsApp",
+        "email_label": "Oppure inviami un'email",
+        "gdpr_title": "Informativa sulla Privacy & Cookie",
+        "gdpr_text": "Utilizziamo cookie tecnici per garantire il corretto funzionamento del sito. Non utilizziamo cookie di profilazione o tracciamento di terze parti senza il tuo consenso.",
+        "gdpr_accept": "Accetta"
     },
     "footer": {
-        "rights": "Tutti i diritti riservati."
+        "rights": "Tutti i diritti riservati.",
+        "privacy": "Informativa sulla Privacy",
+        "cookie": "Cookie Policy"
+    },
+    "privacy": {
+        "title": "Informativa sulla Privacy & Cookie Policy",
+        "section_1_title": "1. Raccolta Dati",
+        "section_1_text": "Questo sito utilizza solo cookie tecnici strettamente necessari al suo funzionamento. Non raccogliamo dati personali a fini di profilazione o marketing tramite cookie di terze parti senza il tuo esplicito consenso.",
+        "section_2_title": "2. Modulo di Contatto e WhatsApp",
+        "section_2_text": "I dati inviati volontariamente tramite email o cliccando sul link WhatsApp verranno utilizzati esclusivamente per rispondere alle tue richieste e non verranno ceduti a terzi.",
+        "section_3_title": "3. Analytics & Tracciamento",
+        "section_3_text": "L'infrastruttura di hosting (Vercel) può raccogliere log di accesso anonimi per fini di sicurezza e performance tecniche. Questi dati non sono associati ad identità specifiche.",
+        "section_4_title": "4. I Tuoi Diritti",
+        "section_4_text": "Ai sensi del GDPR (Regolamento UE 2016/679), hai il diritto di richiedere l'accesso, la rettifica o la cancellazione di eventuali dati personali in nostro possesso contattandoci via email."
     }
 }
