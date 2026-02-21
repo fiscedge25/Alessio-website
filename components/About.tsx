@@ -88,9 +88,14 @@ export default function About() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         {[t("bio_1"), t("bio_2"), t("bio_3")].map((p, i) => (
-                            <p
+                            <motion.p
                                 key={i}
-                                className="text-base sm:text-lg leading-relaxed mb-6 last:mb-0"
+                                whileHover={{
+                                    x: 8,
+                                    color: "var(--text-primary)",
+                                }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                className="text-base sm:text-lg leading-relaxed mb-6 last:mb-0 cursor-default"
                                 style={{
                                     fontFamily: "var(--font-dm)",
                                     color: "var(--text-secondary)",
@@ -98,7 +103,7 @@ export default function About() {
                                 }}
                             >
                                 {p}
-                            </p>
+                            </motion.p>
                         ))}
                     </motion.div>
                 </div>
