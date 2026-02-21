@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { stats } from "@/lib/data";
+import Image from "next/image";
 
 const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -66,10 +67,13 @@ export default function About() {
                             border: "1px solid var(--border)",
                         }}
                     >
-                        <img
+                        <Image
                             src="/images/profile.jpg"
                             alt="Alessio Sabatino"
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 400px"
+                            className="object-cover"
+                            priority
                         />
                         <div
                             className="absolute inset-0"
