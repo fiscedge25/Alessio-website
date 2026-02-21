@@ -50,10 +50,10 @@ export async function generateMetadata({
         ],
         authors: [{ name: "Alessio Sabatino" }],
         alternates: {
-            canonical: `https://alessiosabatino.com/${locale}`,
+            canonical: `https://www.alessiosabatino.it/${locale}`,
             languages: {
-                en: "https://alessiosabatino.com/en",
-                it: "https://alessiosabatino.com/it",
+                en: "https://www.alessiosabatino.it/en",
+                it: "https://www.alessiosabatino.it/it",
             },
         },
         openGraph: {
@@ -101,17 +101,17 @@ export default async function LocaleLayout({
                 <link
                     rel="alternate"
                     hrefLang="en"
-                    href="https://alessiosabatino.com/en"
+                    href="https://www.alessiosabatino.it/en"
                 />
                 <link
                     rel="alternate"
                     hrefLang="it"
-                    href="https://alessiosabatino.com/it"
+                    href="https://www.alessiosabatino.it/it"
                 />
                 <link
                     rel="alternate"
                     hrefLang="x-default"
-                    href="https://alessiosabatino.com/en"
+                    href="https://www.alessiosabatino.it/en"
                 />
                 <script
                     type="application/ld+json"
@@ -121,7 +121,7 @@ export default async function LocaleLayout({
                             "@type": "Person",
                             name: "Alessio Sabatino",
                             jobTitle: "Business Strategist & Developer",
-                            url: "https://academy.fiscedge.com",
+                            url: "https://www.alessiosabatino.it",
                             email: "alessio.sabatino29@gmail.com",
                             telephone: "+39 345 125 1902",
                             address: {
