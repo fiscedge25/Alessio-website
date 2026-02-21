@@ -9,6 +9,12 @@ export default function Experience() {
 
     const items = [
         {
+            role: t("role_delos_title"),
+            subtitle: t("role_delos_subtitle"),
+            period: t("period_current"),
+            highlights: [t("role_delos_h1"), t("role_delos_h2"), t("role_delos_h3")],
+        },
+        {
             role: t("role_1_title"),
             subtitle: t("role_1_subtitle"),
             period: "Dec 2025",
