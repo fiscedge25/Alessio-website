@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import GDPRConsent from "@/components/GDPRConsent";
+import CustomCursor from "@/components/CustomCursor";
 import "../globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -148,7 +149,8 @@ export default async function LocaleLayout({
                     }}
                 />
             </head>
-            <body className="antialiased">
+            <body className="antialiased font-dm">
+                <CustomCursor />
                 <NextIntlClientProvider messages={messages}>
                     {children}
                     <GDPRConsent />
