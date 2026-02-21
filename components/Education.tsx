@@ -28,7 +28,7 @@ export default function Education() {
         },
     ];
 
-    const certs = [t("cert_1"), t("cert_2"), t("cert_3")];
+    const certs = [t("cert_1"), t("cert_2"), t("cert_3"), t("cert_4"), t("cert_5")];
 
     return (
         <section id="education" className="relative z-10 py-28 px-6">

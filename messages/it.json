@@ -45,7 +45,9 @@
         "bsc_focus": "Problem-solving strutturato, ragionamento quantitativo, analisi disciplinata",
         "cert_1": "Introduction to Program Management — IBM & Coursera (2025)",
         "cert_2": "The Nature of Data and Relational Database Design — UC Irvine & Coursera (2024)",
-        "cert_3": "Data Warehousing and Business Intelligence — UC Irvine & Coursera (2024)"
+        "cert_3": "Data Warehousing and Business Intelligence — UC Irvine & Coursera (2024)",
+        "cert_4": "Information Technology (IT) Fundamentals for Everyone — IBM & Coursera (2026)",
+        "cert_5": "Python for Everybody Specialization — Coursera (2026)"
     },
     "experience": {
         "label": "Esperienza",
