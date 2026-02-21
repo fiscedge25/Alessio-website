@@ -82,8 +82,10 @@ export default function Education() {
                                     boxShadow: "0 0 12px var(--accent-dim)",
                                 }}
                             />
-                            <div
-                                className="p-6 rounded-xl transition-all duration-300"
+                            <motion.div
+                                whileHover={{ x: 8, borderColor: "var(--border-hover)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}
+                                transition={{ duration: 0.3 }}
+                                className="p-6 rounded-xl transition-colors duration-300"
                                 style={{
                                     backgroundColor: "var(--bg-surface)",
                                     border: "1px solid var(--border)",
@@ -137,7 +139,7 @@ export default function Education() {
                                         {item.focus}
                                     </span>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.div>
                     ))}
                 </div>
@@ -167,8 +169,9 @@ export default function Education() {
                                 initial={{ opacity: 0, y: 10 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="p-4 rounded-xl flex items-start gap-3 transition-all duration-300"
+                                whileHover={{ scale: 1.05, borderColor: "var(--border-hover)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}
+                                transition={{ delay: i * 0.1, duration: 0.2 }}
+                                className="p-4 rounded-xl flex items-start gap-3 transition-colors duration-300 cursor-default"
                                 style={{
                                     backgroundColor: "var(--bg-surface)",
                                     border: "1px solid var(--border)",

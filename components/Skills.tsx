@@ -110,18 +110,23 @@ export default function Skills() {
                         </h3>
                         <div className="space-y-4">
                             {strategy.map((s) => (
-                                <div key={s.name} className="flex items-center justify-between gap-3">
+                                <motion.div
+                                    key={s.name}
+                                    whileHover={{ x: 5, color: "var(--accent)" }}
+                                    transition={{ duration: 0.2 }}
+                                    className="flex items-center justify-between gap-3 cursor-default"
+                                >
                                     <span
-                                        className="text-sm"
+                                        className="text-sm transition-colors duration-200"
                                         style={{
                                             fontFamily: "var(--font-dm)",
-                                            color: "var(--text-secondary)",
+                                            color: "inherit",
                                         }}
                                     >
                                         {s.name}
                                     </span>
                                     <DotRating level={s.level} />
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </motion.div>
@@ -150,18 +155,23 @@ export default function Skills() {
                         </h3>
                         <div className="space-y-4">
                             {technical.map((s) => (
-                                <div key={s.name} className="flex items-center justify-between gap-3">
+                                <motion.div
+                                    key={s.name}
+                                    whileHover={{ x: 5, color: "var(--accent)" }}
+                                    transition={{ duration: 0.2 }}
+                                    className="flex items-center justify-between gap-3 cursor-default"
+                                >
                                     <span
-                                        className="text-sm"
+                                        className="text-sm transition-colors duration-200"
                                         style={{
                                             fontFamily: "var(--font-dm)",
-                                            color: "var(--text-secondary)",
+                                            color: "inherit",
                                         }}
                                     >
                                         {s.name}
                                     </span>
                                     <DotRating level={s.level} />
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </motion.div>
@@ -190,12 +200,17 @@ export default function Skills() {
                         </h3>
                         <div className="space-y-5">
                             {langs.map((l) => (
-                                <div key={l.name}>
+                                <motion.div
+                                    key={l.name}
+                                    whileHover={{ x: 5 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="cursor-default"
+                                >
                                     <p
-                                        className="text-base mb-1"
+                                        className="text-base mb-1 transition-colors duration-200"
                                         style={{
                                             fontFamily: "var(--font-dm)",
-                                            color: "var(--text-primary)",
+                                            color: "var(--accent)",
                                         }}
                                     >
                                         {l.name}
@@ -209,7 +224,7 @@ export default function Skills() {
                                     >
                                         {l.level}
                                     </p>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </motion.div>

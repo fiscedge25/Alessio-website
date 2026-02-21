@@ -100,8 +100,10 @@ export default function Experience() {
                                 }}
                             />
 
-                            <div
-                                className="p-6 rounded-xl transition-all duration-300 group-hover:border-[var(--border-hover)]"
+                            <motion.div
+                                whileHover={{ x: 8, borderColor: "var(--border-hover)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}
+                                transition={{ duration: 0.3 }}
+                                className="p-6 rounded-xl transition-colors duration-300"
                                 style={{
                                     backgroundColor: "var(--bg-surface)",
                                     border: "1px solid var(--border)",
@@ -185,7 +187,7 @@ export default function Experience() {
                                         ))}
                                     </div>
                                 )}
-                            </div>
+                            </motion.div>
                         </motion.div>
                     ))}
                 </div>
