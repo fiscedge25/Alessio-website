@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { stats } from "@/lib/data";
 import Image from "next/image";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -144,7 +145,7 @@ export default function About() {
                                     lineHeight: 1.1,
                                 }}
                             >
-                                {s.value}
+                                <AnimatedNumber value={s.value} />
                             </p>
                             <p
                                 className="text-sm tracking-wider uppercase"
