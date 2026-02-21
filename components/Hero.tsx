@@ -40,7 +40,6 @@ export default function Hero() {
                             fontFamily: "var(--font-cormorant)",
                             color: "var(--text-heading)",
                             fontWeight: 600,
-                            fontStyle: "italic",
                             fontSize: "clamp(3.5rem, 9vw, 7rem)",
                             letterSpacing: "-0.03em",
                             lineHeight: 1.0,
@@ -121,7 +120,6 @@ export default function Hero() {
                                     "linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%)",
                                 color: "var(--accent)",
                                 fontFamily: "var(--font-cormorant)",
-                                fontStyle: "italic",
                                 fontWeight: 300,
                                 fontSize: "3rem",
                             }}

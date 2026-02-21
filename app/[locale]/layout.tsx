@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Space_Grotesk, DM_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
-const cormorant = Cormorant_Garamond({
+const spaceGrotesk = Space_Grotesk({
     subsets: ["latin"],
-    weight: ["300", "400", "500", "600"],
-    style: ["normal", "italic"],
+    weight: ["300", "400", "500", "600", "700"],
     variable: "--font-cormorant",
     display: "swap",
 });
@@ -95,7 +94,7 @@ export default async function LocaleLayout({
         <html
             lang={locale}
             data-theme="dark"
-            className={`${cormorant.variable} ${dmSans.variable}`}
+            className={`${spaceGrotesk.variable} ${dmSans.variable}`}
         >
             <head>
                 <link

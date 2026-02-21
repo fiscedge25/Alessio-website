@@ -51,7 +51,6 @@ export default function Education() {
                             fontFamily: "var(--font-cormorant)",
                             color: "var(--text-heading)",
                             fontWeight: 500,
-                            fontStyle: "italic",
                             fontSize: "clamp(2.2rem, 5vw, 3.6rem)",
                             letterSpacing: "-0.02em",
                             lineHeight: 1.1,
@@ -156,7 +155,6 @@ export default function Education() {
                             fontFamily: "var(--font-cormorant)",
                             color: "var(--text-heading)",
                             fontWeight: 500,
-                            fontStyle: "italic",
                             fontSize: "1.5rem",
                         }}
                     >
