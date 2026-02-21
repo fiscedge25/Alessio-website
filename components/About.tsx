@@ -53,28 +53,55 @@ export default function About() {
                     </h2>
                 </motion.div>
 
-                {/* Bio text */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="mb-16 max-w-3xl"
-                >
-                    {[t("bio_1"), t("bio_2"), t("bio_3")].map((p, i) => (
-                        <p
-                            key={i}
-                            className="text-base sm:text-lg leading-relaxed mb-6 last:mb-0"
+                {/* Bio & Image */}
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 mb-16 items-center">
+                    {/* Profile Image */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative w-full max-w-[400px] mx-auto md:mx-0 aspect-[4/5] rounded-2xl overflow-hidden"
+                        style={{
+                            border: "1px solid var(--border)",
+                        }}
+                    >
+                        <img
+                            src="/images/profile.jpg"
+                            alt="Alessio Sabatino"
+                            className="w-full h-full object-cover"
+                        />
+                        <div
+                            className="absolute inset-0"
                             style={{
-                                fontFamily: "var(--font-dm)",
-                                color: "var(--text-secondary)",
-                                fontWeight: 300,
+                                background:
+                                    "linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 40%)",
                             }}
-                        >
-                            {p}
-                        </p>
-                    ))}
-                </motion.div>
+                        />
+                    </motion.div>
+
+                    {/* Bio text */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        {[t("bio_1"), t("bio_2"), t("bio_3")].map((p, i) => (
+                            <p
+                                key={i}
+                                className="text-base sm:text-lg leading-relaxed mb-6 last:mb-0"
+                                style={{
+                                    fontFamily: "var(--font-dm)",
+                                    color: "var(--text-secondary)",
+                                    fontWeight: 300,
+                                }}
+                            >
+                                {p}
+                            </p>
+                        ))}
+                    </motion.div>
+                </div>
 
                 {/* Stat cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
