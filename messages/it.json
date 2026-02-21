@@ -143,6 +143,14 @@
         "privacy": "Informativa sulla Privacy",
         "cookie": "Cookie Policy"
     },
+    "services": {
+        "tagline": "Cosa faccio",
+        "title_1": "Trasformo idee",
+        "title_2": "in sistemi reali.",
+        "cta_title": "Hai un'idea o un progetto?",
+        "cta_subtitle": "Il primo passo costa solo una conversazione.",
+        "cta_btn": "Scrivimi"
+    },
     "privacy": {
         "title": "Informativa sulla Privacy & Cookie Policy",
         "section_1_title": "1. Raccolta Dati",

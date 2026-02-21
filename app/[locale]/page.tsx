@@ -10,6 +10,7 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Services from "@/components/Services";
 
 const ParticleBackground = dynamic(
     () => import("@/components/ParticleBackground"),
@@ -28,6 +29,8 @@ export default function Home() {
                 <Hero />
                 <div className="section-divider" />
                 <About />
+                <div className="section-divider" />
+                <Services />
                 <div className="section-divider" />
                 <Education />
                 <div className="section-divider" />

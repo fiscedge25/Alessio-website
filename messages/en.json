@@ -143,6 +143,14 @@
         "privacy": "Privacy Policy",
         "cookie": "Cookie Policy"
     },
+    "services": {
+        "tagline": "What I do",
+        "title_1": "Turning ideas",
+        "title_2": "into real systems.",
+        "cta_title": "Have an idea or a project?",
+        "cta_subtitle": "The first step only costs a conversation.",
+        "cta_btn": "Write me"
+    },
     "privacy": {
         "title": "Privacy Policy & Cookie Policy",
         "section_1_title": "1. Data Collection",
