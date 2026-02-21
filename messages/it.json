@@ -11,7 +11,14 @@
         "headline": "Strategia, Innovazione & Sistemi Digitali",
         "tagline": "Business Strategist · Sviluppatore Autodidatta · Innovation Builder",
         "cta_projects": "Vedi Progetti",
-        "cta_portfolio": "Portfolio"
+        "cta_portfolio": "Portfolio",
+        "word_1": "Ambizione.",
+        "word_2": "Visione.",
+        "word_3": "Coraggio.",
+        "word_4": "Futuro.",
+        "hook_prefix": "Il tuo prossimo",
+        "hook_suffix": "passo è adesso.",
+        "badge": "Connected to the Future"
     },
     "about": {
         "label": "Chi Sono",

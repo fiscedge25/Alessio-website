@@ -5,15 +5,12 @@ import { useTranslations } from "next-intl";
 import { identity } from "@/lib/data";
 import { ArrowDown, ExternalLink } from "lucide-react";
 
-// Animated words that cycle in the headline
-const CYCLING_WORDS = ["Ambizione.", "Visione.", "Coraggio.", "Futuro."];
-
-function CyclingWord() {
+function CyclingWord({ words }: { words: string[] }) {
     return (
         <span className="cycling-word-wrapper">
-            {CYCLING_WORDS.map((word, i) => (
+            {words.map((word, i) => (
                 <motion.span
-                    key={word}
+                    key={i} // Using index to avoid duplicate key issues if translations change
                     className="cycling-word"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: [0, 1, 1, 0], y: [20, 0, 0, -20] }}
@@ -21,7 +18,7 @@ function CyclingWord() {
                         delay: i * 2,
                         duration: 2,
                         repeat: Infinity,
-                        repeatDelay: (CYCLING_WORDS.length - 1) * 2,
+                        repeatDelay: (words.length - 1) * 2,
                         ease: "easeInOut",
                         times: [0, 0.15, 0.85, 1],
                     }}
@@ -41,6 +38,7 @@ function CyclingWord() {
 
 export default function Hero() {
     const t = useTranslations("hero");
+    const cyclingWords = [t("word_1"), t("word_2"), t("word_3"), t("word_4")];
 
     return (
         <section
@@ -92,11 +90,11 @@ export default function Hero() {
                                 minWidth: "11ch",
                             }}
                         >
-                            <CyclingWord />
+                            <CyclingWord words={cyclingWords} />
                         </span>
                         <br />
                         <span style={{ color: "var(--text-heading)" }}>
-                            Il tuo prossimo
+                            {t("hook_prefix")}
                         </span>
                         <br />
                         <span
@@ -106,7 +104,7 @@ export default function Hero() {
                                 fontStyle: "italic",
                             }}
                         >
-                            passo è adesso.
+                            {t("hook_suffix")}
                         </span>
                     </motion.h1>
 
@@ -169,7 +167,7 @@ export default function Hero() {
                                 fontWeight: 500,
                             }}
                         >
-                            Connected to the Future
+                            {t("badge")}
                         </span>
                     </motion.div>
 

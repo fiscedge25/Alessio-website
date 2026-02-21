@@ -11,7 +11,14 @@
         "headline": "Strategy, Innovation & Digital Systems",
         "tagline": "Business Strategist · Self-Taught Developer · Innovation Builder",
         "cta_projects": "View Projects",
-        "cta_portfolio": "Portfolio"
+        "cta_portfolio": "Portfolio",
+        "word_1": "Ambition.",
+        "word_2": "Vision.",
+        "word_3": "Courage.",
+        "word_4": "Future.",
+        "hook_prefix": "Your next",
+        "hook_suffix": "step is now.",
+        "badge": "Connected to the Future"
     },
     "about": {
         "label": "About",
