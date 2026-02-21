@@ -23,9 +23,9 @@
     "about": {
         "label": "About",
         "title": "Who I Am",
-        "bio_1": "With a foundation in scientific analysis and advanced training in business strategy, I operate at the crossroads of innovation and implementation. My Bachelor's in Chemistry trained me to think in systems; my MBA and Master in Entrepreneurship taught me to build them.",
-        "bio_2": "Over the past years, I have independently designed and deployed multiple digital platforms — from educational academies to startup MVPs — handling everything from concept and architecture to front-end development and deployment using modern technologies such as React, Supabase, and Vercel.",
-        "bio_3": "I work in business consulting and digital marketing, collaborating with international brands and institutions including the Italian Chamber of Commerce UK (ICUK). My focus: transforming complex business requirements into scalable digital solutions.",
+        "bio_1": "I believe the future belongs to those who build it. I don't just observe change; I drive it through structured digital ecosystems that turn visionary ideas into real-world traction.",
+        "bio_2": "My focus lies at the intersection of business strategy and technological scalability. Over recent years, I have architected and launched platforms like FiscEdge (business & AI education), Giurimi (advanced legal education), and The Italians (B2B digital storytelling), managing everything from inception to deployment.",
+        "bio_3": "Whether it's developing the infrastructure for a tech startup or optimizing corporate workflows with Artificial Intelligence, my objective remains singular: creating concrete digital solutions that accelerate growth and define tomorrow's market.",
         "stat_platforms": "Platforms Built",
         "stat_degrees": "Academic Degrees",
         "stat_languages": "Languages Spoken"
