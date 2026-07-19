@@ -1,5 +1,7 @@
 {
     "nav": {
+        "home": "Home",
+        "portfolio": "Portfolio",
         "about": "About",
         "education": "Education",
         "experience": "Experience",
@@ -7,18 +9,37 @@
         "skills": "Skills",
         "contact": "Contact"
     },
+    "newsletter": {
+        "placeholder": "Your email",
+        "cta": "Subscribe",
+        "hint": "One email when I ship something useful. No spam.",
+        "success": "Done! You're in. Talk soon.",
+        "already": "You're already subscribed — talk soon!",
+        "invalid": "Please enter a valid email.",
+        "error": "Something went wrong. Try again.",
+        "soon": "Sign-ups going live shortly — try again in a bit."
+    },
+    "portfolio": {
+        "back": "Back to home",
+        "label": "Portfolio",
+        "title": "Profile & projects",
+        "intro": "An overview of who I am and what I've built — platforms and systems taken from idea to production.",
+        "projects_title": "Selected projects"
+    },
     "hero": {
-        "headline": "Strategy, Innovation & Digital Systems",
-        "tagline": "Business Strategist · Self-Taught Developer · Innovation Builder",
+        "headline": "AI Builder & Founder — based in Rome, building globally",
+        "tagline": "I design and ship AI-powered platforms and systems that turn an idea into a real product — from MVP to deployment.",
         "cta_projects": "View Projects",
         "cta_portfolio": "Portfolio",
-        "word_1": "Ambition.",
-        "word_2": "Vision.",
-        "word_3": "Courage.",
-        "word_4": "Future.",
-        "hook_prefix": "Your next",
-        "hook_suffix": "step is now.",
-        "badge": "Connected to the Future"
+        "cta_contact": "Contact",
+        "verb_prefix": "I build systems that",
+        "word_1": "Automate.",
+        "word_2": "Scale.",
+        "word_3": "Convert.",
+        "word_4": "Ship.",
+        "hook_line_1": "Build with AI.",
+        "hook_line_2": "Think like a founder.",
+        "badge": "Currently building — FiscEdge"
     },
     "about": {
         "label": "About",
@@ -28,7 +49,12 @@
         "bio_3": "Whether it's developing the infrastructure for a tech startup or optimizing corporate workflows with Artificial Intelligence, my objective remains singular: creating concrete digital solutions that accelerate growth and define tomorrow's market.",
         "stat_platforms": "Platforms Built",
         "stat_degrees": "Academic Degrees",
-        "stat_languages": "Languages Spoken"
+        "stat_languages": "Languages Spoken",
+        "badge": "Rome · Building globally",
+        "focus_1": "AI Systems",
+        "focus_2": "Product & MVP",
+        "focus_3": "Business Strategy",
+        "focus_4": "Full-stack / No-code"
     },
     "education": {
         "label": "Education",
@@ -87,6 +113,7 @@
     "projects": {
         "label": "Projects",
         "title": "What I've Built",
+        "status_live": "Live",
         "fiscedge_academy_name": "FiscEdge Academy",
         "fiscedge_academy_type": "E-Learning Platform",
         "fiscedge_academy_desc": "Educational platform simplifying business and AI concepts through structured learning paths, enrollment systems, and progress tracking.",

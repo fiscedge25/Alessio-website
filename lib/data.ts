@@ -6,7 +6,7 @@ export const identity = {
   headline: "Strategy, Innovation & Digital Systems",
   bioShort:
     "Business strategist and self-taught developer building digital platforms at the intersection of innovation, technology, and entrepreneurship. Based in Rome, building globally.",
-  email: "alessio.sabatino29@gmail.com",
+  email: "alessio.sabatino@fiscedge.com",
   phone: "+39 345 125 1902",
   city: "Roma, Italia",
   linkedin: "https://www.linkedin.com/in/alessio-sabatino29",

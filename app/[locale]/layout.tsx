@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import GDPRConsent from "@/components/GDPRConsent";
-import CustomCursor from "@/components/CustomCursor";
 import "../globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -95,10 +94,15 @@ export default async function LocaleLayout({
     return (
         <html
             lang={locale}
-            data-theme="dark"
+            data-theme="light"
             className={`${spaceGrotesk.variable} ${dmSans.variable}`}
         >
             <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
+                    }}
+                />
                 <link
                     rel="alternate"
                     hrefLang="en"
@@ -123,7 +127,7 @@ export default async function LocaleLayout({
                             name: "Alessio Sabatino",
                             jobTitle: "Business Strategist & Developer",
                             url: "https://www.alessiosabatino.it",
-                            email: "alessio.sabatino29@gmail.com",
+                            email: "alessio.sabatino@fiscedge.com",
                             telephone: "+39 345 125 1902",
                             address: {
                                 "@type": "PostalAddress",
@@ -150,7 +154,6 @@ export default async function LocaleLayout({
                 />
             </head>
             <body className="antialiased font-dm">
-                <CustomCursor />
                 <NextIntlClientProvider messages={messages}>
                     {children}
                     <GDPRConsent />

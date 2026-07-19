@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(false);
+
+    // Sync initial state with whatever the no-flash script / default set
+    useEffect(() => {
+        const current = document.documentElement.getAttribute("data-theme");
+        setIsDark(current === "dark");
+    }, []);
 
     const toggle = () => {
         const next = !isDark;
         setIsDark(next);
-        document.documentElement.setAttribute(
-            "data-theme",
-            next ? "dark" : "light"
-        );
+        const theme = next ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+        try {
+            localStorage.setItem("theme", theme);
+        } catch {
+            /* ignore */
+        }
     };
 
     return (

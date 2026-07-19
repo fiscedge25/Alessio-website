@@ -1,33 +1,52 @@
 @import "tailwindcss";
 
 /* ─── Custom Theme Variables ──────────────────────────────────────────────── */
+/* Light "stellar dawn" is the DEFAULT — off-white with cool depth, indigo accent */
 :root {
-  /* Dark (default) */
-  --bg-primary: #0a0a0a;
-  --bg-elevated: #111111;
-  --bg-surface: #181818;
-  --border: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --text-heading: #ffffff;
-  --text-primary: #f0efe9;
-  --text-secondary: #8a8a8a;
-  --text-muted: #555555;
-  --accent: #c8c0b0;
-  --accent-dim: rgba(200, 192, 176, 0.15);
-}
-
-[data-theme="light"] {
-  --bg-primary: #f5f4f0;
+  --bg-primary: #f6f7fc;
   --bg-elevated: #ffffff;
   --bg-surface: #ffffff;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-hover: rgba(0, 0, 0, 0.16);
-  --text-heading: #0a0a0a;
-  --text-primary: #2a2a2a;
-  --text-secondary: #5a5a5a;
-  --text-muted: #8a8a8a;
-  --accent: #8a7e6d;
-  --accent-dim: rgba(138, 126, 109, 0.12);
+  --border: rgba(30, 27, 75, 0.08);
+  --border-hover: rgba(37, 99, 235, 0.28);
+  --text-heading: #0f1a33;
+  --text-primary: #29303f;
+  --text-secondary: #566074;
+  --text-muted: #97a0b4;
+  --accent: #2563eb;
+  --accent-2: #0ea5e9;
+  --accent-rgb: 37, 99, 235;
+  --accent-dim: rgba(37, 99, 235, 0.10);
+  --star: rgba(37, 99, 235, 0.50);
+  --star-link: rgba(14, 165, 233, 0.35);
+  /* Ambient nebula glows behind everything */
+  --nebula:
+    radial-gradient(60% 45% at 12% 8%, rgba(37, 99, 235, 0.10) 0%, transparent 60%),
+    radial-gradient(55% 40% at 88% 20%, rgba(14, 165, 233, 0.10) 0%, transparent 55%),
+    radial-gradient(70% 50% at 50% 100%, rgba(37, 99, 235, 0.07) 0%, transparent 60%);
+  --grain-opacity: 0.02;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #070712;
+  --bg-elevated: #0e0e1c;
+  --bg-surface: #12121f;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(96, 165, 250, 0.35);
+  --text-heading: #ffffff;
+  --text-primary: #e9edf7;
+  --text-secondary: #99a2b8;
+  --text-muted: #56607a;
+  --accent: #60a5fa;
+  --accent-2: #38bdf8;
+  --accent-rgb: 96, 165, 250;
+  --accent-dim: rgba(96, 165, 250, 0.14);
+  --star: rgba(224, 236, 255, 0.85);
+  --star-link: rgba(96, 165, 250, 0.30);
+  --nebula:
+    radial-gradient(60% 45% at 12% 8%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
+    radial-gradient(55% 40% at 88% 18%, rgba(14, 165, 233, 0.16) 0%, transparent 55%),
+    radial-gradient(70% 55% at 50% 100%, rgba(56, 189, 248, 0.12) 0%, transparent 60%);
+  --grain-opacity: 0.05;
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -42,15 +61,27 @@ html {
 }
 
 body {
+  position: relative;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.5s ease, color 0.5s ease;
   overflow-x: hidden;
 }
 
+/* Fixed nebula layer sitting behind the starfield canvas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--nebula);
+  transition: background 0.5s ease;
+}
+
 ::selection {
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #ffffff;
 }
 
 /* ─── Grain Overlay ───────────────────────────────────────────────────────── */
@@ -59,7 +90,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 128px 128px;
 }
@@ -74,7 +105,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+  background: var(--accent);
+  opacity: 0.4;
   border-radius: 3px;
 }
 
@@ -82,7 +114,7 @@ body {
 .section-divider {
   width: 100%;
   height: 1px;
-  background: var(--border);
+  background: linear-gradient(to right, transparent, var(--border-hover), transparent);
   margin: 0;
 }
 
@@ -99,19 +131,33 @@ body {
   background: var(--accent);
 }
 
+/* ─── Accent gradient text helper ─────────────────────────────────────────── */
+.accent-gradient {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* ─── Animated Glow Ring (for profile image) ──────────────────────────────── */
 @keyframes glowPulse {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(200, 192, 176, 0.3), 0 0 40px rgba(200, 192, 176, 0.1);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.30), 0 0 40px rgba(var(--accent-rgb), 0.10);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(200, 192, 176, 0.5), 0 0 60px rgba(200, 192, 176, 0.15);
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.50), 0 0 60px rgba(var(--accent-rgb), 0.15);
   }
 }
 
 .glow-ring {
   animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* ─── Twinkle (used by decorative stars) ──────────────────────────────────── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
 }

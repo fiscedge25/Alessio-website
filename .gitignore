@@ -35,6 +35,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# tooling output (code-analysis cache/reports)
+/graphify-out/
+
+# personal playbook — keep out of the public repo
+alessio-linkedin-SKILL.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
