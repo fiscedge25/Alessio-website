@@ -75,13 +75,13 @@ export default function ParticleBackground() {
                 },
                 number: {
                     density: { enable: true, width: 1200, height: 900 },
-                    value: 130,
+                    value: 90,
                 },
                 opacity: {
                     value: { min: 0.15, max: isDark ? 0.95 : 0.7 },
                     animation: {
                         enable: true,
-                        speed: 0.7,
+                        speed: 0.6,
                         sync: false,
                         startValue: "random" as const,
                     },
@@ -89,12 +89,6 @@ export default function ParticleBackground() {
                 shape: { type: "circle" },
                 size: {
                     value: { min: 0.4, max: 1.8 },
-                    animation: {
-                        enable: true,
-                        speed: 1.2,
-                        sync: false,
-                        startValue: "random" as const,
-                    },
                 },
                 shadow: {
                     enable: isDark,

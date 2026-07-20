@@ -3,26 +3,26 @@
 /* ─── Custom Theme Variables ──────────────────────────────────────────────── */
 /* Light "stellar dawn" is the DEFAULT — off-white with cool depth, indigo accent */
 :root {
-  --bg-primary: #f6f7fc;
+  --bg-primary: #f4f5f9;
   --bg-elevated: #ffffff;
   --bg-surface: #ffffff;
-  --border: rgba(30, 27, 75, 0.08);
-  --border-hover: rgba(37, 99, 235, 0.28);
-  --text-heading: #0f1a33;
-  --text-primary: #29303f;
-  --text-secondary: #566074;
-  --text-muted: #97a0b4;
-  --accent: #2563eb;
-  --accent-2: #0ea5e9;
-  --accent-rgb: 37, 99, 235;
-  --accent-dim: rgba(37, 99, 235, 0.10);
-  --star: rgba(37, 99, 235, 0.50);
-  --star-link: rgba(14, 165, 233, 0.35);
+  --border: rgba(15, 23, 42, 0.10);
+  --border-hover: rgba(29, 78, 216, 0.32);
+  --text-heading: #0a1024;
+  --text-primary: #1c2431;
+  --text-secondary: #434b5c;
+  --text-muted: #6a7386;
+  --accent: #1d4ed8;
+  --accent-2: #0369a1;
+  --accent-rgb: 29, 78, 216;
+  --accent-dim: rgba(29, 78, 216, 0.09);
+  --star: rgba(29, 78, 216, 0.50);
+  --star-link: rgba(3, 105, 161, 0.35);
   /* Ambient nebula glows behind everything */
   --nebula:
-    radial-gradient(60% 45% at 12% 8%, rgba(37, 99, 235, 0.10) 0%, transparent 60%),
-    radial-gradient(55% 40% at 88% 20%, rgba(14, 165, 233, 0.10) 0%, transparent 55%),
-    radial-gradient(70% 50% at 50% 100%, rgba(37, 99, 235, 0.07) 0%, transparent 60%);
+    radial-gradient(60% 45% at 12% 8%, rgba(29, 78, 216, 0.09) 0%, transparent 60%),
+    radial-gradient(55% 40% at 88% 20%, rgba(3, 105, 161, 0.08) 0%, transparent 55%),
+    radial-gradient(70% 50% at 50% 100%, rgba(29, 78, 216, 0.06) 0%, transparent 60%);
   --grain-opacity: 0.02;
 }
 
