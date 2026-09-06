@@ -188,5 +188,217 @@
         "section_3_text": "The hosting infrastructure (Vercel) may collect anonymous access logs for security and technical performance purposes. This data is not associated with specific identities.",
         "section_4_title": "4. Your Rights",
         "section_4_text": "Under the GDPR (EU Regulation 2016/679), you have the right to request access, rectification, or deletion of any personal data we hold by contacting us via email."
+    },
+    "hub": {
+        "nav": {
+            "building": "Building",
+            "projects": "Projects",
+            "notes": "Notes",
+            "about": "About",
+            "buildWithMe": "Build with me",
+            "menu": "Open menu",
+            "close": "Close menu"
+        },
+        "hero": {
+            "aria": "Introduction",
+            "status": "Currently building",
+            "line1": "Building things",
+            "line2": "I wish existed.",
+            "sub1": "I'm Alessio Sabatino, a founder building AI products from idea to company.",
+            "sub2": "Here I share the work as it happens: what I ship, what I test, what I learn.",
+            "ctaBuilding": "See what I'm building",
+            "linkedin": "Follow the journey on LinkedIn"
+        },
+        "creed": {
+            "eyebrow": "Operating principle",
+            "line1": "Build with AI.",
+            "line2": "Think like a founder.",
+            "role": "Founder & AI Builder",
+            "alt": "Alessio Sabatino"
+        },
+        "common": {
+            "explore": "Explore project",
+            "visit": "Visit website",
+            "view": "View project"
+        },
+        "building": {
+            "eyebrow": "Now building",
+            "title": "NOW BUILDING",
+            "intro": "A snapshot of what I'm working on right now.",
+            "viewAll": "See all projects"
+        },
+        "projects": {
+            "eyebrow": "Selected work",
+            "title": "SELECTED PROJECTS",
+            "intro": "A curated few — companies, platforms and experiments I actually shipped. Not every repo, just the ones that matter."
+        },
+        "lab": {
+            "eyebrow": "Experiments",
+            "title": "THE LAB",
+            "intro": "Not everything needs to become a startup.",
+            "line2": "Sometimes I build something because the idea is interesting."
+        },
+        "notes": {
+            "eyebrow": "Build log",
+            "title": "BUILD LOG",
+            "intro": "Short notes from whatever I'm building, breaking or learning.",
+            "viewAll": "All notes",
+            "discuss": "Discuss on LinkedIn"
+        },
+        "ideas": {
+            "eyebrow": "Your turn",
+            "title": "What should I build next?",
+            "intro": "I keep a longer list of ideas than I have time to build. Help me choose.",
+            "vote": "Vote for this",
+            "voted": "Voted — thanks",
+            "suggestTitle": "Have an idea that should exist?",
+            "suggestIntro": "Send it over. I read everything.",
+            "suggestCta": "Send an idea",
+            "modalTitle": "What should exist?",
+            "name": "Name (optional)",
+            "email": "Email (optional)",
+            "ideaLabel": "What should exist?",
+            "send": "Send idea",
+            "success": "Interesting. Added to the idea pile.",
+            "error": "Something went wrong. Try again.",
+            "close": "Close"
+        },
+        "github": {
+            "eyebrow": "From GitHub",
+            "title": "PROOF OF BUILDING",
+            "intro": "Some of the code behind the experiments.",
+            "explore": "Explore GitHub",
+            "updated": "Updated"
+        },
+        "ecosystem": {
+            "eyebrow": "Ecosystem",
+            "title": "PART OF WHAT I'M BUILDING",
+            "intro": "Fiscedge is the larger ecosystem I'm building around entrepreneurship, AI-powered company creation and applied learning.",
+            "exploreFiscedge": "Explore Fiscedge",
+            "exploreAcademy": "Explore Academy"
+        },
+        "interests": {
+            "eyebrow": "Focus",
+            "title": "CURRENTLY INTERESTED IN"
+        },
+        "stack": {
+            "title": "TOOLS I KEEP REACHING FOR"
+        },
+        "about": {
+            "eyebrow": "About",
+            "title": "ABOUT",
+            "p1": "I like the point where an idea stops being a presentation and starts becoming something people can actually use.",
+            "p2": "That's why my work tends to move between business strategy, product thinking and engineering.",
+            "p3": "Sometimes that becomes a company. Sometimes a platform. Sometimes a weekend experiment.",
+            "p4": "BuiltWithSabba is where I keep track of the journey.",
+            "based": "Based between Italy and wherever the next project takes me."
+        },
+        "together": {
+            "title": "BUILD SOMETHING TOGETHER",
+            "intro": "Most of what you see here started as an idea, a problem or a rough prototype. I also work with selected founders, teams and companies to turn their ideas into real digital products.",
+            "detail": "From an early concept to a working MVP, internal AI tool, automation or production-ready platform.",
+            "approach": "I usually start from the problem, not the technology. Sometimes the answer is AI. Sometimes it's automation. Sometimes it's simply a better product.",
+            "cta": "How it works"
+        },
+        "open": {
+            "eyebrow": "Contact",
+            "title": "OPEN TO INTERESTING CONVERSATIONS",
+            "intro": "If you're building something interesting, working on a problem worth solving, or just want to compare notes, feel free to reach out.",
+            "t1": "Building together",
+            "t2": "Startup / AI ideas",
+            "t3": "Product conversations",
+            "t4": "Research",
+            "t5": "Collaborations",
+            "t6": "Interesting experiments",
+            "cta": "Start a conversation"
+        },
+        "project": {
+            "back": "All projects",
+            "thesis": "Thesis",
+            "what": "What is it?",
+            "problem": "The problem",
+            "built": "What I built",
+            "learnings": "What I learned",
+            "live": "Live product",
+            "ctaTitle": "Have something similar in mind?",
+            "ctaIntro": "If you're trying to build a product, internal platform or AI workflow, tell me about it.",
+            "ctaLink": "Start a conversation"
+        },
+        "notesPage": {
+            "back": "Home",
+            "backToNotes": "All notes",
+            "title": "BUILD LOG",
+            "intro": "Short notes from whatever I'm building, breaking or learning.",
+            "discuss": "Discuss on LinkedIn"
+        },
+        "buildWithMe": {
+            "back": "Home",
+            "hero": "LET'S BUILD SOMETHING USEFUL.",
+            "intro": "I spend most of my time building my own products. For the right projects, I also partner with founders and companies to design and build products from idea to launch.",
+            "detail": "I occasionally work with founders, startups, professionals and established companies on projects where product, technology and business intersect.",
+            "scenariosTitle": "This might be you",
+            "s1": "A founder has an idea but needs a working MVP.",
+            "s2": "A company has a repetitive internal process that could be automated.",
+            "s3": "A team wants to introduce AI into an existing workflow.",
+            "s4": "A professional needs a custom platform instead of another generic SaaS subscription.",
+            "s5": "A company has an internal idea but doesn't have the product team to prototype it quickly.",
+            "processTitle": "How it works",
+            "step1t": "Understand",
+            "step1d": "We define the actual problem, the user and what needs to exist.",
+            "step2t": "Shape",
+            "step2d": "We turn the idea into a clear product scope and technical direction.",
+            "step3t": "Build",
+            "step3d": "I design and develop the first working version.",
+            "step4t": "Ship",
+            "step4d": "We launch, measure what happens and improve from real usage.",
+            "title": "Tell me what you're building",
+            "formIntro": "A few lines are enough. I'll take a look and get back to you if it feels like a good fit.",
+            "name": "Name",
+            "email": "Email",
+            "company": "Company / Project (optional)",
+            "messageLabel": "What are you trying to build?",
+            "messagePh": "The problem, the user, what exists so far…",
+            "typeLabel": "Project type",
+            "types": {
+                "new": "New product",
+                "mvp": "MVP / prototype",
+                "ai": "AI integration",
+                "internal": "Internal tool",
+                "automation": "Automation",
+                "improve": "Existing product improvement",
+                "unsure": "Not sure yet"
+            },
+            "stageLabel": "Where are you currently? (optional)",
+            "stages": {
+                "idea": "Just an idea",
+                "exploring": "Exploring",
+                "designed": "Already designed",
+                "prototype": "Prototype exists",
+                "existing": "Existing product",
+                "production": "Already in production"
+            },
+            "budgetLabel": "Budget",
+            "optional": "optional",
+            "budgets": {
+                "figuring": "Still figuring it out",
+                "lt5": "< $5k",
+                "5to15": "$5k–15k",
+                "15to30": "$15k–30k",
+                "30plus": "$30k+",
+                "discuss": "Let's discuss"
+            },
+            "send": "Send project",
+            "success": "Got it. I'll take a look and get back to you if it feels like a good fit.",
+            "error": "Something went wrong. Try again — or reach out on LinkedIn.",
+            "linkedinAlt": "Prefer to connect on LinkedIn"
+        },
+        "footer": {
+            "newsletterEyebrow": "Build notes, occasionally",
+            "newsletterTitle": "WHEN I SHIP SOMETHING INTERESTING",
+            "newsletterIntro": "Occasional notes when I build something useful, discover something worth sharing or make a mistake worth learning from.",
+            "newsletterMicro": "No weekly content machine. No spam.",
+            "signoff": "KEEP BUILDING.",
+            "notes": "Build log"
+        }
     }
 }

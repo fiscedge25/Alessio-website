@@ -57,9 +57,8 @@ export default function Newsletter() {
                 onSubmit={submit}
                 className="relative flex items-center rounded-full p-1.5 transition-all duration-300"
                 style={{
-                    backgroundColor: "var(--bg-elevated)",
-                    border: "1px solid var(--border)",
-                    boxShadow: "0 10px 30px rgba(var(--accent-rgb), 0.10)",
+                    backgroundColor: "var(--paper-elevated)",
+                    border: "1px solid var(--line)",
                 }}
                 onFocusCapture={(e) =>
                     (e.currentTarget.style.borderColor = "var(--border-hover)")
@@ -90,10 +89,9 @@ export default function Newsletter() {
                     disabled={state === "loading" || success}
                     className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm tracking-wider uppercase font-medium transition-all duration-300 hover:scale-[1.03] disabled:opacity-80 shrink-0"
                     style={{
-                        fontFamily: "var(--font-dm)",
-                        background:
-                            "linear-gradient(135deg, var(--accent), var(--accent-2))",
-                        color: "#ffffff",
+                        fontFamily: "var(--font-sans)",
+                        background: "var(--ink)",
+                        color: "var(--paper)",
                     }}
                 >
                     {state === "loading" ? (

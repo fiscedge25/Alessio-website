@@ -7,7 +7,7 @@ import { identity } from "@/lib/data";
 
 // Extracted text content into the component to utilize next-intl later if needed,
 // but keeping the user's provided structure for now.
-const getServices = (t: any) => [
+const getServices = (t: ReturnType<typeof useTranslations>) => [
     {
         icon: Cpu,
         tag: "BUILD",

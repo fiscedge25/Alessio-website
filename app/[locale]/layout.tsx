@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { site } from "@/lib/site";
 import GDPRConsent from "@/components/GDPRConsent";
+import BackdropGrid from "@/components/hub/BackdropGrid";
 import "../globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const inter = Inter({
     subsets: ["latin"],
-    weight: ["300", "400", "500", "600", "700"],
-    variable: "--font-cormorant",
+    variable: "--font-sans",
     display: "swap",
 });
 
-const dmSans = DM_Sans({
+const jetbrainsMono = JetBrains_Mono({
     subsets: ["latin"],
-    weight: ["300", "400", "500"],
-    variable: "--font-dm",
+    weight: ["400", "500"],
+    variable: "--font-mono",
     display: "swap",
 });
 
@@ -32,49 +33,38 @@ export async function generateMetadata({
     const { locale } = await params;
     const isIt = locale === "it";
 
+    const title = isIt
+        ? "Alessio Sabatino — Founder & AI Builder | BuiltWithSabba"
+        : "Alessio Sabatino — AI Builder, Founder & Developer | BuiltWithSabba";
+    const description = isIt
+        ? "Sono Alessio Sabatino. Costruisco prodotti AI, piattaforme digitali ed esperimenti tra tecnologia e imprenditorialità. Segui cosa sto costruendo su BuiltWithSabba."
+        : "I'm Alessio Sabatino. I build AI products, digital platforms and experiments across technology and entrepreneurship. Follow what I'm building at BuiltWithSabba.";
+
     return {
-        title: isIt
-            ? "Alessio Sabatino — Business Strategist & Sviluppatore"
-            : "Alessio Sabatino — Business Strategist & Developer",
-        description: isIt
-            ? "Business strategist e sviluppatore autodidatta che costruisce piattaforme digitali all'intersezione di innovazione, tecnologia e imprenditorialità. Con base a Roma, costruisco globalmente."
-            : "Business strategist and self-taught developer building digital platforms at the intersection of innovation, technology, and entrepreneurship. Based in Rome, building globally.",
-        keywords: [
-            "Alessio Sabatino",
-            "business strategist",
-            "developer",
-            "Rome",
-            "React",
-            "innovation",
-            "digital platforms",
-        ],
-        authors: [{ name: "Alessio Sabatino" }],
+        title,
+        description,
+        metadataBase: new URL(site.url),
+        authors: [{ name: site.owner, url: site.url }],
+        creator: site.owner,
         alternates: {
-            canonical: `https://www.alessiosabatino.it/${locale}`,
+            canonical: `${site.url}/${locale}`,
             languages: {
-                en: "https://www.alessiosabatino.it/en",
-                it: "https://www.alessiosabatino.it/it",
+                en: `${site.url}/en`,
+                it: `${site.url}/it`,
             },
         },
         openGraph: {
-            title: isIt
-                ? "Alessio Sabatino — Business Strategist & Sviluppatore"
-                : "Alessio Sabatino — Business Strategist & Developer",
-            description: isIt
-                ? "Strategia, Innovazione & Sistemi Digitali."
-                : "Strategy, Innovation & Digital Systems.",
+            title,
+            description,
             type: "website",
             locale: isIt ? "it_IT" : "en_US",
-            siteName: "Alessio Sabatino",
+            url: `${site.url}/${locale}`,
+            siteName: "BuiltWithSabba",
         },
         twitter: {
             card: "summary_large_image",
-            title: isIt
-                ? "Alessio Sabatino — Business Strategist & Sviluppatore"
-                : "Alessio Sabatino — Business Strategist & Developer",
-            description: isIt
-                ? "Strategia, Innovazione & Sistemi Digitali."
-                : "Strategy, Innovation & Digital Systems.",
+            title,
+            description,
         },
         icons: { icon: "/favicon.ico" },
     };
@@ -95,7 +85,8 @@ export default async function LocaleLayout({
         <html
             lang={locale}
             data-theme="light"
-            className={`${spaceGrotesk.variable} ${dmSans.variable}`}
+            className={`${inter.variable} ${jetbrainsMono.variable}`}
+            suppressHydrationWarning
         >
             <head>
                 <script
@@ -103,57 +94,58 @@ export default async function LocaleLayout({
                         __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
                     }}
                 />
-                <link
-                    rel="alternate"
-                    hrefLang="en"
-                    href="https://www.alessiosabatino.it/en"
-                />
-                <link
-                    rel="alternate"
-                    hrefLang="it"
-                    href="https://www.alessiosabatino.it/it"
-                />
-                <link
-                    rel="alternate"
-                    hrefLang="x-default"
-                    href="https://www.alessiosabatino.it/en"
-                />
+                <link rel="alternate" hrefLang="en" href={`${site.url}/en`} />
+                <link rel="alternate" hrefLang="it" href={`${site.url}/it`} />
+                <link rel="alternate" hrefLang="x-default" href={`${site.url}/en`} />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
                             "@context": "https://schema.org",
                             "@type": "Person",
-                            name: "Alessio Sabatino",
-                            jobTitle: "Business Strategist & Developer",
-                            url: "https://www.alessiosabatino.it",
-                            email: "alessio.sabatino@fiscedge.com",
-                            telephone: "+39 345 125 1902",
+                            name: site.owner,
+                            jobTitle: "AI Builder & Founder",
+                            url: site.url,
+                            email: site.email,
                             address: {
                                 "@type": "PostalAddress",
                                 addressLocality: "Roma",
                                 addressCountry: "IT",
                             },
                             sameAs: [
-                                "https://www.linkedin.com/in/alessio-sabatino29",
-                                "https://academy.fiscedge.com",
+                                site.linkedin.url,
+                                site.github.url,
+                                site.fiscedge.url,
+                                site.fiscedge.academyUrl,
                             ],
-                            knowsLanguage: ["Italian", "English", "Spanish"],
-                            alumniOf: [
-                                {
-                                    "@type": "CollegeOrUniversity",
-                                    name: "Rome Business School",
-                                },
-                                {
-                                    "@type": "CollegeOrUniversity",
-                                    name: "Università La Sapienza",
-                                },
+                            knowsAbout: [
+                                "AI products",
+                                "Company building",
+                                "Product development",
+                                "Web engineering",
                             ],
                         }),
                     }}
                 />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "WebSite",
+                            name: "BuiltWithSabba",
+                            url: site.url,
+                            author: {
+                                "@type": "Person",
+                                name: site.owner,
+                            },
+                            inLanguage: ["en", "it"],
+                        }),
+                    }}
+                />
             </head>
-            <body className="antialiased font-dm">
+            <body className="antialiased">
+                <BackdropGrid />
                 <NextIntlClientProvider messages={messages}>
                     {children}
                     <GDPRConsent />

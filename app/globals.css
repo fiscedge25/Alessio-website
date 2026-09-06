@@ -1,52 +1,81 @@
 @import "tailwindcss";
 
-/* ─── Custom Theme Variables ──────────────────────────────────────────────── */
-/* Light "stellar dawn" is the DEFAULT — off-white with cool depth, indigo accent */
+/* ─── BuiltWithSabba — Apple-grade monochrome system ────────────────────────
+   White + soft gray bands (#f5f5f7 rhythm), near-black ink, ONE Apple-blue
+   accent reserved for primary actions and links. Rounded cards, soft
+   shadows, oversized centered type moments. No gradients, no glow. */
+
 :root {
-  --bg-primary: #f4f5f9;
-  --bg-elevated: #ffffff;
-  --bg-surface: #ffffff;
-  --border: rgba(15, 23, 42, 0.10);
-  --border-hover: rgba(29, 78, 216, 0.32);
-  --text-heading: #0a1024;
-  --text-primary: #1c2431;
-  --text-secondary: #434b5c;
-  --text-muted: #6a7386;
-  --accent: #1d4ed8;
-  --accent-2: #0369a1;
-  --accent-rgb: 29, 78, 216;
-  --accent-dim: rgba(29, 78, 216, 0.09);
-  --star: rgba(29, 78, 216, 0.50);
-  --star-link: rgba(3, 105, 161, 0.35);
-  /* Ambient nebula glows behind everything */
-  --nebula:
-    radial-gradient(60% 45% at 12% 8%, rgba(29, 78, 216, 0.09) 0%, transparent 60%),
-    radial-gradient(55% 40% at 88% 20%, rgba(3, 105, 161, 0.08) 0%, transparent 55%),
-    radial-gradient(70% 50% at 50% 100%, rgba(29, 78, 216, 0.06) 0%, transparent 60%);
-  --grain-opacity: 0.02;
+  --paper: #ffffff;
+  --paper-elevated: #ffffff;
+  --surface: #f5f5f7;
+  --ink: #1d1d1f;
+  --ink-2: #1d1d1f;
+  --muted: #6e6e73;
+  --line: #d2d2d7;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --status: #1d8127;
+  --selection-bg: rgba(0, 113, 227, 0.18);
+  --selection-fg: #1d1d1f;
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.1);
+  --radius-card: 20px;
+  --nav-bg: rgba(255, 255, 255, 0.72);
+
+  /* Compat aliases for legacy components (portfolio page) */
+  --bg-primary: var(--paper);
+  --bg-elevated: var(--paper-elevated);
+  --bg-surface: var(--surface);
+  --border: var(--line);
+  --border-hover: #aeaeb2;
+  --text-heading: var(--ink);
+  --text-primary: var(--ink-2);
+  --text-secondary: #424245;
+  --text-muted: var(--muted);
+  --accent-2: var(--accent-hover);
+  --accent-rgb: 0, 113, 227;
+  --accent-dim: rgba(0, 113, 227, 0.07);
+
+  /* Legacy font aliases: Newsletter + LanguageToggle still use these. */
+  --font-dm: var(--font-sans);
+  --font-cormorant: var(--font-sans);
+
+  /* Backdrop grid: barely there, revealed by the pointer spotlight. */
+  --grid-line: rgba(0, 0, 0, 0.07);
 }
 
 [data-theme="dark"] {
-  --bg-primary: #070712;
-  --bg-elevated: #0e0e1c;
-  --bg-surface: #12121f;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(96, 165, 250, 0.35);
-  --text-heading: #ffffff;
-  --text-primary: #e9edf7;
-  --text-secondary: #99a2b8;
-  --text-muted: #56607a;
-  --accent: #60a5fa;
-  --accent-2: #38bdf8;
-  --accent-rgb: 96, 165, 250;
-  --accent-dim: rgba(96, 165, 250, 0.14);
-  --star: rgba(224, 236, 255, 0.85);
-  --star-link: rgba(96, 165, 250, 0.30);
-  --nebula:
-    radial-gradient(60% 45% at 12% 8%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
-    radial-gradient(55% 40% at 88% 18%, rgba(14, 165, 233, 0.16) 0%, transparent 55%),
-    radial-gradient(70% 55% at 50% 100%, rgba(56, 189, 248, 0.12) 0%, transparent 60%);
-  --grain-opacity: 0.05;
+  --paper: #000000;
+  --paper-elevated: #1d1d1f;
+  --surface: #161617;
+  --ink: #f5f5f7;
+  --ink-2: #e8e8ed;
+  --muted: #86868b;
+  --line: #2d2d2f;
+  --accent: #0a84ff;
+  --accent-hover: #409cff;
+  --status: #30d158;
+  --selection-bg: rgba(10, 132, 255, 0.3);
+  --selection-fg: #f5f5f7;
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --nav-bg: rgba(10, 10, 10, 0.72);
+
+  --bg-primary: var(--paper);
+  --bg-elevated: var(--paper-elevated);
+  --bg-surface: var(--surface);
+  --border: var(--line);
+  --border-hover: #515154;
+  --text-heading: var(--ink);
+  --text-primary: var(--ink-2);
+  --text-secondary: #d4d4d8;
+  --text-muted: var(--muted);
+  --accent: var(--accent);
+  --accent-2: var(--accent-hover);
+  --accent-rgb: 10, 132, 255;
+  --accent-dim: rgba(10, 132, 255, 0.12);
+  --grid-line: rgba(255, 255, 255, 0.08);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -58,106 +87,448 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  position: relative;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.5s ease, color 0.5s ease;
+  background-color: var(--paper);
+  color: var(--ink-2);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
 }
 
-/* Fixed nebula layer sitting behind the starfield canvas */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: var(--nebula);
-  transition: background 0.5s ease;
-}
-
 ::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Typography helpers ──────────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.035em;
+  font-weight: 650;
+}
+
+.font-mono-meta {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+
+/* ─── Apple-style buttons ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    opacity 0.25s ease;
+  min-height: 48px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
   background: var(--accent);
-  color: #ffffff;
+  color: #fff;
 }
 
-/* ─── Grain Overlay ───────────────────────────────────────────────────────── */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 128px 128px;
+.btn-primary:hover {
+  background: var(--accent-hover);
 }
 
-/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
+[data-theme="dark"] .btn-primary {
+  color: #fff;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--line);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  opacity: 0.4;
-  border-radius: 3px;
+.btn-secondary:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
 }
 
-/* ─── Section Divider ─────────────────────────────────────────────────────── */
-.section-divider {
-  width: 100%;
+/* Blue text link, Apple style */
+.link-blue {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.link-blue:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Cards & bands ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--paper-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.band {
+  background: var(--surface);
+}
+
+/* ─── Editorial link: underline reveals on hover ──────────────────────────── */
+.u-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.u-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
   height: 1px;
-  background: linear-gradient(to right, transparent, var(--border-hover), transparent);
-  margin: 0;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ─── Dot Rating ──────────────────────────────────────────────────────────── */
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: background 0.3s ease;
+.u-link:hover::after,
+.u-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.dot.active {
-  background: var(--accent);
+/* Arrow nudges 3–4px on hover */
+.arrow-shift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ─── Accent gradient text helper ─────────────────────────────────────────── */
-.accent-gradient {
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+a:hover .arrow-shift,
+button:hover .arrow-shift {
+  transform: translate(3px, -3px);
 }
 
-/* ─── Animated Glow Ring (for profile image) ──────────────────────────────── */
-@keyframes glowPulse {
-
+/* ─── Status pulse (the ONLY animation allowed to loop) ───────────────────── */
+@keyframes status-pulse {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.30), 0 0 40px rgba(var(--accent-rgb), 0.10);
+    opacity: 1;
+    transform: scale(1);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.50), 0 0 60px rgba(var(--accent-rgb), 0.15);
+    opacity: 0.45;
+    transform: scale(0.82);
   }
 }
 
-.glow-ring {
-  animation: glowPulse 4s ease-in-out infinite;
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--status);
+  animation: status-pulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
-/* ─── Twinkle (used by decorative stars) ──────────────────────────────────── */
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
+/* Status pill, Apple-style */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 0.5rem 1.1rem;
+}
+
+/* ─── Reveal on scroll: subtle, plays once ────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── Project row hover ───────────────────────────────────────────────────── */
+.project-row {
+  transition: background-color 0.3s ease;
+}
+
+.project-row:hover {
+  background-color: var(--accent-dim);
+}
+
+.project-row .project-title {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-row:hover .project-title {
+  transform: translateX(6px);
+}
+
+/* ─── Hairline rules ──────────────────────────────────────────────────────── */
+.rule {
+  border-color: var(--line);
+}
+
+/* ─── Forms ───────────────────────────────────────────────────────────────── */
+.field {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper-elevated);
+  padding: 0.8rem 1rem;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.field::placeholder {
+  color: var(--muted);
+}
+
+/* ─── Scrollbar (thin, monochrome) ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+/* ─── Status badge ────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.7rem 0.28rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: var(--surface);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge .status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.badge-live {
+  color: var(--status);
+  border-color: color-mix(in srgb, var(--status) 32%, var(--line));
+  background: color-mix(in srgb, var(--status) 8%, var(--paper-elevated));
+}
+
+.badge-live .status-dot {
+  background: var(--status);
+}
+
+.badge-building {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+  background: var(--accent-dim);
+}
+
+.badge-building .status-dot {
+  background: var(--accent);
+}
+
+/* ─── Tech chips ──────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: var(--surface);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.project-row:hover .tag {
+  color: var(--ink-2);
+  border-color: var(--border-hover);
+}
+
+/* ─── Section heading accents ─────────────────────────────────────────────── */
+.accent-bar {
+  display: block;
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.index-num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Reduced motion: kill everything decorative ──────────────────────────── */
+/* ═══ MOTION LAYER ═════════════════════════════════════════════════════════
+   Three scroll/pointer-driven effects. The two scroll ones are pure CSS
+   scroll-driven animations: zero JavaScript, and browsers without support
+   simply render the page static instead of breaking. */
+
+/* ─── Backdrop grid + pointer spotlight ───────────────────────────────────
+   Fixed behind everything (negative z-index sits above the canvas
+   background, below all content). Never intercepts clicks. */
+.backdrop-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  --mx: 50%;
+  --my: 22%;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  /* Before the pointer is seen, a wide static wash near the top; once
+     BackdropGrid.tsx attaches it becomes a tight travelling spotlight. */
+  -webkit-mask-image: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    #000 0%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    #000 0%,
+    transparent 72%
+  );
+  animation: grid-drift 26s linear infinite;
+}
+
+/* Constant, almost subliminal drift — keeps the surface alive on touch
+   devices, where there is no pointer to follow. */
+@keyframes grid-drift {
+  to {
+    background-position: 64px 64px;
+  }
+}
+
+/* ─── Hero recede on scroll ───────────────────────────────────────────────
+   The hero sinks and fades as the page moves past it. */
+@keyframes hero-recede {
+  to {
+    transform: translateY(-44px) scale(0.975);
+    opacity: 0.25;
+  }
+}
+
+/* ─── Reading progress line under the navbar ──────────────────────────────── */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+@keyframes progress-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-hero {
+      animation: hero-recede linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 90vh;
+      will-change: transform, opacity;
+    }
+
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .status-dot {
+    animation: none;
+  }
+
+  .backdrop-grid {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

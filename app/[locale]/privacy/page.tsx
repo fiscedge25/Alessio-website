@@ -1,9 +1,13 @@
-import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export default function PrivacyPolicyPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function PrivacyPolicyPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}) {
+    const { locale } = await params;
     setRequestLocale(locale);
-    const t = useTranslations("privacy");
+    const t = await getTranslations({ locale, namespace: "privacy" });
 
     return (
         <main className="min-h-screen pt-32 pb-20 px-6 max-w-4xl mx-auto relative z-10">

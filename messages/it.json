@@ -188,5 +188,217 @@
         "section_3_text": "L'infrastruttura di hosting (Vercel) può raccogliere log di accesso anonimi per fini di sicurezza e performance tecniche. Questi dati non sono associati ad identità specifiche.",
         "section_4_title": "4. I Tuoi Diritti",
         "section_4_text": "Ai sensi del GDPR (Regolamento UE 2016/679), hai il diritto di richiedere l'accesso, la rettifica o la cancellazione di eventuali dati personali in nostro possesso contattandoci via email."
+    },
+    "hub": {
+        "nav": {
+            "building": "In cantiere",
+            "projects": "Progetti",
+            "notes": "Note",
+            "about": "Chi sono",
+            "buildWithMe": "Costruiamo insieme",
+            "menu": "Apri il menu",
+            "close": "Chiudi il menu"
+        },
+        "hero": {
+            "aria": "Introduzione",
+            "status": "A cosa sto lavorando ora",
+            "line1": "Costruisco cose",
+            "line2": "che vorrei esistessero.",
+            "sub1": "Sono Alessio Sabatino, founder che costruisce prodotti AI dall'idea all'azienda.",
+            "sub2": "Qui condivido il lavoro mentre accade: cosa pubblico, cosa testo, cosa imparo.",
+            "ctaBuilding": "Vedi cosa sto costruendo",
+            "linkedin": "Segui il percorso su LinkedIn"
+        },
+        "creed": {
+            "eyebrow": "Principio guida",
+            "line1": "Build with AI.",
+            "line2": "Think like a founder.",
+            "role": "Founder & AI Builder",
+            "alt": "Alessio Sabatino"
+        },
+        "common": {
+            "explore": "Esplora il progetto",
+            "visit": "Visita il sito",
+            "view": "Vedi il progetto"
+        },
+        "building": {
+            "eyebrow": "In cantiere ora",
+            "title": "IN CANTIERE ORA",
+            "intro": "Un'istantanea di ciò a cui sto lavorando in questo momento.",
+            "viewAll": "Vedi tutti i progetti"
+        },
+        "projects": {
+            "eyebrow": "Lavori selezionati",
+            "title": "PROGETTI SELEZIONATI",
+            "intro": "Solo alcuni, curati — aziende, piattaforme ed esperimenti che ho davvero pubblicato. Non ogni repository, solo quelli che contano."
+        },
+        "lab": {
+            "eyebrow": "Esperimenti",
+            "title": "IL LABORATORIO",
+            "intro": "Non tutto deve diventare una startup.",
+            "line2": "A volte costruisco qualcosa perché l'idea è interessante."
+        },
+        "notes": {
+            "eyebrow": "Diario di bordo",
+            "title": "DIARIO DI BORDO",
+            "intro": "Note brevi da ciò che sto costruendo, rompendo o imparando.",
+            "viewAll": "Tutte le note",
+            "discuss": "Discutine su LinkedIn"
+        },
+        "ideas": {
+            "eyebrow": "A te la scelta",
+            "title": "Cosa dovrei costruire dopo?",
+            "intro": "Ho una lista di idee più lunga del tempo per costruirle. Aiutami a scegliere.",
+            "vote": "Vota questa",
+            "voted": "Votato — grazie",
+            "suggestTitle": "Hai un'idea che dovrebbe esistere?",
+            "suggestIntro": "Mandamela. Leggo tutto.",
+            "suggestCta": "Invia un'idea",
+            "modalTitle": "Cosa dovrebbe esistere?",
+            "name": "Nome (facoltativo)",
+            "email": "Email (facoltativa)",
+            "ideaLabel": "Cosa dovrebbe esistere?",
+            "send": "Invia l'idea",
+            "success": "Interessante. Aggiunta al mucchio delle idee.",
+            "error": "Qualcosa è andato storto. Riprova.",
+            "close": "Chiudi"
+        },
+        "github": {
+            "eyebrow": "Da GitHub",
+            "title": "LA PROVA CHE COSTRUISCO",
+            "intro": "Parte del codice dietro gli esperimenti.",
+            "explore": "Esplora GitHub",
+            "updated": "Aggiornato"
+        },
+        "ecosystem": {
+            "eyebrow": "Ecosistema",
+            "title": "PARTE DI CIÒ CHE STO COSTRUENDO",
+            "intro": "Fiscedge è l'ecosistema più ampio che sto costruendo attorno a imprenditorialità, creazione d'impresa con l'AI e apprendimento applicato.",
+            "exploreFiscedge": "Esplora Fiscedge",
+            "exploreAcademy": "Esplora l'Academy"
+        },
+        "interests": {
+            "eyebrow": "Focus",
+            "title": "A COSA MI INTERESSO ORA"
+        },
+        "stack": {
+            "title": "STRUMENTI A CUI TORNO SEMPRE"
+        },
+        "about": {
+            "eyebrow": "Chi sono",
+            "title": "CHI SONO",
+            "p1": "Mi piace il punto in cui un'idea smette di essere una presentazione e inizia a diventare qualcosa che le persone possono usare davvero.",
+            "p2": "Per questo il mio lavoro si muove tra strategia d'impresa, pensiero di prodotto e ingegneria.",
+            "p3": "A volte diventa un'azienda. A volte una piattaforma. A volte un esperimento del weekend.",
+            "p4": "BuiltWithSabba è dove tengo traccia del percorso.",
+            "based": "Tra l'Italia e ovunque mi porti il prossimo progetto."
+        },
+        "together": {
+            "title": "COSTRUIAMO QUALCOSA INSIEME",
+            "intro": "Quasi tutto ciò che vedi qui è nato come un'idea, un problema o un prototipo grezzo. Lavoro anche con founder, team e aziende selezionati per trasformare le loro idee in prodotti digitali reali.",
+            "detail": "Da un concetto iniziale a un MVP funzionante, uno strumento AI interno, un'automazione o una piattaforma pronta per la produzione.",
+            "approach": "Di solito parto dal problema, non dalla tecnologia. A volte la risposta è l'AI. A volte è l'automazione. A volte è semplicemente un prodotto migliore.",
+            "cta": "Come funziona"
+        },
+        "open": {
+            "eyebrow": "Contatti",
+            "title": "APERTO A CONVERSAZIONI INTERESSANTI",
+            "intro": "Se stai costruendo qualcosa di interessante, lavori su un problema che valga la pena risolvere, o vuoi semplicemente confrontare appunti, scrivimi.",
+            "t1": "Costruire insieme",
+            "t2": "Idee startup / AI",
+            "t3": "Conversazioni di prodotto",
+            "t4": "Ricerca",
+            "t5": "Collaborazioni",
+            "t6": "Esperimenti interessanti",
+            "cta": "Inizia una conversazione"
+        },
+        "project": {
+            "back": "Tutti i progetti",
+            "thesis": "Tesi",
+            "what": "Cos'è?",
+            "problem": "Il problema",
+            "built": "Cosa ho costruito",
+            "learnings": "Cosa ho imparato",
+            "live": "Prodotto live",
+            "ctaTitle": "Hai in mente qualcosa di simile?",
+            "ctaIntro": "Se stai cercando di costruire un prodotto, una piattaforma interna o un workflow AI, raccontamelo.",
+            "ctaLink": "Inizia una conversazione"
+        },
+        "notesPage": {
+            "back": "Home",
+            "backToNotes": "Tutte le note",
+            "title": "DIARIO DI BORDO",
+            "intro": "Note brevi da ciò che sto costruendo, rompendo o imparando.",
+            "discuss": "Discutine su LinkedIn"
+        },
+        "buildWithMe": {
+            "back": "Home",
+            "hero": "COSTRUIAMO QUALCOSA DI UTILE.",
+            "intro": "Passo la maggior parte del tempo a costruire i miei prodotti. Per i progetti giusti, collaboro anche con founder e aziende per progettare e costruire prodotti dall'idea al lancio.",
+            "detail": "Lavoro occasionalmente con founder, startup, professionisti e aziende consolidate su progetti dove prodotto, tecnologia e business si intersecano.",
+            "scenariosTitle": "Potresti essere tu",
+            "s1": "Un founder ha un'idea ma ha bisogno di un MVP funzionante.",
+            "s2": "Un'azienda ha un processo interno ripetitivo che potrebbe essere automatizzato.",
+            "s3": "Un team vuole introdurre l'AI in un workflow esistente.",
+            "s4": "Un professionista ha bisogno di una piattaforma su misura invece dell'ennesimo abbonamento SaaS generico.",
+            "s5": "Un'azienda ha un'idea interna ma non ha il team di prodotto per prototiparla in fretta.",
+            "processTitle": "Come funziona",
+            "step1t": "Capire",
+            "step1d": "Definiamo il problema reale, l'utente e cosa deve esistere.",
+            "step2t": "Dare forma",
+            "step2d": "Trasformiamo l'idea in uno scopo di prodotto chiaro e una direzione tecnica.",
+            "step3t": "Costruire",
+            "step3d": "Progetto e sviluppo la prima versione funzionante.",
+            "step4t": "Pubblicare",
+            "step4d": "Lanciamo, misuriamo cosa succede e miglioriamo dall'uso reale.",
+            "title": "Raccontami cosa stai costruendo",
+            "formIntro": "Bastano poche righe. Darò un'occhiata e ti risponderò se mi sembra una buona affinità.",
+            "name": "Nome",
+            "email": "Email",
+            "company": "Azienda / Progetto (facoltativo)",
+            "messageLabel": "Cosa stai cercando di costruire?",
+            "messagePh": "Il problema, l'utente, cosa esiste finora…",
+            "typeLabel": "Tipo di progetto",
+            "types": {
+                "new": "Nuovo prodotto",
+                "mvp": "MVP / prototipo",
+                "ai": "Integrazione AI",
+                "internal": "Strumento interno",
+                "automation": "Automazione",
+                "improve": "Miglioria prodotto esistente",
+                "unsure": "Non ancora sicuro"
+            },
+            "stageLabel": "A che punto sei? (facoltativo)",
+            "stages": {
+                "idea": "Solo un'idea",
+                "exploring": "In esplorazione",
+                "designed": "Già progettato",
+                "prototype": "Esiste un prototipo",
+                "existing": "Prodotto esistente",
+                "production": "Già in produzione"
+            },
+            "budgetLabel": "Budget",
+            "optional": "facoltativo",
+            "budgets": {
+                "figuring": "Ci sto ancora pensando",
+                "lt5": "< $5k",
+                "5to15": "$5k–15k",
+                "15to30": "$15k–30k",
+                "30plus": "$30k+",
+                "discuss": "Parliamone"
+            },
+            "send": "Invia il progetto",
+            "success": "Ricevuto. Darò un'occhiata e ti risponderò se mi sembra una buona affinità.",
+            "error": "Qualcosa è andato storto. Riprova — o contattami su LinkedIn.",
+            "linkedinAlt": "Preferisci connetterti su LinkedIn"
+        },
+        "footer": {
+            "newsletterEyebrow": "Note di cantiere, ogni tanto",
+            "newsletterTitle": "QUANDO PUBBLICO QUALCOSA DI INTERESSANTE",
+            "newsletterIntro": "Note occasionali quando costruisco qualcosa di utile, scopro qualcosa che vale la pena condividere o faccio un errore da cui imparare.",
+            "newsletterMicro": "Niente macchina dei contenuti settimanale. Niente spam.",
+            "signoff": "CONTINUA A COSTRUIRE.",
+            "notes": "Diario di bordo"
+        }
     }
 }
