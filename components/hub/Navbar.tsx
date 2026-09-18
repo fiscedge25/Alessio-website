@@ -66,6 +66,12 @@ export default function Navbar() {
                         </Link>
                     ))}
                     <Link
+                        href={`/${locale}/prompts`}
+                        className="u-link font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                    >
+                        {t("prompts")}
+                    </Link>
+                    <Link
                         href={`/${locale}/build-with-me`}
                         className="font-mono-meta text-[12px] uppercase border border-[color:var(--line)] rounded-full px-4 py-2 text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] hover:border-[color:var(--ink)] transition-colors"
                     >
@@ -126,6 +132,13 @@ export default function Navbar() {
                             {t(l.key)}
                         </Link>
                     ))}
+                    <Link
+                        href={`/${locale}/prompts`}
+                        onClick={() => setOpen(false)}
+                        className="font-mono-meta text-[13px] uppercase text-[color:var(--ink-2)]"
+                    >
+                        {t("prompts")}
+                    </Link>
                     <Link
                         href={`/${locale}/build-with-me`}
                         onClick={() => setOpen(false)}

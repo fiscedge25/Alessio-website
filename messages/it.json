@@ -197,7 +197,8 @@
             "about": "Chi sono",
             "buildWithMe": "Costruiamo insieme",
             "menu": "Apri il menu",
-            "close": "Chiudi il menu"
+            "close": "Chiudi il menu",
+            "prompts": "Prompt"
         },
         "hero": {
             "aria": "Introduzione",
@@ -207,7 +208,9 @@
             "sub1": "Sono Alessio Sabatino, founder che costruisce prodotti AI dall'idea all'azienda.",
             "sub2": "Qui condivido il lavoro mentre accade: cosa pubblico, cosa testo, cosa imparo.",
             "ctaBuilding": "Vedi cosa sto costruendo",
-            "linkedin": "Segui il percorso su LinkedIn"
+            "linkedin": "Segui il percorso su LinkedIn",
+            "portraitCaption": "Io, in 0 e 1. Passaci sopra.",
+            "portraitCta": "Prendi il prompt"
         },
         "creed": {
             "eyebrow": "Principio guida",
@@ -399,6 +402,51 @@
             "newsletterMicro": "Niente macchina dei contenuti settimanale. Niente spam.",
             "signoff": "CONTINUA A COSTRUIRE.",
             "notes": "Diario di bordo"
+        },
+        "prompts": {
+            "eyebrow": "Libreria di prompt",
+            "title": "PROMPT",
+            "intro": "I prompt dietro le cose che ho costruito, liberi da prendere. Incollane uno nel tuo agente e costruisci la stessa cosa.",
+            "back": "Tutti i prompt",
+            "home": "Torna alla home",
+            "open": "Apri il prompt",
+            "minutes": "min",
+            "worksWith": "Funziona con",
+            "keyword": "Arrivi da Instagram? Commenta",
+            "keywordAfter": "e te lo mando in DM",
+            "result": "Cosa ottieni",
+            "resultIntro": "Questo è il mio profilo, costruito esattamente con questo prompt. Le animazioni partono una volta al caricamento della pagina.",
+            "seeLive": "Guardalo dal vivo su GitHub",
+            "pathsTitle": "Due modi per costruirlo",
+            "pathPrompt": "Con il prompt",
+            "pathPromptSub": "Per Claude Code, Cursor, Codex. Alla fine possiedi codice che capisci.",
+            "pathTemplate": "Con il template",
+            "pathTemplateSub": "Niente terminale. Funziona dal telefono. La build gira su GitHub Actions.",
+            "useTemplate": "Usa il template",
+            "viewRepo": "Vedi il repo",
+            "promptTitle": "Il prompt",
+            "promptIntro": "Dice al tuo agente cosa costruire e le quattro cose che vanno storte se nessuno lo avverte — la differenza tra un ritratto e una macchia.",
+            "unlockTitle": "Sblocca il prompt completo",
+            "unlockBody": "Lascia la tua email ed è tuo da copiare. Ti scrivo quando pubblico il prossimo — nient'altro.",
+            "emailPlaceholder": "tu@esempio.com",
+            "unlockCta": "Sblocca",
+            "unlocking": "Sblocco…",
+            "invalid": "Questa email non sembra corretta.",
+            "error": "Qualcosa è andato storto. Riprova.",
+            "privacy": "Niente spam. Disiscrizione con un clic.",
+            "copy": "Copia il prompt",
+            "copied": "Copiato",
+            "download": "Scarica .md",
+            "lines": "righe",
+            "shareTitle": "Condividilo",
+            "shareNative": "Condividi",
+            "copyLink": "Copia link",
+            "linkCopied": "Link copiato",
+            "shareText": "Trasforma il tuo profilo GitHub con un prompt — ritratto ASCII, card neofetch, grafico dei contributi dal vivo.",
+            "tipsTitle": "La foto conta più di qualsiasi impostazione",
+            "tips": "Un volto, sguardo in camera, ben illuminato, su sfondo semplice. Una luce dura batte una luce piatta: la rampa ASCII ha bisogno di luci e ombre vere. Foto di gruppo e a figura intera diventano una macchia.",
+            "ctaTitle": "Vuoi qualcosa del genere per il tuo prodotto?",
+            "cta": "Costruiamolo insieme"
         }
     }
 }

@@ -13,7 +13,11 @@ export type AnalyticsEvent =
     | "newsletter_signup"
     | "idea_submission"
     | "idea_vote"
-    | "contact_submit";
+    | "contact_submit"
+    | "prompt_unlock"
+    | "prompt_copy"
+    | "prompt_download"
+    | "prompt_share";
 
 export function track(event: AnalyticsEvent, detail?: Record<string, string>) {
     if (typeof window === "undefined") return;

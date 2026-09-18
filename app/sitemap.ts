@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 import { projects, sortedNotes } from "@/lib/hub";
+import { prompts } from "@/lib/prompts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const locales = ["en", "it"];
-    const staticPaths = ["", "/notes", "/build-with-me"];
+    const staticPaths = ["", "/notes", "/build-with-me", "/prompts"];
     const entries: MetadataRoute.Sitemap = [];
 
     for (const locale of locales) {
@@ -19,6 +20,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         for (const proj of projects) {
             entries.push({
                 url: `${site.url}/${locale}/projects/${proj.slug}`,
+                lastModified: new Date(),
+                changeFrequency: "monthly",
+                priority: 0.8,
+            });
+        }
+        for (const pr of prompts) {
+            entries.push({
+                url: `${site.url}/${locale}/prompts/${pr.slug}`,
                 lastModified: new Date(),
                 changeFrequency: "monthly",
                 priority: 0.8,

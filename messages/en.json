@@ -197,7 +197,8 @@
             "about": "About",
             "buildWithMe": "Build with me",
             "menu": "Open menu",
-            "close": "Close menu"
+            "close": "Close menu",
+            "prompts": "Prompts"
         },
         "hero": {
             "aria": "Introduction",
@@ -207,7 +208,9 @@
             "sub1": "I'm Alessio Sabatino, a founder building AI products from idea to company.",
             "sub2": "Here I share the work as it happens: what I ship, what I test, what I learn.",
             "ctaBuilding": "See what I'm building",
-            "linkedin": "Follow the journey on LinkedIn"
+            "linkedin": "Follow the journey on LinkedIn",
+            "portraitCaption": "Me, in 0s and 1s. Hover it.",
+            "portraitCta": "Get the prompt"
         },
         "creed": {
             "eyebrow": "Operating principle",
@@ -399,6 +402,51 @@
             "newsletterMicro": "No weekly content machine. No spam.",
             "signoff": "KEEP BUILDING.",
             "notes": "Build log"
+        },
+        "prompts": {
+            "eyebrow": "Prompt library",
+            "title": "PROMPTS",
+            "intro": "The prompts behind things I've built, free to take. Paste one into your agent and ship the same thing yourself.",
+            "back": "All prompts",
+            "home": "Back to home",
+            "open": "Open prompt",
+            "minutes": "min",
+            "worksWith": "Works with",
+            "keyword": "On Instagram? Comment",
+            "keywordAfter": "to get it in your DMs",
+            "result": "What you get",
+            "resultIntro": "This is my own profile, built with exactly this prompt. The animations play once when the page loads.",
+            "seeLive": "See it live on GitHub",
+            "pathsTitle": "Two ways to build it",
+            "pathPrompt": "With the prompt",
+            "pathPromptSub": "For Claude Code, Cursor, Codex. You end up owning code you understand.",
+            "pathTemplate": "With the template",
+            "pathTemplateSub": "No terminal. Works from your phone. The build runs in GitHub Actions.",
+            "useTemplate": "Use the template",
+            "viewRepo": "View the repo",
+            "promptTitle": "The prompt",
+            "promptIntro": "It tells your agent what to build and the four things that go wrong if nobody warns it — the difference between a portrait and a smudge.",
+            "unlockTitle": "Unlock the full prompt",
+            "unlockBody": "Drop your email and it's yours to copy. I'll send the next one when I ship it — nothing else.",
+            "emailPlaceholder": "you@example.com",
+            "unlockCta": "Unlock",
+            "unlocking": "Unlocking…",
+            "invalid": "That email doesn't look right.",
+            "error": "Something went wrong. Try again.",
+            "privacy": "No spam. Unsubscribe in one click.",
+            "copy": "Copy prompt",
+            "copied": "Copied",
+            "download": "Download .md",
+            "lines": "lines",
+            "shareTitle": "Share it",
+            "shareNative": "Share",
+            "copyLink": "Copy link",
+            "linkCopied": "Link copied",
+            "shareText": "Upgrade your GitHub profile with one prompt — ASCII portrait, neofetch card, live contribution graph.",
+            "tipsTitle": "Your photo matters more than any setting",
+            "tips": "One face, looking at the camera, clearly lit, against a plain background. Harder light beats flat light: the ASCII ramp needs real highlights and shadows. Group shots and full-body photos convert to mush.",
+            "ctaTitle": "Want something like this built for your product?",
+            "cta": "Build with me"
         }
     }
 }
