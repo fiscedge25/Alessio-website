@@ -82,7 +82,7 @@ const FROM = (max: number, required = false): GiftField => ({
     required,
 });
 
-export const gifts: GiftEntry[] = [
+const allGifts: GiftEntry[] = [
     {
         slug: "flowers",
         keyword: "Flower",
@@ -253,6 +253,12 @@ export const gifts: GiftEntry[] = [
         bundle: { to: "to", from: "from" },
     },
 ];
+
+/**
+ * Gifts on sale. One without a Payment Link yet stays hidden everywhere —
+ * catalog, its own page, the bundle — instead of showing a dead buy button.
+ */
+export const gifts: GiftEntry[] = allGifts.filter((g) => g.paymentLink);
 
 export function getGift(slug: string): GiftEntry | undefined {
     return gifts.find((g) => g.slug === slug);
