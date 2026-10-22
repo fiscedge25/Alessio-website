@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LoveMe · Encrypted Protocol v3.0</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&family=Orbitron:wght@600;800;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   THEME PALETTES & CSS VARIABLES
+   ========================================================================== */
+:root {
+    --primary: #ff2a8d;
+    --primary-glow: rgba(255, 42, 141, 0.45);
+    --primary-dim: rgba(255, 42, 141, 0.15);
+    --primary-dark: #330018;
+    --accent: #ffb3d9;
+    --bg-dark: #060205;
+    --bg-card: rgba(18, 5, 14, 0.78);
+    --border-glow: rgba(255, 42, 141, 0.45);
+    --scanline-color: rgba(255, 42, 141, 0.035);
+    --secondary-neon: #a855f7;
+}
+
+[data-theme="green"] {
+    --primary: #00ff66;
+    --primary-glow: rgba(0, 255, 102, 0.45);
+    --primary-dim: rgba(0, 255, 102, 0.15);
+    --primary-dark: #003311;
+    --accent: #a8ffcc;
+    --bg-dark: #020804;
+    --bg-card: rgba(3, 16, 8, 0.78);
+    --border-glow: rgba(0, 255, 102, 0.45);
+    --scanline-color: rgba(0, 255, 102, 0.035);
+    --secondary-neon: #00e5ff;
+}
+
+[data-theme="cyan"] {
+    --primary: #00e5ff;
+    --primary-glow: rgba(0, 229, 255, 0.45);
+    --primary-dim: rgba(0, 229, 255, 0.15);
+    --primary-dark: #002233;
+    --accent: #b3f5ff;
+    --bg-dark: #010609;
+    --bg-card: rgba(3, 14, 22, 0.78);
+    --border-glow: rgba(0, 229, 255, 0.45);
+    --scanline-color: rgba(0, 229, 255, 0.035);
+    --secondary-neon: #3b82f6;
+}
+
+[data-theme="violet"] {
+    --primary: #b537f2;
+    --primary-glow: rgba(181, 55, 242, 0.45);
+    --primary-dim: rgba(181, 55, 242, 0.15);
+    --primary-dark: #220433;
+    --accent: #e9bbfb;
+    --bg-dark: #060209;
+    --bg-card: rgba(16, 5, 24, 0.78);
+    --border-glow: rgba(181, 55, 242, 0.45);
+    --scanline-color: rgba(181, 55, 242, 0.035);
+    --secondary-neon: #ff2a8d;
+}
+
+[data-theme="gold"] {
+    --primary: #ffd700;
+    --primary-glow: rgba(255, 215, 0, 0.45);
+    --primary-dim: rgba(255, 215, 0, 0.15);
+    --primary-dark: #332b00;
+    --accent: #fff3a8;
+    --bg-dark: #080601;
+    --bg-card: rgba(20, 16, 3, 0.78);
+    --border-glow: rgba(255, 215, 0, 0.45);
+    --scanline-color: rgba(255, 215, 0, 0.035);
+    --secondary-neon: #ff8c00;
+}
+
+/* ==========================================================================
+   RESET & ULTRA-PERFORMANCE BASE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    color: var(--primary);
+    font-family: 'Fira Code', monospace;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+/* Canvas layers (Hardware accelerated with will-change & transform3d) */
+#matrixCanvas, #heartCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+#matrixCanvas {
+    z-index: 1;
+    opacity: 0.85;
+    transition: opacity 1s ease;
+}
+
+#heartCanvas {
+    z-index: 2;
+    opacity: 0;
+    pointer-events: auto;
+    transition: opacity 1.2s ease;
+}
+
+/* Retro CRT and Light Overlays */
+.crtOverlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--scanline-color) 50%),
+                linear-gradient(90deg, rgba(255,0,0,0.02), rgba(0,255,0,0.01), rgba(0,0,255,0.02));
+    background-size: 100% 3px, 3px 100%;
+}
+
+.crtVignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 11;
+    background: radial-gradient(circle at center, transparent 45%, rgba(0,0,0,0.85) 100%);
+}
+
+.shockwaveFlash {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 60;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   TOP HUD & LIVE ECG HEART MONITOR
+   ========================================================================== */
+.topHud {
+    position: fixed;
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    pointer-events: auto;
+}
+
+.hudLeftGroup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.systemStatus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border-glow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 16px var(--primary-glow);
+}
+
+.statusDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    animation: statusBlink 1.4s infinite ease-in-out;
+}
+
+@keyframes statusBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+.ecgMonitor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border-glow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 14px var(--primary-glow);
+}
+
+#ecgCanvas {
+    width: 68px;
+    height: 20px;
+}
+
+.bpmValue {
+    font-weight: 700;
+    color: #ffffff;
+    min-width: 58px;
+    font-size: 11px;
+    text-shadow: 0 0 10px var(--primary);
+}
+
+.hudRightGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.soundToggleBtn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    color: var(--accent);
+    padding: 6px 11px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+}
+
+.soundToggleBtn:hover {
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.themeSelector {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 5px 8px;
+    border-radius: 100px;
+    border: 1px solid var(--border-glow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.themeDot {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+}
+
+.themeDot:hover { transform: scale(1.22); }
+.themeDot.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px currentColor;
+    transform: scale(1.1);
+}
+
+.dot-pink { background: #ff2a8d; color: #ff2a8d; }
+.dot-green { background: #00ff66; color: #00ff66; }
+.dot-cyan { background: #00e5ff; color: #00e5ff; }
+.dot-violet { background: #b537f2; color: #b537f2; }
+.dot-gold { background: #ffd700; color: #ffd700; }
+
+/* ==========================================================================
+   MAIN CONTAINERS & PHASE CARDS
+   ========================================================================== */
+.mainContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    padding: 20px;
+}
+
+.phaseCard {
+    width: min(560px, 94vw);
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 24px;
+    padding: 38px 30px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 0 45px var(--primary-glow), inset 0 0 25px var(--primary-dim);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.phaseCard.active {
+    display: flex;
+}
+
+@keyframes cardAppear {
+    0% { opacity: 0; transform: translateY(24px) scale(0.95); filter: blur(6px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* ==========================================================================
+   PHASE 1: BOOT
+   ========================================================================== */
+.terminalTag {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.mainTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(26px, 5.5vw, 42px);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    color: #ffffff;
+    text-shadow: 0 0 20px var(--primary-glow);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 13.5px;
+    color: var(--accent);
+    opacity: 0.9;
+    margin-bottom: 24px;
+    line-height: 1.55;
+    max-width: 440px;
+}
+
+.inputGroup {
+    width: 100%;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.inputLabel {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    margin-bottom: 8px;
+    color: var(--accent);
+}
+
+.cyberInputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.cyberInput {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1.5px solid var(--border-glow);
+    border-radius: 14px;
+    padding: 14px 18px 14px 44px;
+    color: #ffffff;
+    font-family: 'Fira Code', monospace;
+    font-size: 14.5px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cyberInput:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 25px var(--primary-glow);
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.cyberInput::placeholder {
+    color: rgba(255, 255, 255, 0.32);
+    font-size: 13px;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.cyberBtn {
+    position: relative;
+    width: 100%;
+    padding: 16px 28px;
+    border-radius: 14px;
+    border: 1.5px solid var(--primary);
+    background: var(--primary-dim);
+    color: #ffffff;
+    font-family: 'Orbitron', 'Fira Code', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 25px var(--primary-glow);
+    margin-top: 6px;
+}
+
+.cyberBtn:hover {
+    background: var(--primary);
+    color: #000000;
+    box-shadow: 0 0 45px var(--primary);
+    transform: translateY(-2px);
+}
+
+.cyberBtn:active {
+    transform: translateY(1px);
+}
+
+/* ==========================================================================
+   PHASE 2: CINEMATIC FULLSCREEN DECRYPTION
+   ========================================================================== */
+.cinemaCard {
+    width: min(940px, 94vw);
+    min-height: 440px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 15px 10px;
+}
+
+.cinemaCard.active {
+    display: flex;
+}
+
+.cinemaPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    padding: 7px 20px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    box-shadow: 0 0 20px var(--primary-glow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.cinemaWordBox {
+    width: 100%;
+    min-height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cinemaMainWord {
+    font-family: 'Orbitron', 'Fira Code', monospace;
+    font-size: clamp(30px, 6.8vw, 72px);
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    text-shadow: 0 0 25px var(--primary), 0 0 60px var(--primary-glow);
+    text-align: center;
+    word-break: break-word;
+    max-width: 900px;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cinemaMainWord.wordPop {
+    animation: wordPopAnim 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wordPopAnim {
+    0% { transform: scale(0.65); filter: blur(8px) brightness(2.2); opacity: 0; }
+    50% { transform: scale(1.15); filter: blur(0px) brightness(1.5); opacity: 1; }
+    100% { transform: scale(1); filter: blur(0px) brightness(1); opacity: 1; }
+}
+
+.charFlicker {
+    color: var(--primary);
+    text-shadow: 0 0 18px var(--primary);
+    opacity: 0.9;
+}
+
+.cinemaFooterProgress {
+    width: min(400px, 86%);
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+}
+
+.progressBarContainer {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    overflow: hidden;
+    border: 1px solid var(--border-glow);
+}
+
+.progressBarFill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-neon), var(--primary));
+    box-shadow: 0 0 14px var(--primary);
+    transition: width 0.35s ease;
+}
+
+.progressLabel {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   PHASE 3: THE 3D INTERACTIVE HEART & DEDICATION FINALE
+   ========================================================================== */
+.heartFinaleCard {
+    width: min(640px, 95vw);
+    padding: 30px 22px;
+    position: relative;
+    z-index: 40;
+    pointer-events: auto;
+}
+
+.heartCenterBanner {
+    margin: 6px 0 4px 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(30px, 6.8vw, 50px);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary-glow);
+    animation: glowBanner 2.2s infinite alternate;
+}
+
+@keyframes glowBanner {
+    from { text-shadow: 0 0 18px var(--primary), 0 0 30px var(--primary-glow); transform: scale(1); }
+    to { text-shadow: 0 0 30px var(--primary), 0 0 60px var(--primary); transform: scale(1.02); }
+}
+
+.recipientLoveName {
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(16px, 4vw, 22px);
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    text-shadow: 0 0 14px var(--primary-glow);
+}
+
+.romanticDedication {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(15px, 3.4vw, 17.5px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 22px;
+    max-width: 520px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
+
+.interactiveHint {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    opacity: 0.8;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.actionButtonsRow {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.secondaryBtn {
+    flex: 1;
+    padding: 13px 18px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-glow);
+    color: #ffffff;
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.secondaryBtn:hover {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.secondaryBtn:active {
+    transform: translateY(1px);
+}
+
+/* ==========================================================================
+   NOTIFICATIONS & LIGHTWEIGHT PARTICLES
+   ========================================================================== */
+.toastNotification {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(25px);
+    background: var(--bg-card);
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 25px var(--primary-glow);
+    padding: 11px 24px;
+    border-radius: 100px;
+    font-size: 12.5px;
+    color: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+}
+
+.toastNotification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.loveParticle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 18px;
+    color: var(--primary);
+    z-index: 45;
+    will-change: transform, opacity;
+    animation: particleFly 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes particleFly {
+    0% { transform: translate3d(-50%, -50%, 0) scale(0.3); opacity: 1; }
+    100% { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--dy)), 0) scale(1.6) rotate(var(--rot)); opacity: 0; }
+}
+
+@media (max-width: 580px) {
+    .phaseCard { padding: 26px 16px; border-radius: 20px; }
+    .actionButtonsRow { flex-direction: column; }
+    .topHud { top: 10px; left: 10px; right: 10px; }
+    .ecgMonitor { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Hardware Accelerated Canvas 2D / 3D Layers -->
+<canvas id="matrixCanvas"></canvas>
+<canvas id="heartCanvas"></canvas>
+
+<!-- Visual Shaders & Overlays -->
+<div class="crtOverlay"></div>
+<div class="crtVignette"></div>
+<div class="shockwaveFlash" id="shockwaveFlash"></div>
+
+<!-- Top HUD Navigation -->
+<header class="topHud">
+    <div class="hudLeftGroup">
+        <div class="systemStatus">
+            <div class="statusDot"></div>
+            <span id="statusLabel">SYSTEM ONLINE</span>
+        </div>
+        <!-- Optimized ECG monitor -->
+        <div class="ecgMonitor" title="Target Resonance BPM">
+            <canvas id="ecgCanvas" width="68" height="20"></canvas>
+            <span class="bpmValue" id="bpmCounter">72 BPM</span>
+        </div>
+    </div>
+
+    <div class="hudRightGroup">
+        <button class="soundToggleBtn" id="soundToggle" title="Mute / Unmute Audio Synthesis">
+            🔊 AUDIO ON
+        </button>
+        <div class="themeSelector" title="Switch Holographic Palette">
+            <div class="themeDot dot-pink active" data-color="pink" title="Cyber Pink"></div>
+            <div class="themeDot dot-green" data-color="green" title="Matrix Green"></div>
+            <div class="themeDot dot-cyan" data-color="cyan" title="Hologram Cyan"></div>
+            <div class="themeDot dot-violet" data-color="violet" title="Neon Violet"></div>
+            <div class="themeDot dot-gold" data-color="gold" title="Golden Sunset"></div>
+        </div>
+    </div>
+</header>
+
+<main class="mainContainer">
+
+    <!-- Phase 1: Boot & Customization Card -->
+    <section class="phaseCard active" id="phase1">
+        <div class="terminalTag">PROTOCOL · LOVEME_v3.0</div>
+        <h1 class="mainTitle">ENCRYPTED MESSAGE</h1>
+        <p class="subtitle">A high-priority emotional data packet is waiting to be decrypted for someone extraordinary.</p>
+        
+        <div class="inputGroup">
+            <label for="recipientInput" class="inputLabel">RECIPIENT NAME / NICKNAME (OPTIONAL):</label>
+            <div class="cyberInputWrapper">
+                <span class="inputIcon">🔒</span>
+                <input 
+                    type="text" 
+                    id="recipientInput" 
+                    class="cyberInput" 
+                    placeholder="Enter her / his name (e.g. Giulia, My Love)..." 
+                    maxlength="32"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+        </div>
+
+        <button class="cyberBtn" id="startDecryptionBtn">
+            INITIATE DECRYPTION ❯
+        </button>
+    </section>
+
+    <!-- Phase 2: Fullscreen Cinematic Decryption Sequence -->
+    <section class="cinemaCard" id="phase2">
+        <div class="cinemaPill" id="cinemaPill">✨ DECRYPTING SENTIMENT ✨</div>
+        
+        <div class="cinemaWordBox">
+            <div class="cinemaMainWord" id="cinemaWord">
+                <!-- Words decrypt sequentially here -->
+            </div>
+        </div>
+
+        <div class="cinemaFooterProgress">
+            <div class="progressBarContainer">
+                <div class="progressBarFill" id="progressFill"></div>
+            </div>
+            <div class="progressLabel" id="progressLabel">INITIALIZING DECRYPTOR [0%]</div>
+        </div>
+    </section>
+
+    <!-- Phase 3: The 3D Beating Heart Finale -->
+    <section class="phaseCard heartFinaleCard" id="phase3">
+        <div class="terminalTag">DECRYPTION COMPLETE · 100% UNLOCKED</div>
+        
+        <div class="heartCenterBanner">I LOVE YOU</div>
+        <div class="recipientLoveName" id="recipientFinalName"></div>
+
+        <p class="romanticDedication" id="romanticNote">
+            "In an infinite universe of infinite code,<br>
+            you will always be my favorite line."
+        </p>
+
+        <div class="interactiveHint">
+            <span>✨ Move cursor / tilt device to rotate heart · Tap to send love</span>
+        </div>
+
+        <div class="actionButtonsRow">
+            <button class="secondaryBtn" id="pulseHeartBtn">
+                💓 Send Heartbeat
+            </button>
+            <button class="secondaryBtn" id="starShowerBtn">
+                ✨ Star Shower
+            </button>
+            <button class="secondaryBtn" id="shareLinkBtn">
+                🔗 Share Link
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<div class="toastNotification" id="toast">✓ Personalized love link copied to clipboard!</div>
+
+<script>
+/* ==========================================================================
+   HIGH PERFORMANCE WEB AUDIO SYNTHESIS
+   ========================================================================== */
+let audioCtx = null;
+let soundEnabled = true;
+let ambientOsc1 = null, ambientOsc2 = null, ambientGain = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+    if (soundEnabled && !ambientGain) {
+        startAmbientDrone();
+    }
+}
+
+function startAmbientDrone() {
+    if (!audioCtx || !soundEnabled) return;
+    try {
+        ambientGain = audioCtx.createGain();
+        ambientGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        ambientGain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 2.5);
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+
+        ambientOsc1 = audioCtx.createOscillator();
+        ambientOsc1.type = "sine";
+        ambientOsc1.frequency.setValueAtTime(130.81, audioCtx.currentTime); // C3
+
+        ambientOsc2 = audioCtx.createOscillator();
+        ambientOsc2.type = "triangle";
+        ambientOsc2.frequency.setValueAtTime(196.00, audioCtx.currentTime); // G3
+
+        ambientOsc1.connect(filter);
+        ambientOsc2.connect(filter);
+        filter.connect(ambientGain);
+        ambientGain.connect(audioCtx.destination);
+
+        ambientOsc1.start();
+        ambientOsc2.start();
+    } catch(e) {}
+}
+
+function boostAmbientHarmonics() {
+    if (!ambientGain || !audioCtx) return;
+    try {
+        ambientGain.gain.exponentialRampToValueAtTime(0.07, audioCtx.currentTime + 1.5);
+    } catch(e) {}
+}
+
+function playKeyClick(freq = 900) {
+    if (!audioCtx || !soundEnabled) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq + (Math.random() * 160 - 80), audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+        setTimeout(() => { osc.disconnect(); gain.disconnect(); }, 100);
+    } catch (e) {}
+}
+
+function playHeartbeatThump() {
+    if (navigator.vibrate) {
+        navigator.vibrate([30, 40, 50]);
+    }
+    if (!audioCtx || !soundEnabled) return;
+    try {
+        [0, 0.11].forEach((offset, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(idx === 0 ? 80 : 65, audioCtx.currentTime + offset);
+            osc.frequency.exponentialRampToValueAtTime(28, audioCtx.currentTime + offset + 0.2);
+            gain.gain.setValueAtTime(idx === 0 ? 0.3 : 0.22, audioCtx.currentTime + offset);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + offset + 0.22);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + offset);
+            osc.stop(audioCtx.currentTime + offset + 0.24);
+            setTimeout(() => { osc.disconnect(); gain.disconnect(); }, 400);
+        });
+    } catch (e) {}
+}
+
+function playCelestialChimes() {
+    if (!audioCtx || !soundEnabled) return;
+    try {
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+            gain.gain.setValueAtTime(0.07, audioCtx.currentTime + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + idx * 0.08 + 2.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + idx * 0.08);
+            osc.stop(audioCtx.currentTime + idx * 0.08 + 2.3);
+            setTimeout(() => { osc.disconnect(); gain.disconnect(); }, 2600);
+        });
+    } catch (e) {}
+}
+
+/* ==========================================================================
+   TOP ECG MONITOR (Ultra-Lightweight 60fps)
+   ========================================================================== */
+const ecgCanvas = document.getElementById("ecgCanvas");
+const ecgCtx = ecgCanvas ? ecgCanvas.getContext("2d") : null;
+const bpmCounter = document.getElementById("bpmCounter");
+let currentBpm = 72;
+let targetBpm = 72;
+let ecgPoints = [];
+
+function drawECG() {
+    if (!ecgCtx) return;
+    currentBpm += (targetBpm - currentBpm) * 0.04;
+    if (bpmCounter) bpmCounter.textContent = Math.round(currentBpm) + " BPM";
+
+    ecgCtx.fillStyle = "rgba(0, 0, 0, 0.25)";
+    ecgCtx.fillRect(0, 0, ecgCanvas.width, ecgCanvas.height);
+
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || "#ff2a8d";
+    ecgCtx.strokeStyle = primaryColor;
+    ecgCtx.lineWidth = 1.5;
+
+    const time = Date.now() * 0.008 * (currentBpm / 72);
+    const mod = time % 12;
+    let y = 10;
+
+    if (mod > 4 && mod < 5) y = 4;
+    else if (mod >= 5 && mod < 6.2) y = 17;
+    else if (mod >= 6.2 && mod < 7.5) y = 3;
+    else if (mod >= 7.5 && mod < 8.5) y = 12;
+
+    ecgPoints.push(y);
+    if (ecgPoints.length > ecgCanvas.width) ecgPoints.shift();
+
+    ecgCtx.beginPath();
+    for (let i = 0; i < ecgPoints.length; i++) {
+        if (i === 0) ecgCtx.moveTo(i, ecgPoints[i]);
+        else ecgCtx.lineTo(i, ecgPoints[i]);
+    }
+    ecgCtx.stroke();
+
+    requestAnimationFrame(drawECG);
+}
+requestAnimationFrame(drawECG);
+
+/* ==========================================================================
+   MATRIX RAIN ENGINE (Optimized)
+   ========================================================================== */
+const matrixCanvas = document.getElementById("matrixCanvas");
+const mCtx = matrixCanvas.getContext("2d");
+
+const baseLovePhrases = [
+    "I LOVE YOU ♡", "THINKING OF YOU ♥", "YOU'RE MY EVERYTHING ✦",
+    "ALWAYS WITH YOU ♡", "YOU MAKE ME SMILE ✨", "MY WHOLE HEART ♥",
+    "ENDLESS LOVE ♡", "YOU ARE MY WORLD ✦", "FOREVER & ALWAYS ♥",
+    "CRAZY ABOUT YOU ♡", "MY FAVORITE PERSON ♥", "TI AMO ♥",
+    "SO IN LOVE WITH YOU ✦", "MY SAFE PLACE ♡", "YOU COMPLETE ME ✦"
+];
+
+let mFontSize = 16;
+let mColumns = 0;
+let mStreams = [];
+let matrixActive = true;
+let matrixIntervalId = null;
+
+function getTargetName() {
+    const input = document.getElementById("recipientInput");
+    return (input && input.value.trim()) || "";
+}
+
+function getActivePhrases() {
+    const name = getTargetName().toUpperCase();
+    if (!name) return baseLovePhrases;
+    return [
+        ...baseLovePhrases,
+        `I LOVE YOU ${name} ♡`,
+        `${name} MY HEART ♥`,
+        `THINKING OF ${name} ✦`,
+        `${name} YOU'RE SPECIAL ✨`,
+        `FOREVER YOURS ${name} ♡`
+    ];
+}
+
+function initMatrixStreams() {
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+    mFontSize = Math.max(14, Math.min(18, Math.floor(window.innerWidth / 35)));
+    mColumns = Math.floor(matrixCanvas.width / mFontSize);
+    mStreams = [];
+
+    const phrases = getActivePhrases();
+
+    for (let i = 0; i < mColumns; i++) {
+        const p = phrases[Math.floor(Math.random() * phrases.length)];
+        mStreams[i] = {
+            phrase: p,
+            charIndex: Math.floor(Math.random() * p.length),
+            y: Math.floor(Math.random() * (matrixCanvas.height / mFontSize)),
+            speed: 0.45 + Math.random() * 0.65
+        };
+    }
+}
+initMatrixStreams();
+window.addEventListener("resize", initMatrixStreams);
+
+function drawMatrix() {
+    if (!matrixActive) return;
+
+    mCtx.fillStyle = "rgba(4, 2, 6, 0.18)";
+    mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || "#ff2a8d";
+    mCtx.font = `600 ${mFontSize}px 'Fira Code', monospace`;
+
+    const phrases = getActivePhrases();
+
+    for (let i = 0; i < mStreams.length; i++) {
+        const s = mStreams[i];
+        const x = i * mFontSize;
+        const currentY = Math.floor(s.y) * mFontSize;
+
+        const char = s.phrase[s.charIndex % s.phrase.length];
+        s.charIndex++;
+
+        // White glowing leading char (zero shadowBlur for high FPS)
+        if (currentY >= 0 && currentY <= matrixCanvas.height + mFontSize) {
+            mCtx.fillStyle = "#ffffff";
+            mCtx.fillText(char, x, currentY);
+
+            // Trailing colored chars
+            mCtx.fillStyle = primaryColor;
+            for (let trail = 1; trail < 4; trail++) {
+                const trailChar = s.phrase[(s.charIndex - trail + s.phrase.length * 10) % s.phrase.length];
+                const trailY = currentY - (trail * mFontSize);
+                if (trailY >= 0) {
+                    mCtx.fillText(trailChar, x, trailY);
+                }
+            }
+        }
+
+        s.y += s.speed;
+
+        if (currentY > matrixCanvas.height + (mFontSize * 5) && Math.random() > 0.94) {
+            s.y = 0;
+            s.phrase = phrases[Math.floor(Math.random() * phrases.length)];
+            s.charIndex = 0;
+            s.speed = 0.45 + Math.random() * 0.65;
+        }
+    }
+}
+matrixIntervalId = setInterval(drawMatrix, 38);
+
+/* ==========================================================================
+   ULTRA-OPTIMIZED 3D PARTICLE HEART (Additive Blending · 60-120 FPS)
+   ========================================================================== */
+const heartCanvas = document.getElementById("heartCanvas");
+const hCtx = heartCanvas.getContext("2d");
+
+let particles = [];
+const TOTAL_PARTICLES = 1100; // Optimal performance & high density
+let heartAngleX = 0, heartAngleY = 0;
+let targetHeartAngleX = 0, targetHeartAngleY = 0;
+let heartPulseScale = 1;
+let isHeartActive = false;
+
+class Heart3DParticle {
+    constructor() {
+        this.resetTarget();
+        this.x = (Math.random() - 0.5) * window.innerWidth * 1.4;
+        this.y = (Math.random() - 0.5) * window.innerHeight * 1.4;
+        this.z = (Math.random() - 0.5) * 600;
+        this.size = 1.2 + Math.random() * 2.0;
+        this.speed = 0.045 + Math.random() * 0.045;
+        this.alpha = 0.4 + Math.random() * 0.6;
+        this.isAccent = Math.random() < 0.16;
+    }
+
+    resetTarget() {
+        const t = Math.random() * Math.PI * 2;
+        const hx = 16 * Math.pow(Math.sin(t), 3);
+        const hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        const hz = (Math.random() - 0.5) * 11 * Math.sin(t);
+
+        const scale = Math.min(window.innerWidth, window.innerHeight) * 0.0185;
+        this.tx = hx * scale;
+        this.ty = hy * scale;
+        this.tz = hz * scale * 2.4;
+    }
+
+    update() {
+        this.x += (this.tx * heartPulseScale - this.x) * this.speed;
+        this.y += (this.ty * heartPulseScale - this.y) * this.speed;
+        this.z += (this.tz - this.z) * this.speed;
+    }
+}
+
+function initHeartParticles() {
+    heartCanvas.width = window.innerWidth;
+    heartCanvas.height = window.innerHeight;
+    particles = [];
+    for (let i = 0; i < TOTAL_PARTICLES; i++) {
+        particles.push(new Heart3DParticle());
+    }
+}
+initHeartParticles();
+window.addEventListener("resize", initHeartParticles);
+
+// Smooth 3D tilt tracking
+window.addEventListener("mousemove", (e) => {
+    if (!isHeartActive) return;
+    targetHeartAngleY = ((e.clientX / window.innerWidth) - 0.5) * 0.75;
+    targetHeartAngleX = -((e.clientY / window.innerHeight) - 0.5) * 0.75;
+});
+
+window.addEventListener("deviceorientation", (e) => {
+    if (!isHeartActive || !e.gamma) return;
+    targetHeartAngleY = (e.gamma / 45) * 0.6;
+    targetHeartAngleX = -(e.beta / 45) * 0.6;
+});
+
+function renderHeart3D() {
+    if (!isHeartActive) {
+        requestAnimationFrame(renderHeart3D);
+        return;
+    }
+
+    hCtx.clearRect(0, 0, heartCanvas.width, heartCanvas.height);
+
+    // Hardware accelerated additive blending (zero CPU shadow overhead)
+    hCtx.globalCompositeOperation = "lighter";
+
+    heartAngleX += (targetHeartAngleX - heartAngleX) * 0.05;
+    heartAngleY += (targetHeartAngleY - heartAngleY) * 0.05;
+
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || "#ff2a8d";
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || "#ffb3d9";
+
+    const cx = heartCanvas.width / 2;
+    const cy = heartCanvas.height * 0.42;
+    const fov = 400;
+
+    const cosY = Math.cos(heartAngleY), sinY = Math.sin(heartAngleY);
+    const cosX = Math.cos(heartAngleX), sinX = Math.sin(heartAngleX);
+
+    for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.update();
+
+        // 3D rotation
+        let x1 = p.x * cosY - p.z * sinY;
+        let z1 = p.z * cosY + p.x * sinY;
+
+        let y2 = p.y * cosX - z1 * sinX;
+        let z2 = z1 * cosX + p.y * sinX;
+
+        // Fast Perspective projection
+        const scale = fov / (fov + z2 + 280);
+        const projX = cx + x1 * scale;
+        const projY = cy + y2 * scale;
+
+        if (scale > 0 && projX >= 0 && projX <= heartCanvas.width && projY >= 0 && projY <= heartCanvas.height) {
+            hCtx.beginPath();
+            const radius = Math.max(0.7, p.size * scale);
+            hCtx.arc(projX, projY, radius, 0, Math.PI * 2);
+            hCtx.fillStyle = p.isAccent ? accentColor : primaryColor;
+            hCtx.globalAlpha = Math.min(1, Math.max(0.2, scale * p.alpha));
+            hCtx.fill();
+        }
+    }
+
+    hCtx.globalCompositeOperation = "source-over";
+    hCtx.globalAlpha = 1;
+    requestAnimationFrame(renderHeart3D);
+}
+requestAnimationFrame(renderHeart3D);
+
+// Dynamic Heartbeat expansion loop
+function triggerHeartbeatPulse() {
+    if (!isHeartActive) return;
+    heartPulseScale = 1.16;
+    playHeartbeatThump();
+    setTimeout(() => { heartPulseScale = 0.96; }, 130);
+    setTimeout(() => { heartPulseScale = 1.10; }, 240);
+    setTimeout(() => { heartPulseScale = 1.0; }, 380);
+}
+
+/* ==========================================================================
+   THEME SELECTOR & SOUND TOGGLE HANDLERS
+   ========================================================================== */
+document.querySelectorAll(".themeDot").forEach(dot => {
+    dot.addEventListener("click", () => {
+        document.querySelectorAll(".themeDot").forEach(d => d.classList.remove("active"));
+        dot.classList.add("active");
+        const theme = dot.dataset.color;
+        if (theme === "pink") {
+            document.documentElement.removeAttribute("data-theme");
+        } else {
+            document.documentElement.setAttribute("data-theme", theme);
+        }
+        playKeyClick(1200);
+    });
+});
+
+const soundToggle = document.getElementById("soundToggle");
+if (soundToggle) {
+    soundToggle.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        soundToggle.textContent = soundEnabled ? "🔊 AUDIO ON" : "🔇 AUDIO OFF";
+        if (!soundEnabled && ambientGain) {
+            ambientGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        } else if (soundEnabled && audioCtx) {
+            startAmbientDrone();
+        }
+    });
+}
+
+// URL Params parsing
+const urlParams = new URLSearchParams(window.location.search);
+const paramName = urlParams.get("to") || urlParams.get("name") || urlParams.get("for");
+const recipientInput = document.getElementById("recipientInput");
+if (paramName && recipientInput) {
+    recipientInput.value = paramName;
+}
+
+/* ==========================================================================
+   TEXT SCRAMBLER & STORY SEQUENCE
+   ========================================================================== */
+const scrambleChars = "01#%$@!*&^~+=<>{}[]?/\\|abcdefghijklmnopqrstuvwxyz";
+
+function scrambleText(element, finalText, duration = 1400) {
+    return new Promise(resolve => {
+        const length = finalText.length;
+        const interval = 45;
+        const totalSteps = duration / interval;
+        let step = 0;
+
+        const timer = setInterval(() => {
+            step++;
+            const progress = step / totalSteps;
+            const solvedCount = Math.floor(progress * length);
+
+            let display = "";
+            for (let i = 0; i < length; i++) {
+                if (i < solvedCount) {
+                    display += finalText[i];
+                } else if (finalText[i] === " " || finalText[i] === "\n") {
+                    display += finalText[i];
+                } else {
+                    const randChar = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                    display += `<span class="charFlicker">${randChar}</span>`;
+                }
+            }
+
+            element.innerHTML = display;
+            playKeyClick(650 + Math.random() * 500);
+
+            if (step >= totalSteps) {
+                clearInterval(timer);
+                element.innerHTML = finalText;
+                resolve();
+            }
+        }, interval);
+    });
+}
+
+function wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+
+function showPhase(phaseId) {
+    document.querySelectorAll(".phaseCard, .cinemaCard").forEach(p => p.classList.remove("active"));
+    const target = document.getElementById(phaseId);
+    if (target) target.classList.add("active");
+}
+
+function triggerShockwave() {
+    const flash = document.getElementById("shockwaveFlash");
+    if (!flash) return;
+    flash.style.opacity = "0.75";
+    setTimeout(() => { flash.style.opacity = "0"; }, 200);
+}
+
+// Lightweight Particle Burst System
+function spawnHeartBurst(originX, originY, count = 22) {
+    const symbols = ["♥", "♡", "💖", "✨", "✦", "1", "0", "🌸"];
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement("div");
+        p.className = "loveParticle";
+        p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        p.style.left = originX + "px";
+        p.style.top = originY + "px";
+        
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 70 + Math.random() * 220;
+        const dx = Math.cos(angle) * dist + "px";
+        const dy = Math.sin(angle) * dist + "px";
+        const rot = (Math.random() * 360) + "deg";
+        
+        p.style.setProperty("--dx", dx);
+        p.style.setProperty("--dy", dy);
+        p.style.setProperty("--rot", rot);
+        document.body.appendChild(p);
+
+        setTimeout(() => p.remove(), 1500);
+    }
+}
+
+/* ==========================================================================
+   STORY PROGRESSION
+   ========================================================================== */
+const startBtn = document.getElementById("startDecryptionBtn");
+if (startBtn) {
+    startBtn.addEventListener("click", () => {
+        initAudio();
+        runDecryptionStory();
+    });
+}
+
+if (recipientInput) {
+    recipientInput.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            initAudio();
+            runDecryptionStory();
+        }
+    });
+}
+
+async function runDecryptionStory() {
+    const name = getTargetName();
+    showPhase("phase2");
+
+    const cinemaWord = document.getElementById("cinemaWord");
+    const cinemaPill = document.getElementById("cinemaPill");
+    const progressFill = document.getElementById("progressFill");
+    const progressLabel = document.getElementById("progressLabel");
+
+    function setProgress(pct, label) {
+        if (progressFill) progressFill.style.width = pct + "%";
+        if (progressLabel) progressLabel.textContent = label;
+    }
+
+    // Statement 1: "SORRY..."
+    targetBpm = 88;
+    if (cinemaPill) cinemaPill.textContent = "✨ INCOMING TRANSMISSION";
+    setProgress(20, "DECRYPTING SENTIMENT [20%]");
+    await scrambleText(cinemaWord, "SORRY...", 900);
+    playHeartbeatThump();
+    await wait(750);
+
+    // Statement 2: "I WAS JUST THINKING ABOUT YOU."
+    targetBpm = 105;
+    if (cinemaPill) cinemaPill.textContent = "💭 THOUGHT BUFFER DETECTED";
+    setProgress(45, "ACCESSING CORE MEMORY [45%]");
+    await scrambleText(cinemaWord, "I WAS JUST THINKING ABOUT YOU.", 1200);
+    playHeartbeatThump();
+    await wait(850);
+
+    // Statement 3: "AND THERE'S SOMETHING..."
+    targetBpm = 125;
+    if (cinemaPill) cinemaPill.textContent = "🔒 BYPASSING ENCRYPTION LOCKS";
+    setProgress(70, "SENTIMENT PURITY 99.8% [70%]");
+    await scrambleText(cinemaWord, "AND THERE'S SOMETHING...", 1050);
+    playHeartbeatThump();
+    await wait(750);
+
+    // Statement 4: "I REALLY NEED TO TELL YOU..."
+    targetBpm = 145;
+    if (cinemaPill) cinemaPill.textContent = name ? `💌 DEDICATED TO ${name.toUpperCase()}` : "💌 CORE SENTIMENT READY";
+    setProgress(88, "SYNCHRONIZING HEARTBEAT [88%]");
+    const message4 = name ? `I REALLY NEED TO TELL YOU, ${name.toUpperCase()}...` : "I REALLY NEED TO TELL YOU...";
+    await scrambleText(cinemaWord, message4, 1200);
+    playHeartbeatThump();
+    await wait(900);
+
+    // RAPID PUNCH WORDS WITH SHOCKWAVES
+    targetBpm = 160;
+    if (cinemaPill) cinemaPill.textContent = "💖 FULL ACCESS GRANTED";
+    setProgress(100, "DECRYPTION COMPLETE [100%]");
+
+    // 1. "I"
+    cinemaWord.textContent = "I";
+    cinemaWord.classList.remove("wordPop");
+    void cinemaWord.offsetWidth;
+    cinemaWord.classList.add("wordPop");
+    triggerShockwave();
+    playHeartbeatThump();
+    spawnHeartBurst(window.innerWidth / 2, window.innerHeight * 0.45, 16);
+    await wait(500);
+
+    // 2. "LOVE"
+    cinemaWord.textContent = "LOVE";
+    cinemaWord.classList.remove("wordPop");
+    void cinemaWord.offsetWidth;
+    cinemaWord.classList.add("wordPop");
+    triggerShockwave();
+    playHeartbeatThump();
+    spawnHeartBurst(window.innerWidth / 2, window.innerHeight * 0.45, 22);
+    await wait(500);
+
+    // 3. "YOU"
+    cinemaWord.textContent = "YOU ♥";
+    cinemaWord.classList.remove("wordPop");
+    void cinemaWord.offsetWidth;
+    cinemaWord.classList.add("wordPop");
+    triggerShockwave();
+    playHeartbeatThump();
+    spawnHeartBurst(window.innerWidth / 2, window.innerHeight * 0.45, 28);
+    await wait(700);
+
+    // 4. Personalized Name (if provided)
+    if (name) {
+        cinemaWord.textContent = `${name.toUpperCase()} ♡`;
+        cinemaWord.classList.remove("wordPop");
+        void cinemaWord.offsetWidth;
+        cinemaWord.classList.add("wordPop");
+        triggerShockwave();
+        playHeartbeatThump();
+        spawnHeartBurst(window.innerWidth / 2, window.innerHeight * 0.45, 36);
+        await wait(800);
+    }
+
+    // Activate 3D Heart Canvas & Pause background matrix loop to save 60% CPU
+    matrixActive = false;
+    if (matrixIntervalId) clearInterval(matrixIntervalId);
+    matrixCanvas.style.opacity = "0";
+
+    isHeartActive = true;
+    const heartCanvasEl = document.getElementById("heartCanvas");
+    if (heartCanvasEl) heartCanvasEl.style.opacity = "1";
+
+    const recipientFinalName = document.getElementById("recipientFinalName");
+    if (recipientFinalName) {
+        recipientFinalName.textContent = name ? `FOR ${name.toUpperCase()} ♡` : `FOREVER YOURS ♡`;
+    }
+
+    showPhase("phase3");
+    boostAmbientHarmonics();
+    playCelestialChimes();
+    triggerShockwave();
+    spawnHeartBurst(window.innerWidth / 2, window.innerHeight * 0.42, 45);
+
+    // Heartbeat pulse interval
+    setInterval(triggerHeartbeatPulse, 1900);
+}
+
+/* ==========================================================================
+   INTERACTIVE BUTTONS & CANVAS CLICKS
+   ========================================================================== */
+const pulseHeartBtn = document.getElementById("pulseHeartBtn");
+if (pulseHeartBtn) {
+    pulseHeartBtn.addEventListener("click", e => {
+        triggerHeartbeatPulse();
+        spawnHeartBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, 25);
+        showToast("💓 Heartbeat signal resonated!");
+    });
+}
+
+const starShowerBtn = document.getElementById("starShowerBtn");
+if (starShowerBtn) {
+    starShowerBtn.addEventListener("click", () => {
+        playCelestialChimes();
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                spawnHeartBurst(Math.random() * window.innerWidth, Math.random() * (window.innerHeight * 0.65), 18);
+            }, i * 160);
+        }
+        showToast("✨ Shooting star shower activated!");
+    });
+}
+
+window.addEventListener("click", e => {
+    if (!isHeartActive) return;
+    if (e.target.closest("button") || e.target.closest("input") || e.target.closest(".themeDot")) return;
+    triggerHeartbeatPulse();
+    spawnHeartBurst(e.clientX, e.clientY, 15);
+});
+
+/* ==========================================================================
+   SHARE LINK
+   ========================================================================== */
+const toast = document.getElementById("toast");
+function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+const shareLinkBtn = document.getElementById("shareLinkBtn");
+if (shareLinkBtn) {
+    shareLinkBtn.addEventListener("click", () => {
+        const name = getTargetName();
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = name ? `${baseUrl}?to=${encodeURIComponent(name)}` : baseUrl;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showToast("✓ Shareable love link copied to clipboard!");
+            }).catch(() => fallbackCopy(shareUrl));
+        } else {
+            fallbackCopy(shareUrl);
+        }
+    });
+}
+
+function fallbackCopy(text) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.top = "-9999px";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+        document.execCommand("copy");
+        showToast("✓ Shareable love link copied to clipboard!");
+    } catch (e) {}
+    document.body.removeChild(ta);
+}
+</script>
+
+</body>
+</html>

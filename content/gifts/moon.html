@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mission: Get Her The Moon 🌙</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+.scene {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ========================================
+   LAUNCH
+======================================== */
+
+#launchScene {
+    background:
+        radial-gradient(
+            circle at 50% 100%,
+            #1e2947,
+            #0b0f1a 45%,
+            #010103 100%
+        );
+    overflow: hidden;
+}
+
+.launchFlash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 85%, rgba(255, 180, 100, 0.45), rgba(255, 100, 50, 0.15) 50%, transparent 80%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity .3s ease;
+}
+
+.launchFlash.flashActive {
+    opacity: 1;
+    animation: flashPulse 1.8s ease forwards;
+}
+
+@keyframes flashPulse {
+    0% { opacity: 0.9; }
+    30% { opacity: 0.7; }
+    100% { opacity: 0; }
+}
+
+#launchSmokeCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 12;
+}
+
+/* Launch Pad & Platform */
+.launchPad {
+    position: absolute;
+    left: 50%;
+    bottom: 2%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 35px;
+    z-index: 14;
+    pointer-events: none;
+}
+
+.launchPlatform {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 12px;
+    background: linear-gradient(180deg, #3a4256, #1b202e);
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(70, 100, 180, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.launchPlatform::before, .launchPlatform::after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    width: 6px;
+    height: 20px;
+    background: #47526b;
+    border-radius: 2px;
+}
+.launchPlatform::before { left: 24px; }
+.launchPlatform::after { right: 24px; }
+
+.launchGantryLeft, .launchGantryRight {
+    position: absolute;
+    bottom: 12px;
+    width: 8px;
+    height: 110px;
+    background: repeating-linear-gradient(0deg, #2b3346, #2b3346 6px, #181d29 6px, #181d29 12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    opacity: 0.8;
+}
+.launchGantryLeft { left: 10px; transform: rotate(-2deg); }
+.launchGantryRight { right: 10px; transform: rotate(2deg); }
+
+.missionHeader {
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+    z-index: 20;
+}
+
+.smallText {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: .28em;
+    color: rgba(255,255,255,.4);
+}
+
+.missionHeader h1 {
+    margin-top: 10px;
+    font-size: clamp(34px, 7vw, 72px);
+    font-weight: 400;
+    letter-spacing: -.055em;
+}
+
+#status {
+    margin-top: 14px;
+    font-family: monospace;
+    color: rgba(255,255,255,.55);
+    font-size: 13px;
+}
+
+.launchControls {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    z-index: 100;
+    width: min(380px, 88%);
+}
+
+.nameInputBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+}
+
+.nameInputLabel {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: #ffd88a;
+    text-shadow: 0 0 10px rgba(255, 215, 120, 0.4);
+    text-transform: uppercase;
+}
+
+.inputInnerWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 16px;
+    font-size: 15px;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+#recipientInput {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid rgba(255, 215, 130, 0.6);
+    border-radius: 100px;
+    padding: 14px 20px 14px 44px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    outline: none;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 25px rgba(255, 200, 80, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.06);
+    transition: all .25s cubic-bezier(.16, 1, .3, 1);
+    font-family: inherit;
+}
+
+#recipientInput:focus {
+    border-color: #ffe49e;
+    background: rgba(20, 30, 58, 0.95);
+    box-shadow: 0 0 30px rgba(255, 215, 120, 0.55), 0 0 60px rgba(100, 180, 255, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.12);
+}
+
+#recipientInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13.5px;
+    font-weight: 400;
+}
+
+#startButton {
+    width: 100%;
+    padding: 16px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(40, 90, 180, 0.55));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: white;
+    font-size: 16.5px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(70, 130, 240, 0.25);
+    transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#startButton:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(60, 120, 230, 0.75));
+    transform: scale(1.04);
+    box-shadow: 0 0 45px rgba(255, 255, 255, 0.4), 0 0 85px rgba(80, 150, 255, 0.35);
+}
+
+#startButton:active {
+    transform: scale(0.98);
+}
+
+#countdown {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(100px, 22vw, 210px);
+    font-weight: 600;
+    letter-spacing: -.08em;
+    opacity: 0;
+    z-index: 20;
+    text-shadow: 0 0 40px rgba(255, 200, 120, 0.4);
+}
+
+.countAnimation {
+    animation: count .9s ease;
+}
+
+@keyframes count {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.5);
+    }
+    35% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.25);
+    }
+}
+
+/* ========================================
+   ROCKET
+======================================== */
+
+#rocket {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    width: 80px;
+    transform: translateX(-50%);
+    z-index: 15;
+    opacity: .95;
+}
+
+.rocketBody {
+    width: 50px;
+    height: 130px;
+    margin: auto;
+    position: relative;
+    border-radius: 50% 50% 20% 20%;
+    background:
+        linear-gradient(
+            90deg,
+            #aaa,
+            #fff 50%,
+            #999
+        );
+    box-shadow: 0 0 25px rgba(255,255,255,.12);
+}
+
+.rocketWindow {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            #9bdcff,
+            #275777
+        );
+    border: 4px solid #ddd;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.4);
+}
+
+.finLeft,
+.finRight {
+    position: absolute;
+    bottom: 0;
+    width: 25px;
+    height: 45px;
+    background: #aaa;
+}
+
+.finLeft {
+    left: -15px;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.finRight {
+    right: -15px;
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.flame {
+    position: absolute;
+    left: 50%;
+    top: 125px;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 95px;
+    border-radius: 50%;
+    background:
+        linear-gradient(
+            #fff,
+            #ffe08a 20%,
+            #ff7722 55%,
+            rgba(255, 60, 0, 0.2) 80%,
+            transparent
+        );
+    opacity: 0;
+    filter: blur(1px);
+    animation: flame .1s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 140, 40, 0.8), 0 0 60px rgba(255, 80, 0, 0.4);
+}
+
+.flameCore {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 45px;
+    background: #fff;
+    border-radius: 50%;
+    filter: blur(0.5px);
+}
+
+.thrusterShockwave {
+    position: absolute;
+    left: 50%;
+    top: 130px;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 18px;
+    border: 2px solid rgba(255, 220, 120, 0.6);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.rocketLaunch .thrusterShockwave {
+    animation: shockwavePulse .35s ease-out infinite;
+}
+
+@keyframes shockwavePulse {
+    0% {
+        transform: translateX(-50%) translateY(0) scale(0.6);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateX(-50%) translateY(55px) scale(2.2);
+        opacity: 0;
+    }
+}
+
+@keyframes flame {
+    from { height: 85px; width: 30px; }
+    to { height: 115px; width: 34px; }
+}
+
+.rocketLaunch {
+    animation:
+        rocketLaunch 4.2s
+        cubic-bezier(.2,.65,.2,1)
+        forwards;
+}
+
+@keyframes rocketLaunch {
+    0% {
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+    15% {
+        transform: translateX(-50%) translateY(-20px) scale(1);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-180px) scale(.92);
+    }
+    75% {
+        transform: translateX(-50%) translateY(-65vh) scale(.6);
+    }
+    100% {
+        transform: translateX(-50%) translateY(-130vh) scale(.28);
+    }
+}
+
+.shake {
+    animation: shake .08s infinite;
+}
+
+.heavyShake {
+    animation: heavyShake .06s infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px,1px); }
+    50% { transform: translate(2px,-1px); }
+    75% { transform: translate(-1px,-2px); }
+    100% { transform: translate(1px,2px); }
+}
+
+@keyframes heavyShake {
+    0% { transform: translate(0); }
+    20% { transform: translate(-4px, 3px) rotate(-0.5deg); }
+    40% { transform: translate(4px, -3px) rotate(0.5deg); }
+    60% { transform: translate(-3px, -4px) rotate(0.3deg); }
+    80% { transform: translate(3px, 4px) rotate(-0.3deg); }
+    100% { transform: translate(-2px, 2px); }
+}
+
+/* ========================================
+   SPACE
+======================================== */
+
+#spaceScene {
+    background:
+        radial-gradient(
+            circle at 50% 80%,
+            #111936,
+            #040610 45%,
+            #000 100%
+        );
+    overflow: hidden;
+}
+
+canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.flightText {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+    z-index: 10;
+}
+
+.flightText h2 {
+    font-size: clamp(30px, 6vw, 60px);
+    font-weight: 400;
+    letter-spacing: -.045em;
+}
+
+.flightText p {
+    margin-top: 12px;
+    font-family: monospace;
+    color: rgba(255,255,255,.45);
+}
+
+.spaceRocket {
+    position: absolute;
+    left: 50%;
+    top: 65%;
+    width: 25px;
+    height: 75px;
+    transform:
+        translate(-50%,-50%)
+        rotate(10deg);
+    background:
+        linear-gradient(
+            90deg,
+            #aaa,
+            white,
+            #888
+        );
+    border-radius: 50% 50% 25% 25%;
+    animation:
+        floatingRocket 4s
+        ease-in-out infinite;
+    box-shadow: 0 0 18px rgba(255,255,255,.1);
+}
+
+.spaceRocket::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 45px;
+    left: 50%;
+    top: 70px;
+    transform: translateX(-50%);
+    background:
+        linear-gradient(
+            white,
+            orange,
+            transparent
+        );
+    border-radius: 50%;
+}
+
+@keyframes floatingRocket {
+    50% {
+        transform:
+            translate(-50%,-65%)
+            rotate(13deg);
+    }
+}
+
+/* Distant Moon in Space Scene */
+.distantMoon {
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, #c8d3e6 60%, #8391ab 100%);
+    box-shadow: 0 0 25px rgba(200, 220, 255, 0.4), 0 0 60px rgba(130, 160, 230, 0.2);
+    opacity: 0;
+    transition: transform 2.8s cubic-bezier(.16,1,.3,1), opacity 1.8s ease;
+    z-index: 8;
+    pointer-events: none;
+}
+
+.distantMoon.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+.distantMoonGlow {
+    position: absolute;
+    inset: -30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 225, 255, 0.35), transparent 70%);
+    filter: blur(8px);
+}
+
+/* Rocket Acceleration into Moon */
+.spaceRocket.accelerateToMoon {
+    animation: rocketToMoon 2.6s cubic-bezier(.35, .1, .2, 1) forwards !important;
+}
+
+@keyframes rocketToMoon {
+    0% {
+        transform: translate(-50%, -50%) rotate(10deg) scale(1);
+        opacity: 1;
+    }
+    35% {
+        transform: translate(-50%, -45%) rotate(-8deg) scale(1.15);
+    }
+    100% {
+        transform: translate(-50%, -190%) rotate(-18deg) scale(0.18);
+        opacity: 0;
+    }
+}
+
+/* Lunar Orbit Rocket in Moon Scene */
+.lunarOrbitContainer {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: clamp(370px, 58vw, 580px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 18;
+    opacity: 0;
+}
+
+.lunarOrbitContainer.activeOrbit {
+    opacity: 1;
+    animation: lunarArrivalSweep 3s cubic-bezier(.16, 1, .3, 1) forwards, lunarOrbitLoop 24s 3s linear infinite;
+}
+
+.lunarOrbitRocket {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14px;
+    height: 36px;
+    transform: translate(-50%, -50%) rotate(90deg);
+    background: linear-gradient(90deg, #999, #fff 50%, #888);
+    border-radius: 50% 50% 20% 20%;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.lunarOrbitRocket::after {
+    content: "";
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 16px;
+    background: linear-gradient(#ffe08a, #ff993d, transparent);
+    border-radius: 50%;
+    opacity: .85;
+}
+
+@keyframes lunarArrivalSweep {
+    0% {
+        transform: translate(-50%, -50%) rotate(-135deg) scale(2.2);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes lunarOrbitLoop {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* ========================================
+   MOON SCENE & MEGA MOON
+======================================== */
+
+#moonScene {
+    background:
+        radial-gradient(
+            circle at 50% 55%,
+            #182142,
+            #040714 45%,
+            #000 100%
+        );
+    overflow: hidden;
+}
+
+.moonHeading {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.moonHeading h1 {
+    font-size: clamp(30px,6vw,62px);
+    font-weight: 400;
+    letter-spacing: -.05em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.moonHeading p {
+    margin-top: 10px;
+    color: rgba(255,255,255,.55);
+    font-size: clamp(13px, 3.5vw, 16px);
+}
+
+/* ========================================
+   MEGA WOW TOUCHDOWN BANNER
+======================================== */
+
+.touchdownBannerWrapper {
+    position: absolute;
+    top: 17%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    pointer-events: auto;
+}
+
+.touchdownBadge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 34px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(20, 30, 60, 0.85));
+    border: 2px solid rgba(255, 220, 130, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff4d4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: clamp(14px, 3.6vw, 18px);
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow:
+        0 0 30px rgba(255, 200, 80, 0.45),
+        0 0 70px rgba(100, 180, 255, 0.3),
+        inset 0 0 20px rgba(255, 230, 160, 0.25);
+    transition: all .35s cubic-bezier(.16,1,.3,1);
+    user-select: none;
+    overflow: hidden;
+    animation: bannerFloatPulse 2.4s infinite ease-in-out;
+}
+
+.touchdownBadge::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+    );
+    transform: rotate(25deg);
+    animation: bannerShimmer 3s infinite;
+}
+
+@keyframes bannerShimmer {
+    0% { left: -100%; }
+    40%, 100% { left: 200%; }
+}
+
+@keyframes bannerFloatPulse {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+        box-shadow:
+            0 0 25px rgba(255, 200, 80, 0.45),
+            0 0 60px rgba(100, 180, 255, 0.25),
+            inset 0 0 15px rgba(255, 230, 160, 0.25);
+        border-color: rgba(255, 220, 130, 0.7);
+    }
+    50% {
+        transform: scale(1.06) translateY(-4px);
+        box-shadow:
+            0 0 50px rgba(255, 215, 90, 0.85),
+            0 0 100px rgba(120, 210, 255, 0.5),
+            inset 0 0 25px rgba(255, 240, 180, 0.45);
+        border-color: #ffe89e;
+        color: #ffffff;
+    }
+}
+
+.touchdownBadge:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow:
+        0 0 60px rgba(255, 220, 100, 0.95),
+        0 0 110px rgba(140, 220, 255, 0.6),
+        inset 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.touchdownBadge .badgeIcon {
+    font-size: 1.35em;
+    filter: drop-shadow(0 0 8px rgba(255, 220, 120, 0.8));
+    animation: iconBounce 1.6s infinite ease-in-out;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.18); }
+}
+
+.touchdownBadge.touchdownSuccess {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.35), rgba(10, 40, 25, 0.9));
+    border-color: #2ecc71;
+    color: #c9ffe2;
+    box-shadow:
+        0 0 50px rgba(46, 204, 113, 0.8),
+        0 0 100px rgba(46, 204, 113, 0.4),
+        inset 0 0 25px rgba(46, 204, 113, 0.35);
+    animation: successBadgeExplode 1.2s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes successBadgeExplode {
+    0% { transform: scale(0.85); opacity: 0.8; }
+    40% { transform: scale(1.18); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ========================================
+   REALISTIC NASA MEGA MOON
+======================================== */
+
+#moon {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: clamp(310px, 52vw, 500px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 15;
+    touch-action: none;
+    user-select: none;
+    perspective: 900px;
+    box-shadow:
+        0 0 15px rgba(255,255,255,.25),
+        0 0 45px rgba(220,225,255,.22),
+        0 0 100px rgba(130,150,210,.18),
+        0 0 200px rgba(80,100,180,.12);
+}
+
+#moon.megaMoonEnter {
+    animation: megaMoonRise 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, moonFloat 6s 2.4s ease-in-out infinite;
+}
+
+@keyframes megaMoonRise {
+    0% {
+        transform: translate(-50%, 125%) scale(0.55);
+        opacity: 0;
+        filter: blur(12px) brightness(0.6);
+    }
+    60% {
+        opacity: 1;
+        filter: blur(0px) brightness(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        filter: blur(0px) brightness(1);
+    }
+}
+
+#moon:active {
+    cursor: grabbing;
+}
+
+#moonImage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    filter:
+        contrast(1.15)
+        brightness(.95)
+        saturate(.8);
+}
+
+.moonShade {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 38% 30%,
+            rgba(255,255,255,.15),
+            transparent 34%
+        ),
+        linear-gradient(
+            105deg,
+            transparent 40%,
+            rgba(0,0,0,.04) 56%,
+            rgba(0,0,0,.22) 86%,
+            rgba(0,0,0,.38)
+        );
+}
+
+.moonGlow {
+    position: absolute;
+    inset: -14%;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(230,235,255,.18),
+            rgba(130,150,210,.08) 45%,
+            transparent 72%
+        );
+    filter: blur(22px);
+    pointer-events: none;
+}
+
+.moonTouchdownRipple {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 230, 150, 0.9);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.moonTouchdownRipple.rippleActive {
+    animation: moonRippleEffect 1.4s ease-out forwards;
+}
+
+@keyframes moonRippleEffect {
+    0% {
+        transform: scale(0.85);
+        opacity: 1;
+        box-shadow: 0 0 40px rgba(255, 220, 120, 0.9);
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+        box-shadow: 0 0 120px rgba(255, 220, 120, 0);
+    }
+}
+
+@keyframes moonFloat {
+    0%,100% { margin-top: 0; }
+    50% { margin-top: -11px; }
+}
+
+/* ========================================
+   ORBIT UI
+======================================== */
+
+#orbitInfo {
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    color: rgba(255,255,255,.25);
+    text-align: right;
+    z-index: 5;
+    pointer-events: none;
+}
+
+#shootingStar {
+    position: absolute;
+    width: 130px;
+    height: 1px;
+    top: 25%;
+    left: -150px;
+    opacity: 0;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.9)
+        );
+    transform: rotate(-18deg);
+    z-index: 4;
+}
+
+.shoot {
+    animation:
+        shootingStar
+        1.25s ease-out;
+}
+
+@keyframes shootingStar {
+    0% {
+        opacity: 0;
+        transform:
+            translateX(0)
+            rotate(-18deg);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translateX(120vw)
+            translateY(140px)
+            rotate(-18deg);
+    }
+}
+
+/* ========================================
+   SECRET DEDICATION HUD
+======================================== */
+
+#secret {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%,-50%) scale(.95);
+    width: min(620px, 90%);
+    text-align: center;
+    opacity: 0;
+    transition: opacity .8s, transform .8s;
+    z-index: 17;
+    pointer-events: none;
+    background: rgba(10, 14, 25, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 30px 24px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 120, 0.15);
+}
+
+#secret.visible {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
+    pointer-events: auto;
+}
+
+#secret span {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: .25em;
+    color: #f7d197;
+}
+
+#secret h2 {
+    margin-top: 12px;
+    font-size: clamp(23px,4.5vw,42px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -.04em;
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+#secret p {
+    margin-top: 14px;
+    color: rgba(255,255,255,.65);
+    font-size: clamp(13px, 3vw, 15px);
+}
+
+/* ========================================
+   KEEP BUTTON
+======================================== */
+
+#keepButton {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+    padding: 13px 24px;
+    border-radius: 100px;
+    border:
+        1px solid
+        rgba(255,255,255,.2);
+    background:
+        rgba(255,255,255,.08);
+    color: white;
+    backdrop-filter:
+        blur(10px);
+    cursor: pointer;
+    display: none;
+    z-index: 30;
+}
+
+/* ========================================
+   FINAL
+======================================== */
+
+#finalScene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+        radial-gradient(
+            circle,
+            #151b31,
+            #020204 65%
+        );
+}
+
+.finalContent {
+    padding: 30px;
+}
+
+.finalMoon {
+    font-size: 70px;
+}
+
+.finalContent h1 {
+    margin-top: 20px;
+    font-size: clamp(34px,7vw,70px);
+    font-weight: 400;
+    letter-spacing: -.055em;
+}
+
+.finalContent p {
+    margin-top: 15px;
+    color: rgba(255,255,255,.5);
+    line-height: 1.7;
+}
+
+.noReturns {
+    margin-top: 25px;
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    color: rgba(255,255,255,.22);
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+    #orbitInfo {
+        display: none;
+    }
+
+    #moon {
+        width: min(74vw, 340px);
+    }
+
+    .moonHeading {
+        top: 6%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========================================
+     LAUNCH
+======================================== -->
+
+<section
+    id="launchScene"
+    class="scene active"
+>
+
+<div id="launchFlash" class="launchFlash"></div>
+<canvas id="launchSmokeCanvas"></canvas>
+
+<div class="missionHeader">
+
+    <div class="smallText">
+        MISSION 01 · LUNAR RETRIEVAL
+    </div>
+
+    <h1 id="missionTitle">
+        GET HER THE MOON
+    </h1>
+
+    <div id="status">
+        Houston, we have a request.
+    </div>
+
+</div>
+
+<div class="launchControls" id="launchControls">
+    <div class="nameInputBox">
+        <label for="recipientInput" class="nameInputLabel">✨ DEDICATE THIS MISSION (OPTIONAL) ✨</label>
+        <div class="inputInnerWrapper">
+            <span class="inputIcon">✍️</span>
+            <input 
+                type="text" 
+                id="recipientInput" 
+                placeholder="Enter her name (optional)..." 
+                maxlength="28" 
+                autocomplete="off"
+                spellcheck="false"
+            />
+        </div>
+    </div>
+
+    <button id="startButton" type="button">
+        Start mission 🚀
+    </button>
+</div>
+
+<div id="countdown">
+    3
+</div>
+
+<div class="launchPad">
+    <div class="launchGantryLeft"></div>
+    <div class="launchGantryRight"></div>
+    <div class="launchPlatform"></div>
+</div>
+
+<div id="rocket">
+
+    <div class="rocketBody">
+
+        <div class="rocketWindow"></div>
+
+        <div class="finLeft"></div>
+
+        <div class="finRight"></div>
+
+        <div class="flame">
+            <div class="flameCore"></div>
+        </div>
+
+        <div class="thrusterShockwave"></div>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- ========================================
+     SPACE
+======================================== -->
+
+<section
+    id="spaceScene"
+    class="scene"
+>
+
+<canvas id="stars"></canvas>
+
+<div class="flightText">
+
+    <h2 id="flightTitle">
+        Leaving Earth...
+    </h2>
+
+    <p id="flightStatus">
+        altitude increasing
+    </p>
+
+</div>
+
+<div id="distantMoon" class="distantMoon">
+    <div class="distantMoonGlow"></div>
+</div>
+
+<div class="spaceRocket" id="spaceRocket"></div>
+
+</section>
+
+<!-- ========================================
+     MOON
+======================================== -->
+
+<section
+    id="moonScene"
+    class="scene"
+>
+
+<canvas id="moonStars"></canvas>
+
+<div class="moonHeading">
+
+    <h1 id="moonMainTitle">
+        She asked me for the moon.
+    </h1>
+
+    <p id="moonSubtitle">
+        So I coded a way to get there.
+    </p>
+
+</div>
+
+<div id="orbitInfo">
+    <span id="orbitLine1">LUNAR ORBIT ESTABLISHED</span>
+    <span id="orbitLine2">384,400 KM FROM HOME</span>
+</div>
+
+<div class="touchdownBannerWrapper">
+    <div id="touchdownBadge" class="touchdownBadge">
+        <span class="badgeIcon">🚀</span>
+        <span class="badgeText">TAP HERE TO LAND ON THE MOON 🌕</span>
+    </div>
+</div>
+
+<div id="shootingStar"></div>
+
+<div id="secret">
+
+    <span id="missionStatus">
+        MISSION ACCOMPLISHED
+    </span>
+
+    <h2>
+        I couldn't bring you
+        the real one.
+        <br>
+        So I made this one yours.
+    </h2>
+
+    <p>
+        Some requests are too
+        important to return an error.
+    </p>
+
+</div>
+
+<div class="lunarOrbitContainer" id="lunarOrbitContainer">
+    <div class="lunarOrbitRocket"></div>
+</div>
+
+<div id="moon">
+
+    <div class="moonGlow"></div>
+
+    <img
+        src="https://svs.gsfc.nasa.gov/vis/a000000/a005000/a005048/phase_full.1571_print.jpg"
+        alt="Real Moon - NASA"
+        draggable="false"
+        id="moonImage"
+    >
+
+    <div class="moonShade"></div>
+
+    <div class="moonTouchdownRipple" id="moonRipple"></div>
+
+</div>
+
+<button id="keepButton">
+    Keep the moon ♡
+</button>
+
+</section>
+
+<!-- ========================================
+     FINAL
+======================================== -->
+
+<section
+    id="finalScene"
+    class="scene"
+>
+
+<div class="finalContent">
+
+    <div class="finalMoon">
+        🌙
+    </div>
+
+    <h1>
+        The moon is yours.
+    </h1>
+
+    <p>
+        Keep it.
+        <br>
+        I coded another one for the sky.
+    </p>
+
+    <div class="noReturns">
+        NO RETURNS.
+    </div>
+
+</div>
+
+</section>
+
+<script>
+
+/* ========================================
+   VARIABLES
+======================================== */
+
+const launchScene = document.getElementById("launchScene");
+const spaceScene = document.getElementById("spaceScene");
+const moonScene = document.getElementById("moonScene");
+const finalScene = document.getElementById("finalScene");
+
+const startButton = document.getElementById("startButton");
+const countdown = document.getElementById("countdown");
+const status = document.getElementById("status");
+const rocket = document.getElementById("rocket");
+const flame = document.querySelector(".flame");
+const launchFlash = document.getElementById("launchFlash");
+
+const flightTitle = document.getElementById("flightTitle");
+const flightStatus = document.getElementById("flightStatus");
+const distantMoon = document.getElementById("distantMoon");
+const spaceRocket = document.getElementById("spaceRocket");
+const lunarOrbitContainer = document.getElementById("lunarOrbitContainer");
+
+const moon = document.getElementById("moon");
+const moonImage = document.getElementById("moonImage");
+const moonRipple = document.getElementById("moonRipple");
+const touchdownBadge = document.getElementById("touchdownBadge");
+const secret = document.getElementById("secret");
+const keepButton = document.getElementById("keepButton");
+const missionStatus = document.getElementById("missionStatus");
+
+// State Variables
+let revealed = false;
+let dragging = false;
+let startX = 0, startY = 0;
+let moonX = 0, moonY = 0;
+let originalX = 0, originalY = 0;
+let dragMoved = false;
+let missionStarted = false;
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/* ========================================
+   WEB AUDIO API SOUND EFFECTS
+======================================== */
+
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+}
+
+function playBeep(freq = 750, duration = 0.12) {
+    if (!audioCtx) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+}
+
+function playRocketRoar(duration = 4.2) {
+    if (!audioCtx) return;
+    try {
+        const bufferSize = audioCtx.sampleRate * duration;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(140, audioCtx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 1.2);
+        filter.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + duration);
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        whiteNoise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        whiteNoise.start();
+
+        const subOsc = audioCtx.createOscillator();
+        const subGain = audioCtx.createGain();
+        subOsc.type = "triangle";
+        subOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+        subOsc.frequency.linearRampToValueAtTime(85, audioCtx.currentTime + 1.5);
+        subGain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+        subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        subOsc.connect(subGain);
+        subGain.connect(audioCtx.destination);
+        subOsc.start();
+        subOsc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+}
+
+function playTouchdownChime() {
+    if (!audioCtx) return;
+    try {
+        const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + idx * 0.1 + 1.8);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + idx * 0.1);
+            osc.stop(audioCtx.currentTime + idx * 0.1 + 1.9);
+        });
+    } catch (e) {}
+}
+
+/* ========================================
+   LAUNCH SMOKE CANVAS PARTICLE SYSTEM
+======================================== */
+
+function initLaunchSmoke() {
+    const canvas = document.getElementById("launchSmokeCanvas");
+    if (!canvas) return { start: () => {}, stop: () => {} };
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    let emitting = false;
+    let animId = null;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function spawnPuff() {
+        const originX = canvas.width / 2;
+        const originY = canvas.height * 0.94;
+        for (let i = 0; i < 3; i++) {
+            const side = (Math.random() > 0.5 ? 1 : -1);
+            particles.push({
+                x: originX + (Math.random() - 0.5) * 35,
+                y: originY + (Math.random() - 0.5) * 12,
+                vx: (Math.random() * 3.2 + 1.2) * side,
+                vy: -(Math.random() * 1.6 + 0.4),
+                radius: 12 + Math.random() * 16,
+                maxRadius: 60 + Math.random() * 50,
+                alpha: 0.75 + Math.random() * 0.25,
+                decay: 0.009 + Math.random() * 0.006,
+                color: Math.random() > 0.45 ? "255, 140, 50" : (Math.random() > 0.5 ? "255, 220, 150" : "170, 185, 210")
+            });
+        }
+    }
+
+    function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (emitting) {
+            spawnPuff();
+        }
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.radius += (p.maxRadius - p.radius) * 0.035;
+            p.alpha -= p.decay;
+            if (p.alpha <= 0) {
+                particles.splice(i, 1);
+                continue;
+            }
+            const grad = ctx.createRadialGradient(p.x, p.y, p.radius * 0.08, p.x, p.y, p.radius);
+            grad.addColorStop(0, `rgba(${p.color}, ${p.alpha * 0.7})`);
+            grad.addColorStop(0.5, `rgba(${p.color}, ${p.alpha * 0.35})`);
+            grad.addColorStop(1, `rgba(${p.color}, 0)`);
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        if (emitting || particles.length > 0) {
+            animId = requestAnimationFrame(loop);
+        } else {
+            animId = null;
+        }
+    }
+
+    return {
+        start: () => {
+            emitting = true;
+            if (!animId) loop();
+        },
+        stop: () => {
+            emitting = false;
+        }
+    };
+}
+
+const launchSmoke = initLaunchSmoke();
+
+/* ========================================
+   RECIPIENT NAME (OPTIONAL) & DYNAMIC TEXTS
+======================================== */
+
+const recipientInput = document.getElementById("recipientInput");
+const missionTitle = document.getElementById("missionTitle");
+
+function getName() {
+    if (recipientInput && recipientInput.value.trim()) {
+        return recipientInput.value.trim();
+    }
+    return "Her";
+}
+
+function getPossessiveName() {
+    const name = getName();
+    if (name.toLowerCase() === "her") return "Her";
+    return name.endsWith("s") || name.endsWith("S") ? `${name}'` : `${name}'s`;
+}
+
+function updateDynamicTexts() {
+    const name = getName();
+    const isDefault = (name.toLowerCase() === "her");
+    const possessive = getPossessiveName();
+
+    if (missionTitle) {
+        missionTitle.textContent = isDefault ? "GET HER THE MOON" : `GET ${name.toUpperCase()} THE MOON`;
+    }
+
+    const moonMainTitle = document.getElementById("moonMainTitle");
+    if (moonMainTitle) {
+        moonMainTitle.textContent = isDefault ? "She asked me for the moon." : `${name} asked me for the moon.`;
+    }
+
+    const touchdownBadgeText = document.querySelector("#touchdownBadge .badgeText");
+    if (touchdownBadgeText && !revealed) {
+        touchdownBadgeText.textContent = isDefault ? "TAP HERE TO LAND ON THE MOON 🌕" : `TAP HERE TO LAND ${possessive.toUpperCase()} MOON 🌕`;
+    }
+
+    const missionStatus = document.getElementById("missionStatus");
+    if (missionStatus) {
+        missionStatus.textContent = isDefault ? "MISSION ACCOMPLISHED" : `MISSION ACCOMPLISHED FOR ${name.toUpperCase()}`;
+    }
+
+    const secretHeading = document.querySelector("#secret h2");
+    if (secretHeading) {
+        secretHeading.innerHTML = isDefault
+            ? `I couldn't bring you<br>the real one.<br>So I made this one yours.`
+            : `I couldn't bring you the real one, ${name}.<br>So I made this one yours.`;
+    }
+
+    const finalHeading = document.querySelector(".finalContent h1");
+    if (finalHeading) {
+        finalHeading.textContent = isDefault ? "The moon is yours." : `The moon is yours, ${name}.`;
+    }
+}
+
+// Read optional URL param
+const urlParams = new URLSearchParams(window.location.search);
+const paramName = urlParams.get("to") || urlParams.get("name") || urlParams.get("for");
+if (paramName && recipientInput) {
+    recipientInput.value = paramName;
+}
+updateDynamicTexts();
+
+if (recipientInput) {
+    recipientInput.addEventListener("input", updateDynamicTexts);
+    recipientInput.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            handleStartMission(e);
+        }
+    });
+}
+
+/* ========================================
+   CHANGE SCENE
+======================================== */
+
+function showScene(scene) {
+    document.querySelectorAll(".scene").forEach(item => item.classList.remove("active"));
+    scene.classList.add("active");
+}
+
+/* ========================================
+   START LAUNCH SEQUENCE
+======================================== */
+
+function handleStartMission(e) {
+    if (e) {
+        e.preventDefault();
+    }
+    if (missionStarted) return;
+    missionStarted = true;
+    initAudio();
+    startMission();
+}
+
+startButton.addEventListener("click", handleStartMission);
+
+async function startMission() {
+    const controls = document.getElementById("launchControls");
+    if (controls) {
+        controls.style.display = "none";
+    }
+
+    const name = getName();
+    const isDefault = (name.toLowerCase() === "her");
+
+    status.textContent = isDefault 
+        ? "Request received: she wants the moon."
+        : `Request received: ${name} wants the moon.`;
+
+    await wait(1200);
+    status.textContent = "Copy that.";
+
+    await wait(1000);
+    status.textContent = "Launch sequence initiated";
+
+    await wait(900);
+    countdown.style.opacity = "1";
+
+    await showNumber("3", 700);
+    await showNumber("2", 800);
+    await showNumber("1", 900);
+
+    countdown.style.fontSize = "clamp(45px,8vw,90px)";
+    countdown.textContent = "LIFTOFF";
+    countdown.classList.remove("countAnimation");
+    void countdown.offsetWidth;
+    countdown.classList.add("countAnimation");
+
+    // Ignition Effects
+    playRocketRoar();
+    if (launchFlash) {
+        launchFlash.classList.add("flashActive");
+    }
+    launchSmoke.start();
+
+    flame.style.opacity = "1";
+    rocket.classList.add("rocketLaunch");
+    launchScene.classList.add("heavyShake");
+
+    await wait(1700);
+    launchScene.classList.remove("heavyShake");
+    launchScene.classList.add("shake");
+
+    await wait(1800);
+    launchSmoke.stop();
+
+    await wait(600);
+    launchScene.classList.remove("shake");
+    beginSpaceJourney();
+}
+
+/* ========================================
+   COUNTDOWN
+======================================== */
+
+async function showNumber(number, toneFreq) {
+    countdown.textContent = number;
+    playBeep(toneFreq || 750, 0.14);
+    countdown.classList.remove("countAnimation");
+    void countdown.offsetWidth;
+    countdown.classList.add("countAnimation");
+    await wait(950);
+}
+
+/* ========================================
+   SPACE JOURNEY
+======================================== */
+
+async function beginSpaceJourney() {
+    showScene(spaceScene);
+
+    const name = getName();
+    const isDefault = (name.toLowerCase() === "her");
+
+    flightTitle.textContent = "Leaving Earth...";
+    flightStatus.textContent = "altitude increasing";
+    await wait(1800);
+
+    flightTitle.textContent = "Earth connection fading...";
+    flightStatus.textContent = "signal: still good enough";
+    await wait(1800);
+
+    flightTitle.textContent = isDefault ? "Destination locked: Moon" : `Destination locked: ${name}'s Moon`;
+    flightStatus.textContent = "distance: 384,400 km";
+    await wait(2200);
+
+    flightTitle.textContent = isDefault ? "She asked me for the moon." : `${name} asked me for the moon.`;
+    flightStatus.textContent = "request accepted";
+    await wait(2200);
+
+    flightTitle.textContent = "So I coded a way to get there.";
+    flightStatus.textContent = "approaching lunar orbit";
+
+    if (distantMoon) {
+        distantMoon.classList.add("show");
+    }
+
+    await wait(600);
+
+    if (spaceRocket) {
+        spaceRocket.classList.add("accelerateToMoon");
+    }
+
+    await wait(2200);
+
+    // Transition to Mega Moon Scene
+    showScene(moonScene);
+    updateDynamicTexts();
+
+    if (moon) {
+        moon.classList.remove("megaMoonEnter");
+        void moon.offsetWidth;
+        moon.classList.add("megaMoonEnter");
+    }
+
+    if (lunarOrbitContainer) {
+        lunarOrbitContainer.classList.add("activeOrbit");
+    }
+
+    setTimeout(shootingStar, 1600);
+}
+
+/* ========================================
+   BACKGROUND STARS CANVAS
+======================================== */
+
+function createStars(canvas) {
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = [];
+        for (let i = 0; i < 160; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.4,
+                alpha: .2 + Math.random() * .8
+            });
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const star of stars) {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+            ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+}
+
+createStars(document.getElementById("stars"));
+createStars(document.getElementById("moonStars"));
+
+/* ========================================
+   MOON PARALLAX
+======================================== */
+
+document.addEventListener("mousemove", event => {
+    if (dragging) return;
+    const x = (event.clientX / window.innerWidth) - .5;
+    const y = (event.clientY / window.innerHeight) - .5;
+    if (moonImage) {
+        moonImage.style.transform = `translate(${x * 5}px, ${y * 5}px) scale(1.015)`;
+    }
+});
+
+/* ========================================
+   MEGA MOON INTERACTION & TOUCHDOWN
+======================================== */
+
+function confirmTouchdown(clickEvent) {
+    if (revealed) return;
+    revealed = true;
+
+    initAudio();
+    playTouchdownChime();
+
+    const name = getName();
+    const isDefault = (name.toLowerCase() === "her");
+
+    const badge = document.getElementById("touchdownBadge");
+    if (badge) {
+        badge.classList.remove("pulsePrompt");
+        badge.classList.add("touchdownSuccess");
+        badge.innerHTML = `<span class="badgeIcon">✓</span><span class="badgeText">${isDefault ? "TOUCHDOWN CONFIRMED · WELCOME TO THE MOON 🌙" : `TOUCHDOWN CONFIRMED · THE MOON IS FOR ${name.toUpperCase()} 🌙`}</span>`;
+    }
+
+    const orb1 = document.getElementById("orbitLine1");
+    const orb2 = document.getElementById("orbitLine2");
+    if (orb1) orb1.textContent = "LUNAR TOUCHDOWN CONFIRMED";
+    if (orb2) orb2.textContent = isDefault ? "WELCOME TO THE MOON ♡" : `WELCOME TO THE MOON, ${name.toUpperCase()} ♡`;
+
+    if (moonRipple) {
+        moonRipple.classList.remove("rippleActive");
+        void moonRipple.offsetWidth;
+        moonRipple.classList.add("rippleActive");
+    }
+
+    let originX = window.innerWidth / 2;
+    let originY = window.innerHeight * 0.55;
+    if (clickEvent && clickEvent.clientX) {
+        originX = clickEvent.clientX;
+        originY = clickEvent.clientY;
+    }
+
+    createExplosion(originX, originY);
+    revealSecret();
+}
+
+if (touchdownBadge) {
+    touchdownBadge.addEventListener("click", confirmTouchdown);
+}
+
+moon.addEventListener("pointerdown", event => {
+    dragging = true;
+    dragMoved = false;
+    startX = event.clientX;
+    startY = event.clientY;
+    originalX = moonX;
+    originalY = moonY;
+    moon.setPointerCapture(event.pointerId);
+});
+
+moon.addEventListener("pointermove", event => {
+    if (!dragging) return;
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        dragMoved = true;
+    }
+
+    moonX = originalX + deltaX;
+    moonY = originalY + deltaY;
+    moonX = Math.max(-180, Math.min(180, moonX));
+    moonY = Math.max(-120, Math.min(120, moonY));
+
+    moon.style.transform = `translate(calc(-50% + ${moonX}px), calc(-50% + ${moonY}px))`;
+
+    const distance = Math.sqrt(moonX ** 2 + moonY ** 2);
+    if (distance > 60 && !revealed) {
+        confirmTouchdown(event);
+    }
+});
+
+moon.addEventListener("pointerup", event => {
+    dragging = false;
+    if (!dragMoved && !revealed) {
+        confirmTouchdown(event);
+    }
+});
+
+moon.addEventListener("pointercancel", () => {
+    dragging = false;
+});
+
+/* ========================================
+   SECRET REVEAL
+======================================== */
+
+function revealSecret() {
+    updateDynamicTexts();
+    secret.classList.add("visible");
+    keepButton.style.display = "block";
+}
+
+/* ========================================
+   SHOOTING STAR
+======================================== */
+
+function shootingStar() {
+    const star = document.getElementById("shootingStar");
+    if (!star) return;
+    star.classList.remove("shoot");
+    void star.offsetWidth;
+    star.classList.add("shoot");
+}
+
+/* ========================================
+   COSMIC SUPERNOVA STAR EXPLOSION (WOW EFFECT)
+======================================== */
+
+function createExplosion(centerX, centerY) {
+    const originX = centerX || (window.innerWidth / 2);
+    const originY = centerY || (window.innerHeight * 0.55);
+
+    // Shockwave ring
+    const ring = document.createElement("div");
+    ring.style.position = "fixed";
+    ring.style.left = originX + "px";
+    ring.style.top = originY + "px";
+    ring.style.width = "40px";
+    ring.style.height = "40px";
+    ring.style.borderRadius = "50%";
+    ring.style.border = "3px solid rgba(255, 230, 160, 0.9)";
+    ring.style.boxShadow = "0 0 35px rgba(255, 215, 120, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.6)";
+    ring.style.transform = "translate(-50%, -50%) scale(0.2)";
+    ring.style.pointerEvents = "none";
+    ring.style.zIndex = "95";
+    document.body.appendChild(ring);
+
+    ring.animate([
+        { transform: "translate(-50%, -50%) scale(0.2)", opacity: 1 },
+        { transform: "translate(-50%, -50%) scale(8.5)", opacity: 0 }
+    ], {
+        duration: 1200,
+        easing: "cubic-bezier(0.16, 1, 0.3, 1)"
+    });
+    setTimeout(() => ring.remove(), 1300);
+
+    // 65 Cosmic glittering stars & diamonds
+    for (let i = 0; i < 65; i++) {
+        const star = document.createElement("span");
+        const glyphs = ["✦", "★", "✧", "·", "✨", "✺"];
+        star.innerHTML = glyphs[Math.floor(Math.random() * glyphs.length)];
+        star.style.position = "fixed";
+        star.style.left = originX + "px";
+        star.style.top = originY + "px";
+        star.style.color = Math.random() > 0.35 ? "#ffe8b5" : (Math.random() > 0.45 ? "#ffffff" : "#a8ffcc");
+        star.style.fontSize = (Math.random() * 16 + 10) + "px";
+        star.style.textShadow = "0 0 12px currentColor";
+        star.style.zIndex = "100";
+        star.style.pointerEvents = "none";
+        document.body.appendChild(star);
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 90 + Math.random() * 280;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
+        star.animate([
+            { transform: "translate(-50%,-50%) scale(1.8)", opacity: 1 },
+            { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.15)`, opacity: 0 }
+        ], {
+            duration: 1100 + Math.random() * 1100,
+            easing: "cubic-bezier(.16, 1, .3, 1)"
+        });
+
+        setTimeout(() => star.remove(), 2300);
+    }
+}
+
+/* ========================================
+   KEEP MOON / OWNERSHIP TRANSFER
+======================================= */
+
+keepButton.addEventListener("click", async () => {
+    createExplosion(window.innerWidth / 2, window.innerHeight * 0.6);
+    keepButton.style.display = "none";
+
+    missionStatus.textContent = "OWNERSHIP TRANSFER...";
+    await wait(1000);
+
+    missionStatus.textContent = "OWNERSHIP TRANSFER COMPLETE ✓";
+    await wait(1100);
+
+    updateDynamicTexts();
+    showScene(finalScene);
+});
+
+</script>
+
+</body>
+</html>

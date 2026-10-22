@@ -198,7 +198,8 @@
             "buildWithMe": "Build with me",
             "menu": "Open menu",
             "close": "Close menu",
-            "prompts": "Prompts"
+            "prompts": "Prompts",
+            "gifts": "Gifts"
         },
         "hero": {
             "aria": "Introduction",
@@ -447,6 +448,36 @@
             "tips": "One face, looking at the camera, clearly lit, against a plain background. Harder light beats flat light: the ASCII ramp needs real highlights and shadows. Group shots and full-body photos convert to mush.",
             "ctaTitle": "Want something like this built for your product?",
             "cta": "Build with me"
+        },
+        "gift": {
+            "eyebrow": "Gifts",
+            "title": "SAY IT WITH CODE",
+            "intro": "Animated dedications, coded by hand. Write your words, get a private link, send it to someone who matters.",
+            "home": "Back to home",
+            "back": "All gifts",
+            "open": "Make yours",
+            "from": "from",
+            "previewLabel": "Live preview",
+            "previewNote": "The watermark disappears once it's yours.",
+            "formTitle": "Write your dedication",
+            "style": "Style",
+            "buy": "Get my link · {price}",
+            "buying": "Opening checkout…",
+            "error": "Something went wrong. Try again.",
+            "includes": "One-time payment · Permanent private link · No watermark",
+            "successEyebrow": "Payment received",
+            "successTitle": "Your dedication is ready",
+            "successIntro": "This link is yours forever. Send it however you like — it opens full screen on any phone.",
+            "copy": "Copy link",
+            "copied": "Copied",
+            "whatsapp": "Send on WhatsApp",
+            "openGift": "Open it",
+            "shareText": "I made something for you 💌",
+            "pendingTitle": "Almost there",
+            "pendingIntro": "We couldn't confirm this payment yet. If you just paid, refresh in a few seconds. If it keeps happening, write to me and I'll sort it out.",
+            "refresh": "Refresh",
+            "contact": "Contact me",
+            "missing": "Fill in the required fields."
         }
     }
 }

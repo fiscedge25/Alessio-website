@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Interstellar Journey ✦ Seven Worlds</title>
+  <meta name="description" content="She asked me to take her out… so I built us a ship instead.">
+  <meta name="theme-color" content="#03060d">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 3D Three.js WebGL Canvas Mount -->
+  <div id="space-canvas-container"></div>
+
+  <!-- Cinematic Visual Overlays -->
+  <div class="grain-overlay"></div>
+  <div class="vignette-overlay"></div>
+  <div class="light-sweep-overlay" id="light-sweep"></div>
+  <div class="warp-flash" id="warp-flash"></div>
+
+  <!-- Main Application Wrapper -->
+  <div id="app">
+    <!-- ===================================================================
+         1. OPENING CINEMATIC INTRO
+         =================================================================== -->
+    <div id="scene-intro" class="scene-intro">
+      <div class="intro-content">
+        <div class="intro-sequence-box">
+          <p id="intro-text-line" class="intro-text-line"></p>
+        </div>
+
+        <div id="crew-editor" class="crew-editor">
+          <span class="crew-editor-label">Crew manifest</span>
+          <div class="crew-inputs">
+            <input id="input-recipient" class="crew-input" type="text" maxlength="18"
+                   placeholder="Her name" aria-label="Her name" autocomplete="off" spellcheck="false">
+            <span class="crew-plus">+</span>
+            <input id="input-sender" class="crew-input" type="text" maxlength="18"
+                   placeholder="Your name" aria-label="Your name" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <div id="intro-actions" class="intro-actions">
+          <button id="btn-start-trip" class="btn-start-trip" aria-label="Start the trip on autopilot">
+            <span id="btn-start-trip-text">I'm ready</span>
+            <span class="btn-icon">→</span>
+          </button>
+          <button id="btn-start-manual" class="btn-start-manual" aria-label="Fly the ship yourself">
+            or I'll fly it myself
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         2. TOP HUD
+         =================================================================== -->
+    <header id="header-hud" class="header-hud">
+      <div class="hud-pill">
+        <span class="live-beacon"></span>
+        <span id="hud-status-text">CRUISING</span>
+      </div>
+
+      <div class="hud-pill hud-passengers" title="Click a name to change it">
+        <span class="crew-prefix">CREW:</span>
+        <span id="crew-name-a" class="crew-name" contenteditable="true" spellcheck="false" data-placeholder="You"></span>
+        <span class="crew-plus-hud">+</span>
+        <span id="crew-name-b" class="crew-name" contenteditable="true" spellcheck="false" data-placeholder="Me"></span>
+      </div>
+
+      <div class="hud-actions">
+        <button id="btn-restart" class="btn-icon-hud" title="Start over from the beginning" aria-label="Start over">
+          <span class="restart-icon">↺</span>
+        </button>
+
+        <button id="btn-autopilot" class="btn-icon-hud btn-autopilot" title="Autopilot" aria-label="Toggle autopilot">
+          <span id="autopilot-icon" class="autopilot-icon">❚❚</span>
+        </button>
+
+        <button id="btn-sound-toggle" class="btn-icon-hud" title="Toggle Sound" aria-label="Toggle sound">
+          <div class="audio-waves" id="audio-visualizer">
+            <span></span><span></span><span></span>
+          </div>
+        </button>
+
+        <button id="btn-flight-log" class="btn-icon-hud" title="Flight Mission Log" aria-label="Flight log">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         3. STORY CARD
+         =================================================================== -->
+    <main id="main-stage" class="main-stage">
+      <div id="planet-story-card" class="planet-story-card">
+        <span id="stop-sub-tag" class="stop-tag">DEPARTURE</span>
+        <h1 id="stop-planet-title" class="planet-title">Earth</h1>
+        <p id="stop-planet-caption" class="planet-caption">Every good trip starts with a yes.</p>
+        <p id="stop-planet-quote" class="planet-quote">Engines warm. The ordinary world is behind us.</p>
+        <div id="auto-countdown" class="auto-countdown" aria-hidden="true">
+          <span class="auto-countdown-label">Next jump</span>
+          <div class="auto-countdown-track"><i id="auto-countdown-bar"></i></div>
+        </div>
+      </div>
+
+      <!-- In-flight banner shown while the warp drive is running -->
+      <div id="warp-banner" class="warp-banner">
+        <span class="warp-banner-label">WARP DRIVE ENGAGED</span>
+        <span id="warp-banner-target" class="warp-banner-target">Setting course</span>
+        <div class="warp-progress"><i id="warp-progress-bar"></i></div>
+      </div>
+    </main>
+
+    <!-- ===================================================================
+         4. SHIP TELEMETRY STRIP
+         =================================================================== -->
+    <div id="telemetry" class="telemetry">
+      <div class="telemetry-item">
+        <span class="telemetry-label">Ship</span>
+        <span id="telemetry-ship" class="telemetry-value">S.S. STARLIGHT</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="telemetry-label">Velocity</span>
+        <span id="telemetry-velocity" class="telemetry-value">0.00 c</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="telemetry-label">Flight time</span>
+        <span id="telemetry-time" class="telemetry-value">T-00:00</span>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         5. BOTTOM NAVIGATION
+         =================================================================== -->
+    <footer id="footer-hud" class="footer-hud">
+      <div class="distance-tracker">
+        <span class="distance-label">DISTANCE FROM EARTH</span>
+        <span id="distance-counter" class="distance-value">0 km</span>
+      </div>
+
+      <nav class="route-timeline" id="route-timeline" aria-label="Journey stops">
+        <!-- Injected by app.js -->
+      </nav>
+
+      <div class="nav-actions">
+        <button id="btn-nav-prev" class="btn-nav prev" aria-label="Previous destination" disabled>
+          ← Back
+        </button>
+        <button id="btn-nav-next" class="btn-nav next" aria-label="Next destination">
+          <span id="btn-next-label">Set course: Moon</span> →
+        </button>
+      </div>
+    </footer>
+
+    <!-- ===================================================================
+         6. END OF JOURNEY
+         =================================================================== -->
+    <section id="scene-end" class="scene-end" role="dialog" aria-modal="true">
+      <div class="end-card">
+        <span id="end-badge" class="end-badge">END OF THE LINE</span>
+        <h2 id="end-title" class="end-title">4,351,400,000 km</h2>
+        <p id="end-message" class="end-message"></p>
+        <p id="end-footer" class="end-footer"></p>
+        <div class="end-actions">
+          <button id="btn-surprise" class="btn-primary btn-surprise">Surprise me ✦</button>
+          <button id="btn-keep-drifting" class="btn-ghost">Keep drifting</button>
+          <button id="btn-replay-trip" class="btn-ghost">Start over ↺</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         7. FLIGHT LOG
+         =================================================================== -->
+    <div id="flight-log-modal" class="modal-overlay" role="dialog" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">Mission Flight Log</h3>
+          <button id="btn-close-log" class="btn-modal-close" aria-label="Close log">✕</button>
+        </div>
+        <div id="flight-log-list" class="flight-log-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Engine Scripts -->
+  <script src="lib/three.min.js"></script>
+  <script src="assets/textures.data.js?v=3"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/textures.js?v=3"></script>
+  <script src="js/audio.js?v=3"></script>
+  <script src="js/space-scene.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>

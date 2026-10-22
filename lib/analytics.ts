@@ -17,7 +17,9 @@ export type AnalyticsEvent =
     | "prompt_unlock"
     | "prompt_copy"
     | "prompt_download"
-    | "prompt_share";
+    | "prompt_share"
+    | "gift_checkout"
+    | "gift_share";
 
 export function track(event: AnalyticsEvent, detail?: Record<string, string>) {
     if (typeof window === "undefined") return;
