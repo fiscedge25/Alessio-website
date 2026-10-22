@@ -26,6 +26,9 @@ export const site = {
     // Google Tag Manager. Loads with Consent Mode v2 defaulting to "denied";
     // the cookie banner grants it on Accept.
     gtm: { id: "GTM-5CNL8M32" },
+    // Google Analytics 4, loaded directly with gtag.js under the same consent.
+    // Don't also add a GA4 tag for this ID inside GTM, or pageviews double.
+    ga4: { id: "G-LJC0SF5DYG" },
     /** Cookie the banner sets ("true" / "false"); the layout reads it on load. */
     consentCookie: "alessiosabatino-gdpr-consent",
 
