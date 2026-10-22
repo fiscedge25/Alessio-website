@@ -59,8 +59,15 @@ export default async function UnlockSuccess({ params, searchParams }: { params: 
                             >
                                 {t("successTitle")}
                             </h1>
-                            <p className="mt-4 mb-10 text-lg leading-relaxed text-[color:var(--muted)]">
+                            <p className="mt-4 text-lg leading-relaxed text-[color:var(--muted)]">
                                 {t("successIntro")}
+                            </p>
+                            {/* No email goes out yet — this page is the only delivery. */}
+                            <p
+                                className="mt-5 mb-10 rounded-xl border px-4 py-3 text-sm leading-relaxed text-[color:var(--ink)]"
+                                style={{ borderColor: "var(--accent)", background: "var(--accent-dim)" }}
+                            >
+                                🔖 {t("keepNote")}
                             </p>
                             {gift.animation === BUNDLE.slug ? (
                                 <ul className="space-y-10">

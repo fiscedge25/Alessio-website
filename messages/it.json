@@ -486,7 +486,8 @@
             "singles": "Oppure scegline una",
             "bundleBuy": "Sblocca tutte e 7 · {price}",
             "bundleIncludes": "{count} link privati · un solo pagamento · invece di {full}",
-            "bundlePreviewNote": "Cambia scheda per vedere le tue parole in ognuna. Senza watermark quando sono tue."
+            "bundlePreviewNote": "Cambia scheda per vedere le tue parole in ognuna. Senza watermark quando sono tue.",
+            "keepNote": "Questa pagina è la tua ricevuta: salvala nei preferiti o copia subito il link. Puoi tornare su questa stessa pagina quando vuoi per ritrovarlo."
         }
     }
 }

@@ -25,6 +25,7 @@ export async function POST(request: Request) {
 
     const url = new URL(gift.paymentLink);
     url.searchParams.set("client_reference_id", id);
-    url.searchParams.set("locale", body.lang === "it" ? "it" : "en");
+    // The gift shop is English-only, checkout included.
+    url.searchParams.set("locale", "en");
     return NextResponse.json({ ok: true, url: url.toString() });
 }
