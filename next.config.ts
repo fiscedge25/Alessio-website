@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
             { source: "/it/gift", destination: "/en/gift", permanent: false },
             { source: "/it/gift/:path*", destination: "/en/gift/:path*", permanent: false },
             { source: "/it/unlock/:path*", destination: "/en/unlock/:path*", permanent: false },
+            { source: "/it/terms", destination: "/en/terms", permanent: false },
         ];
     },
 };

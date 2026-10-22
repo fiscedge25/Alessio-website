@@ -20,7 +20,9 @@ export default function BundleBuilder() {
     );
     const [active, setActive] = useState(gifts[0].slug);
     const [previewSrc, setPreviewSrc] = useState(`/api/gift/preview/${gifts[0].slug}`);
-    const [state, setState] = useState<"idle" | "loading" | "missing" | "error">("idle");
+    const [state, setState] = useState<"idle" | "loading" | "missing" | "consent" | "error">("idle");
+    // Express consent to immediate delivery — required for the no-refund policy (EU digital content).
+    const [consent, setConsent] = useState(false);
 
     useEffect(() => {
         const id = setTimeout(() => {
@@ -44,13 +46,17 @@ export default function BundleBuilder() {
             setState("missing");
             return;
         }
+        if (!consent) {
+            setState("consent");
+            return;
+        }
         setState("loading");
         track("gift_checkout", { slug: BUNDLE.slug });
         try {
             const res = await fetch("/api/gift/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ slug: BUNDLE.slug, lang: locale, ...values }),
+                body: JSON.stringify({ slug: BUNDLE.slug, lang: locale, consent, ...values }),
             });
             const data = await res.json();
             if (!res.ok || !data.url) throw new Error(data.error || "error");
@@ -127,6 +133,24 @@ export default function BundleBuilder() {
                     );
                 })}
 
+                <label className="flex items-start gap-3 text-sm leading-relaxed text-[color:var(--ink-2)] cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={consent}
+                        onChange={(e) => setConsent(e.target.checked)}
+                        className="mt-1 h-4 w-4 shrink-0 accent-[color:var(--accent)]"
+                    />
+                    <span>
+                        {t.rich("consent", {
+                            terms: (chunks) => (
+                                <a href="/en/terms#refunds" target="_blank" rel="noopener noreferrer" className="link-blue">
+                                    {chunks}
+                                </a>
+                            ),
+                        })}
+                    </span>
+                </label>
+
                 <div className="pt-2">
                     <button type="submit" className="btn btn-primary w-full" disabled={state === "loading"}>
                         {state === "loading" ? t("buying") : t("bundleBuy", { price: BUNDLE.price })}
@@ -136,6 +160,7 @@ export default function BundleBuilder() {
                         {t("bundleIncludes", { count: gifts.length, full: BUNDLE_FULL_PRICE })}
                     </p>
                     {state === "missing" && <p className="mt-3 text-sm text-center text-red-500">{t("missing")}</p>}
+                    {state === "consent" && <p className="mt-3 text-sm text-center text-red-500">{t("consentMissing")}</p>}
                     {state === "error" && <p className="mt-3 text-sm text-center text-red-500">{t("error")}</p>}
                 </div>
             </form>

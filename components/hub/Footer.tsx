@@ -108,6 +108,12 @@ export default function Footer() {
                             Privacy
                         </Link>
                         <Link
+                            href="/en/terms"
+                            className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                        >
+                            Terms
+                        </Link>
+                        <Link
                             href={`/${locale}/notes`}
                             className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                         >

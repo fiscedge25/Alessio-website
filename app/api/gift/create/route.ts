@@ -20,7 +20,11 @@ export async function POST(request: Request) {
     const values = parseGiftValues(body, gift);
     if (!values) return NextResponse.json({ error: "empty" }, { status: 400 });
 
-    const id = await createPendingGift(gift.slug, values);
+    // Express consent to immediate delivery / loss of the withdrawal right is
+    // what makes "no refunds" hold for EU buyers — require it and keep a record.
+    if (body.consent !== true) return NextResponse.json({ error: "consent" }, { status: 400 });
+
+    const id = await createPendingGift(gift.slug, { ...values, _consentAt: new Date().toISOString() });
     if (!id) return NextResponse.json({ error: "not_configured" }, { status: 503 });
 
     const url = new URL(gift.paymentLink);

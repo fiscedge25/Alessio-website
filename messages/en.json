@@ -488,7 +488,9 @@
             "bundleBuy": "Unlock all 7 · {price}",
             "bundleIncludes": "{count} private links · one payment · instead of {full}",
             "bundlePreviewNote": "Switch tabs to see your words in each one. No watermark once it's yours.",
-            "keepNote": "This page is your receipt: bookmark it or copy your link now. You can come back to this same page anytime to find it again."
+            "keepNote": "This page is your receipt: bookmark it or copy your link now. You can come back to this same page anytime to find it again.",
+            "consent": "I want my dedication delivered immediately and understand that I lose my right of withdrawal. All sales are final, no refunds (<terms>Terms of Sale</terms>).",
+            "consentMissing": "Please confirm the box above to continue."
         }
     }
 }

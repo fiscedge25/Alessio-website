@@ -488,7 +488,9 @@
             "bundleBuy": "Sblocca tutte e 7 · {price}",
             "bundleIncludes": "{count} link privati · un solo pagamento · invece di {full}",
             "bundlePreviewNote": "Cambia scheda per vedere le tue parole in ognuna. Senza watermark quando sono tue.",
-            "keepNote": "Questa pagina è la tua ricevuta: salvala nei preferiti o copia subito il link. Puoi tornare su questa stessa pagina quando vuoi per ritrovarlo."
+            "keepNote": "Questa pagina è la tua ricevuta: salvala nei preferiti o copia subito il link. Puoi tornare su questa stessa pagina quando vuoi per ritrovarlo.",
+            "consent": "Voglio ricevere subito la mia dedica e so che perdo il diritto di recesso. Tutte le vendite sono definitive, nessun rimborso (<terms>Termini di vendita</terms>).",
+            "consentMissing": "Conferma la casella qui sopra per continuare."
         }
     }
 }
