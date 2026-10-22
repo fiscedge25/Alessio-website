@@ -153,7 +153,7 @@ export default function BundleBuilder() {
 
                 <div className="pt-2">
                     <button type="submit" className="btn btn-primary w-full" disabled={state === "loading"}>
-                        {state === "loading" ? t("buying") : t("bundleBuy", { price: BUNDLE.price })}
+                        {state === "loading" ? t("buying") : t("bundleBuy", { price: BUNDLE.price, count: gifts.length })}
                         {state !== "loading" && <ArrowUpRight size={16} />}
                     </button>
                     <p className="mt-3 text-center font-mono-meta text-[11px] uppercase text-[color:var(--muted)]">

@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono&display=swap');
+
+:root { background: #100b16; }
+@property --garden-ambient { syntax: '<color>'; inherits: true; initial-value: #170c19; }
+* { box-sizing: border-box; }
+body { --garden-ambient: #170c19; margin: 0; overflow: hidden; min-height: 100svh; color: #fff6f6; background: radial-gradient(ellipse at 50% 48%, var(--garden-ambient) 0%, #0d0912 46%, #06050a 100%); animation: ambient-awaken 13s ease-out forwards; }
+#garden { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.copy { position: fixed; z-index: 2; top: 50%; left: 50%; width: min(440px, 90vw); transform: translate(-50%, -50%); text-align: center; pointer-events: none; mix-blend-mode: screen; opacity: 0; animation: appear 4.5s 12.2s cubic-bezier(.2,.8,.2,1) forwards; }
+.eyebrow { margin: 0 0 13px; font: 10px/1.2 "DM Mono", monospace; color: #f6c2cf; letter-spacing: .25em; text-transform: uppercase; }
+h1 { margin: 0; font: 400 clamp(33px, 5.2vw, 66px)/.83 "Cormorant Garamond", Georgia, serif; letter-spacing: -.035em; text-shadow: 0 0 28px #ffacc370; }
+.rule { margin: 23px auto 0; width: 138px; display: flex; align-items: center; gap: 9px; color: #f4b8c7; font-size: 10px; }
+.rule i { height: 1px; flex: 1; background: linear-gradient(90deg, transparent, #e8a9b7); }
+.rule i:last-child { transform: scaleX(-1); }
+.vignette { position: fixed; z-index: 3; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 40%, #08060e66 78%, #06050bba 100%); }
+.grain { position: fixed; z-index: 4; inset: -50%; pointer-events: none; opacity: .045; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); animation: noise .17s steps(2) infinite; }
+.hint { position: fixed; z-index: 3; bottom: 26px; left: 50%; transform: translateX(-50%); color: #d7a7b5a0; text-transform: uppercase; font: 8px "DM Mono", monospace; letter-spacing: .22em; }
+@keyframes appear { to { opacity: .9; } }
+@keyframes ambient-awaken { 0%, 18% { --garden-ambient: #120a15; } 100% { --garden-ambient: #3a1630; } }
+@keyframes noise { 0% { transform: translate(0,0); } 25% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, 2%); } 100% { transform: translate(3%, 1%); } }
+@media (max-width: 600px) { h1 { font-size: 42px; } .hint { bottom: 18px; } }

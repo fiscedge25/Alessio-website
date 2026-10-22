@@ -75,7 +75,7 @@ export default async function UnlockSuccess({ params, searchParams }: { params: 
                             <PurchaseTracker
                                 {...resolved.purchase}
                                 itemId={gift.animation}
-                                itemName={product ? product.title.en : "All 7 dedications"}
+                                itemName={product ? product.title.en : "All dedications bundle"}
                             />
                             <p className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-4">
                                 {t("successEyebrow")}

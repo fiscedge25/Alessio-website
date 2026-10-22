@@ -16,6 +16,7 @@ export async function POST(request: Request) {
 
     const gift = typeof body.slug === "string" ? getPurchasable(body.slug) : undefined;
     if (!gift) return NextResponse.json({ error: "unknown_gift" }, { status: 404 });
+    if (!gift.paymentLink) return NextResponse.json({ error: "not_available" }, { status: 503 });
 
     const values = parseGiftValues(body, gift);
     if (!values) return NextResponse.json({ error: "empty" }, { status: 400 });

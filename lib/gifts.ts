@@ -233,6 +233,25 @@ export const gifts: GiftEntry[] = [
         hide: [".inputInnerWrapper", 'label[for="recipientInput"]'],
         bundle: { to: "to" },
     },
+    {
+        slug: "bouquet",
+        keyword: "Flowers",
+        repo: "https://github.com/buildwithsabba/flowers1",
+        title: L("Flowers for you", "Fiori per te"),
+        tagline: L(
+            "A cinematic heart of flowers grows out of the dark, then dedicates itself by name.",
+            "Un cuore di fiori cinematografico cresce dal buio, poi si dedica per nome.",
+        ),
+        price: "$1.99",
+        // TODO: live Payment Link (unlock_slug=bouquet) — still missing.
+        paymentLink: "",
+        fields: [TO(24), FROM(24)],
+        // Name personalisation is added in our copy (content/gifts/bouquet.html);
+        // the original repo has no editor to hide.
+        hide: [],
+        assetsBase: "/gifts/bouquet/",
+        bundle: { to: "to", from: "from" },
+    },
 ];
 
 export function getGift(slug: string): GiftEntry | undefined {
