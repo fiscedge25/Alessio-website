@@ -23,6 +23,12 @@ export const site = {
         url: "https://www.linkedin.com/in/alessio-sabatino29",
     },
 
+    // Google Tag Manager. Loads with Consent Mode v2 defaulting to "denied";
+    // the cookie banner grants it on Accept.
+    gtm: { id: "GTM-5CNL8M32" },
+    /** Cookie the banner sets ("true" / "false"); the layout reads it on load. */
+    consentCookie: "alessiosabatino-gdpr-consent",
+
     fiscedge: {
         url: "https://www.fiscedge.com",
         academyUrl: "https://academy.fiscedge.com",

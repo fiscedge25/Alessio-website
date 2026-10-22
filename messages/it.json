@@ -162,8 +162,9 @@
         "whatsapp_btn": "Scrivimi su WhatsApp",
         "email_label": "Oppure inviami un'email",
         "gdpr_title": "Informativa sulla Privacy & Cookie",
-        "gdpr_text": "Utilizziamo cookie tecnici per garantire il corretto funzionamento del sito. Non utilizziamo cookie di profilazione o tracciamento di terze parti senza il tuo consenso.",
-        "gdpr_accept": "Accetta"
+        "gdpr_text": "Usiamo cookie tecnici per far funzionare il sito e, solo con il tuo consenso, cookie analitici (Google Tag Manager) per capire come viene usato.",
+        "gdpr_accept": "Accetta",
+        "gdpr_decline": "Rifiuta"
     },
     "footer": {
         "rights": "Tutti i diritti riservati.",

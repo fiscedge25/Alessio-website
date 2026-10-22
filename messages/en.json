@@ -162,8 +162,9 @@
         "whatsapp_btn": "Message me on WhatsApp",
         "email_label": "Or send me an email",
         "gdpr_title": "Privacy Policy & Cookies",
-        "gdpr_text": "We use technical cookies to ensure the website functions correctly. We do not use third-party tracking or profiling cookies without your consent.",
-        "gdpr_accept": "Accept"
+        "gdpr_text": "We use technical cookies to make the site work and, only with your consent, analytics cookies (Google Tag Manager) to understand how it's used.",
+        "gdpr_accept": "Accept",
+        "gdpr_decline": "Decline"
     },
     "footer": {
         "rights": "All rights reserved.",
