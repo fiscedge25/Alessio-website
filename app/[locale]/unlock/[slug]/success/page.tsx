@@ -8,6 +8,7 @@ import { fulfillGiftSession, type GiftRow } from "@/lib/gift-store";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import GiftShare from "@/components/hub/GiftShare";
+import PurchaseTracker from "@/components/hub/PurchaseTracker";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -20,19 +21,38 @@ type Search = Promise<{ session_id?: string }>;
  * reached by guessing — and it unlocks the gift itself in case the webhook
  * hasn't arrived yet.
  */
-async function resolveGift(slug: string, sessionId: string | undefined): Promise<GiftRow | null> {
+async function resolveGift(
+    slug: string,
+    sessionId: string | undefined,
+): Promise<{ gift: GiftRow; purchase: Purchase } | null> {
     if (!sessionId || !/^cs_[A-Za-z0-9_]+$/.test(sessionId)) return null;
     const stripe = getStripe();
     if (!stripe) return null;
     try {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
         if (session.metadata?.unlock_slug !== slug) return null;
-        return await fulfillGiftSession(session);
+        const gift = await fulfillGiftSession(session);
+        if (!gift) return null;
+        const currency = session.currency ?? "usd";
+        // Adaptive Pricing may charge in the buyer's currency; a few have no minor unit.
+        const minor = ZERO_DECIMAL.has(currency) ? 1 : 100;
+        return {
+            gift,
+            purchase: { transactionId: session.id, value: (session.amount_subtotal ?? 0) / minor, currency },
+        };
     } catch (err) {
         console.error("[unlock] session lookup failed:", (err as Error).message);
         return null;
     }
 }
+
+interface Purchase {
+    transactionId: string;
+    value: number;
+    currency: string;
+}
+
+const ZERO_DECIMAL = new Set(["bif", "clp", "djf", "gnf", "jpy", "kmf", "krw", "mga", "pyg", "rwf", "ugx", "vnd", "vuv", "xaf", "xof", "xpf"]);
 
 export default async function UnlockSuccess({ params, searchParams }: { params: Params; searchParams: Search }) {
     const { locale: raw, slug } = await params;
@@ -41,15 +61,22 @@ export default async function UnlockSuccess({ params, searchParams }: { params: 
     setRequestLocale(raw);
     const t = await getTranslations({ locale: raw, namespace: "hub.gift" });
 
-    const gift = await resolveGift(slug, session_id);
+    const resolved = await resolveGift(slug, session_id);
+    const gift = resolved?.gift;
+    const product = gift?.animation === BUNDLE.slug ? null : gifts.find((g) => g.slug === gift?.animation);
 
     return (
         <>
             <Navbar />
             <main className="px-5 md:px-8 pt-28 md:pt-36 pb-20">
                 <div className="max-w-2xl mx-auto">
-                    {gift ? (
+                    {gift && resolved ? (
                         <>
+                            <PurchaseTracker
+                                {...resolved.purchase}
+                                itemId={gift.animation}
+                                itemName={product ? product.title.en : "All 7 dedications"}
+                            />
                             <p className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-4">
                                 {t("successEyebrow")}
                             </p>
