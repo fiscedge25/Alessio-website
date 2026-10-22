@@ -477,7 +477,16 @@
             "pendingIntro": "Non riesco ancora a confermare il pagamento. Se hai appena pagato, ricarica tra qualche secondo. Se continua, scrivimi e lo sistemo.",
             "refresh": "Ricarica",
             "contact": "Scrivimi",
-            "missing": "Compila i campi obbligatori."
+            "missing": "Compila i campi obbligatori.",
+            "bundleEyebrow": "Il più conveniente",
+            "bundleTitle": "Tutte e 7 le dediche",
+            "bundleBody": "Scrivi i vostri nomi una volta sola. Ricevi tutte le animazioni (rose, giardino, bloom, cuore, spazio, love e luna), ognuna con il suo link privato: una al giorno o tutte insieme.",
+            "bundleInstead": "invece di",
+            "bundleCta": "Sblocca tutto",
+            "singles": "Oppure scegline una",
+            "bundleBuy": "Sblocca tutte e 7 · {price}",
+            "bundleIncludes": "{count} link privati · un solo pagamento · invece di {full}",
+            "bundlePreviewNote": "Cambia scheda per vedere le tue parole in ognuna. Senza watermark quando sono tue."
         }
     }
 }

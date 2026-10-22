@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { getGift } from "@/lib/gifts";
-import { createPendingGift, parseGiftValues } from "@/lib/gift-store";
+import { createPendingGift, getPurchasable, parseGiftValues } from "@/lib/gift-store";
 
 /**
  * Save the dedication as 'pending' and hand back the Stripe Payment Link for
@@ -15,7 +14,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "invalid_body" }, { status: 400 });
     }
 
-    const gift = typeof body.slug === "string" ? getGift(body.slug) : undefined;
+    const gift = typeof body.slug === "string" ? getPurchasable(body.slug) : undefined;
     if (!gift) return NextResponse.json({ error: "unknown_gift" }, { status: 404 });
 
     const values = parseGiftValues(body, gift);

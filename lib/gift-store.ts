@@ -4,7 +4,7 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import type Stripe from "stripe";
 import { getSupabaseAdmin } from "./supabase";
-import { getGift, type GiftEntry } from "./gifts";
+import { BUNDLE, bundleValuesFor, getGift, type GiftEntry, type Purchasable } from "./gifts";
 
 /**
  * What the buyer typed, keyed by the animation's own query-string params
@@ -15,6 +15,7 @@ export type GiftValues = Record<string, string>;
 
 export interface GiftRow {
     id: string;
+    /** An animation slug, or BUNDLE.slug for the all-in-one purchase. */
     animation: string;
     fields: GiftValues;
     status: "pending" | "paid";
@@ -37,7 +38,7 @@ export function newGiftId(length = 10): string {
  */
 export function parseGiftValues(
     body: Record<string, unknown>,
-    gift: GiftEntry,
+    gift: Purchasable,
     { lenient = false } = {},
 ): GiftValues | null {
     const out: GiftValues = {};
@@ -60,6 +61,21 @@ export function parseGiftValues(
         out[gift.styleParam] = gift.styles.some((x) => x.id === s) ? (s as string) : gift.styles[0].id;
     }
     return out;
+}
+
+/** The form + Payment Link behind a slug: one animation, or the bundle. */
+export function getPurchasable(slug: string): Purchasable | undefined {
+    return slug === BUNDLE.slug ? BUNDLE : getGift(slug);
+}
+
+/**
+ * What one animation should show for a paid row. For a bundle row, the shared
+ * fields are translated into that animation's params, then clamped to its limits.
+ */
+export function valuesForAnimation(row: GiftRow, gift: GiftEntry): GiftValues | null {
+    if (row.animation === gift.slug) return row.fields;
+    if (row.animation !== BUNDLE.slug) return null;
+    return parseGiftValues(bundleValuesFor(gift, row.fields), gift, { lenient: true });
 }
 
 export async function createPendingGift(animation: string, fields: GiftValues): Promise<string | null> {

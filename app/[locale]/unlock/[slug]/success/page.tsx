@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { site } from "@/lib/site";
+import { BUNDLE, gifts } from "@/lib/gifts";
 import { getStripe } from "@/lib/stripe";
 import { fulfillGiftSession, type GiftRow } from "@/lib/gift-store";
 import Navbar from "@/components/hub/Navbar";
@@ -61,7 +62,18 @@ export default async function UnlockSuccess({ params, searchParams }: { params: 
                             <p className="mt-4 mb-10 text-lg leading-relaxed text-[color:var(--muted)]">
                                 {t("successIntro")}
                             </p>
-                            <GiftShare url={`${site.url}/g/${gift.id}`} />
+                            {gift.animation === BUNDLE.slug ? (
+                                <ul className="space-y-10">
+                                    {gifts.map((g) => (
+                                        <li key={g.slug}>
+                                            <p className="font-display text-xl text-[color:var(--ink)] mb-3">{g.title[locale]}</p>
+                                            <GiftShare url={`${site.url}/g/${gift.id}/${g.slug}`} />
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <GiftShare url={`${site.url}/g/${gift.id}`} />
+                            )}
                         </>
                     ) : (
                         <>

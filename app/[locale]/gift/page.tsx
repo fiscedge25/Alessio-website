@@ -8,6 +8,7 @@ import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import Reveal from "@/components/hub/Reveal";
 import { SectionHeading } from "@/components/hub/primitives";
+import BundleCard from "@/components/hub/BundleCard";
 
 export async function generateStaticParams() {
     return [{ locale: "en" }, { locale: "it" }];
@@ -54,6 +55,20 @@ export default async function GiftIndex({ params }: { params: Promise<{ locale: 
                         <SectionHeading index="//" eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
                     </Reveal>
 
+                    <Reveal className="mb-14">
+                        <BundleCard
+                            locale={locale}
+                            labels={{
+                                eyebrow: t("bundleEyebrow"),
+                                title: t("bundleTitle"),
+                                body: t("bundleBody"),
+                                instead: t("bundleInstead"),
+                                cta: t("bundleCta"),
+                            }}
+                        />
+                    </Reveal>
+
+                    <p className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-4">{t("singles")}</p>
                     <ul className="border-t rule">
                         {gifts.map((g, i) => (
                             <Reveal as="li" key={g.slug} delay={i * 80} className="border-b rule">

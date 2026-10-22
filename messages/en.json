@@ -477,7 +477,16 @@
             "pendingIntro": "We couldn't confirm this payment yet. If you just paid, refresh in a few seconds. If it keeps happening, write to me and I'll sort it out.",
             "refresh": "Refresh",
             "contact": "Contact me",
-            "missing": "Fill in the required fields."
+            "missing": "Fill in the required fields.",
+            "bundleEyebrow": "Best value",
+            "bundleTitle": "All 7 dedications",
+            "bundleBody": "Write your names once. Get every animation — roses, garden, bloom, heart, space, love and moon — each on its own private link, to send one a day or all at once.",
+            "bundleInstead": "instead of",
+            "bundleCta": "Unlock all",
+            "singles": "Or pick one",
+            "bundleBuy": "Unlock all 7 · {price}",
+            "bundleIncludes": "{count} private links · one payment · instead of {full}",
+            "bundlePreviewNote": "Switch tabs to see your words in each one. No watermark once it's yours."
         }
     }
 }

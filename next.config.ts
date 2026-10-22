@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     // serverless bundles for these routes ship the HTML files.
     outputFileTracingIncludes: {
         "/g/[id]": ["./content/gifts/**"],
+        "/g/[id]/[slug]": ["./content/gifts/**"],
         "/api/gift/preview/[slug]": ["./content/gifts/**"],
     },
 };
