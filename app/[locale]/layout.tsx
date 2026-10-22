@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -14,9 +15,12 @@ const inter = Inter({
     display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-    subsets: ["latin"],
-    weight: ["400", "500"],
+// Self-hosted (variable, latin): next/font/google's JetBrains Mono CSS now
+// points at /l/font?kit=… URLs that Turbopack can't resolve, which broke the
+// Vercel build. Source: @fontsource-variable/jetbrains-mono 5.3.0 (OFL 1.1).
+const jetbrainsMono = localFont({
+    src: "../fonts/JetBrainsMono-latin-var.woff2",
+    weight: "100 800",
     variable: "--font-mono",
     display: "swap",
 });
