@@ -48,47 +48,47 @@ export default function Navbar() {
             >
                 <Link
                     href={`/${locale}`}
-                    className="font-display text-[15px] tracking-[0.18em] uppercase text-[color:var(--ink)]"
+                    className="shrink-0 mr-6 font-display text-[15px] tracking-[0.18em] uppercase text-[color:var(--ink)]"
                     aria-label="BuiltWithSabba — home"
                 >
                     Sabba
                 </Link>
 
                 {/* Desktop */}
-                <div className="hidden md:flex items-center gap-7">
+                <div className="hidden md:flex items-center gap-5 lg:gap-7">
                     {SECTION_LINKS.map((l) => (
                         <Link
                             key={l.key}
                             href={`/${locale}${l.href}`}
-                            className="u-link font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                            className="u-link whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                         >
                             {t(l.key)}
                         </Link>
                     ))}
                     <Link
                         href={`/${locale}/prompts`}
-                        className="u-link font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                        className="u-link whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                     >
                         {t("prompts")}
                     </Link>
                     <Link
                         href={`/${locale}/gift`}
-                        className="u-link font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                        className="u-link whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                     >
                         {t("gifts")}
                     </Link>
                     <Link
-                        href={`/${locale}/build-with-me`}
-                        className="font-mono-meta text-[12px] uppercase border border-[color:var(--line)] rounded-full px-4 py-2 text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] hover:border-[color:var(--ink)] transition-colors"
+                        href={`/${locale}/start?ref=nav`}
+                        className="whitespace-nowrap font-mono-meta text-[12px] uppercase border border-[color:var(--line)] rounded-full px-4 py-2 text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] hover:border-[color:var(--ink)] transition-colors"
                     >
-                        {t("buildWithMe")}
+                        {t("start")}
                     </Link>
                     <a
                         href={site.github.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => track("github_click", { from: "nav" })}
-                        className="u-link inline-flex items-center gap-1 font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                        className="u-link hidden xl:inline-flex items-center gap-1 whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                     >
                         GitHub <ArrowUpRight size={13} className="arrow-shift" />
                     </a>
@@ -97,7 +97,7 @@ export default function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => track("linkedin_click", { from: "nav" })}
-                        className="u-link inline-flex items-center gap-1 font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
+                        className="u-link hidden xl:inline-flex items-center gap-1 whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
                     >
                         LinkedIn <ArrowUpRight size={13} className="arrow-shift" />
                     </a>
@@ -153,11 +153,11 @@ export default function Navbar() {
                         {t("gifts")}
                     </Link>
                     <Link
-                        href={`/${locale}/build-with-me`}
+                        href={`/${locale}/start?ref=nav`}
                         onClick={() => setOpen(false)}
                         className="font-mono-meta text-[13px] uppercase text-[color:var(--ink-2)]"
                     >
-                        {t("buildWithMe")}
+                        {t("start")}
                     </Link>
                     <div className="flex gap-6 pt-2 border-t rule">
                         <a

@@ -32,6 +32,9 @@ export const site = {
     /** Cookie the banner sets ("true" / "false"); the layout reads it on load. */
     consentCookie: "alessiosabatino-gdpr-consent",
 
+    // Calendly / Cal.com link sent to accepted leads. Optional.
+    bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL || "",
+
     fiscedge: {
         url: "https://www.fiscedge.com",
         academyUrl: "https://academy.fiscedge.com",

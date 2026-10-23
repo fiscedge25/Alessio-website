@@ -107,7 +107,7 @@ export default function IdeaBox({ locale }: { locale: Locale }) {
                 <Reveal>
                     <div>
                         <p className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-4">
-                            05 — {t("eyebrow")}
+                            06 — {t("eyebrow")}
                         </p>
                         <h2
                             className="font-display text-[color:var(--ink)]"

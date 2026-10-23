@@ -200,19 +200,22 @@
             "menu": "Apri il menu",
             "close": "Chiudi il menu",
             "prompts": "Prompt",
-            "gifts": "Regali"
+            "gifts": "Regali",
+            "start": "Inizia un progetto"
         },
         "hero": {
             "aria": "Introduzione",
-            "status": "A cosa sto lavorando ora",
-            "line1": "Costruisco cose",
-            "line2": "che vorrei esistessero.",
-            "sub1": "Sono Alessio Sabatino, founder che costruisce prodotti AI dall'idea all'azienda.",
-            "sub2": "Qui condivido il lavoro mentre accade: cosa pubblico, cosa testo, cosa imparo.",
-            "ctaBuilding": "Vedi cosa sto costruendo",
+            "status": "Disponibile per nuovi progetti",
+            "line1": "Il tuo software,",
+            "line2": "pronto in settimane.",
+            "sub1": "Sono Alessio, sviluppatore indipendente: creo MVP, web app e strumenti AI per founder e piccole imprese, con l'AI che fa il lavoro di un team intero.",
+            "sub2": "Il risultato di una software house a circa un decimo del costo. Parli direttamente con chi scrive il codice.",
+            "ctaBuilding": "Guarda cosa ho costruito",
             "linkedin": "Segui il percorso su LinkedIn",
             "portraitCaption": "Io, in 0 e 1. Passaci sopra.",
-            "portraitCta": "Prendi il prompt"
+            "portraitCta": "Prendi il prompt",
+            "ctaStart": "Inizia il tuo progetto",
+            "proof": "Prima call gratuita · Preventivo fisso · Il codice è tuo"
         },
         "creed": {
             "eyebrow": "Principio guida",
@@ -491,6 +494,136 @@
             "keepNote": "Questa pagina è la tua ricevuta: salvala nei preferiti o copia subito il link. Puoi tornare su questa stessa pagina quando vuoi per ritrovarlo.",
             "consent": "Voglio ricevere subito la mia dedica e so che perdo il diritto di recesso. Tutte le vendite sono definitive, nessun rimborso (<terms>Termini di vendita</terms>).",
             "consentMissing": "Conferma la casella qui sopra per continuare."
+        },
+        "services": {
+            "eyebrow": "Lavora con me",
+            "title": "Software per piccole imprese, senza il conto della software house.",
+            "intro": "Hai un'idea, un processo che ti ruba la settimana o uno strumento che vorresti esistesse. Lo trasformo in software funzionante: progettato, sviluppato e lanciato da una persona sola, con l'AI come team.",
+            "mvp": {
+                "title": "MVP e beta",
+                "body": "Testa la tua idea con utenti veri prima di investire tanto. Una prima versione che funziona, non delle slide.",
+                "eg": "es. app prenotazioni, marketplace, SaaS"
+            },
+            "web": {
+                "title": "Siti e landing page",
+                "body": "Pagine veloci e moderne che spiegano cosa fai e trasformano i visitatori in richieste.",
+                "eg": "es. pagina di lancio, portfolio, shop"
+            },
+            "tool": {
+                "title": "Gestionali su misura",
+                "body": "Software interno al posto di fogli Excel e cinque abbonamenti che non si parlano.",
+                "eg": "es. CRM, ordini, agenda"
+            },
+            "ai": {
+                "title": "Automazioni e agenti AI",
+                "body": "Lascia all'AI il lavoro ripetitivo: email, documenti, risposte ai clienti, inserimento dati.",
+                "eg": "es. follow-up lead, lettura documenti"
+            },
+            "vs": {
+                "agency": "Software house tipica",
+                "me": "Io + AI",
+                "team": "Chi lo sviluppa",
+                "teamAgency": "PM, designer, 3–5 sviluppatori, QA",
+                "teamMe": "Un solo builder che usa l'AI per design, codice e test",
+                "time": "Prima versione funzionante",
+                "timeAgency": "3–6 mesi",
+                "timeMe": "2–6 settimane",
+                "cost": "Costo",
+                "costAgency": "Preventivi a cinque cifre, spesso oltre 30.000 €",
+                "costMe": "Una frazione: spesso da 1/8 a 1/10",
+                "talk": "Con chi parli",
+                "talkAgency": "Un account manager",
+                "talkMe": "Con chi scrive il codice",
+                "note": "Range indicativi. Ogni progetto riceve un preventivo fisso dopo la prima call."
+            },
+            "cta": "Inizia il tuo progetto",
+            "ctaSub": "2 minuti, pochi tap. La prima call è gratuita."
+        },
+        "start": {
+            "status": "Accetto nuovi progetti",
+            "title": "Costruiamo il tuo progetto",
+            "intro": "Poche domande veloci, basta un tap. Leggo personalmente ogni richiesta e ti rispondo con i prossimi passi.",
+            "perk1": "Ci vogliono 2 minuti",
+            "perk2": "Prima call gratuita",
+            "perk3": "Nessun impegno",
+            "next": "Continua",
+            "back": "Indietro",
+            "error": "Qualcosa è andato storto. Riprova o scrivimi su LinkedIn.",
+            "need": {
+                "eyebrow": "Passo 1 · Il progetto",
+                "q": "Di cosa hai bisogno?",
+                "mvp": "Un MVP o una beta",
+                "mvpSub": "Testare la mia idea con utenti veri",
+                "app": "Una web app o app mobile",
+                "appSub": "Un prodotto in cui le persone accedono",
+                "website": "Un sito o una landing page",
+                "websiteSub": "Presentare la mia attività, ricevere richieste",
+                "tool": "Un gestionale interno",
+                "toolSub": "Software su misura per il mio team",
+                "ai": "Automazione o agente AI",
+                "aiSub": "Togliermi il lavoro ripetitivo",
+                "unsure": "Non lo so ancora",
+                "unsureSub": "Aiutami a capire cosa ha senso"
+            },
+            "who": {
+                "eyebrow": "Passo 2 · Tu",
+                "q": "Cosa ti descrive meglio?",
+                "founder": "Founder con un'idea",
+                "smallbiz": "Piccola impresa o negozio",
+                "freelancer": "Professionista o freelance",
+                "company": "Azienda o team"
+            },
+            "stage": {
+                "eyebrow": "Passo 3 · Punto di partenza",
+                "q": "Da dove partiamo?",
+                "idea": "Solo un'idea",
+                "ideaSub": "Ce l'ho in testa (o nelle note del telefono)",
+                "notes": "Appunti, bozze o design",
+                "notesSub": "Ci ho già ragionato",
+                "existing": "Esiste già qualcosa",
+                "existingSub": "Va sistemato, rifatto o ampliato"
+            },
+            "timeline": {
+                "eyebrow": "Passo 4 · Tempi",
+                "q": "Quando vorresti che fosse online?",
+                "asap": "Il prima possibile",
+                "month": "Entro un mese",
+                "quarter": "Tra 1 e 3 mesi",
+                "flexible": "Sono flessibile"
+            },
+            "budget": {
+                "eyebrow": "Passo 5 · Budget",
+                "q": "Che budget hai in mente?",
+                "lt2": "Meno di 2.000 €",
+                "2to5": "2.000 – 5.000 €",
+                "5to10": "5.000 – 10.000 €",
+                "10plus": "Oltre 10.000 €",
+                "unsure": "Aiutami a stimarlo"
+            },
+            "describe": {
+                "eyebrow": "Passo 6 · Dettagli",
+                "q": "Raccontamelo in poche righe.",
+                "ph": "Qual è il problema, per chi è, cosa dovrebbe fare? I link sono benvenuti.",
+                "hint": "Non serve essere tecnici: scrivilo come lo spiegheresti a un amico."
+            },
+            "contact": {
+                "eyebrow": "Ultimo passo",
+                "q": "Dove posso contattarti?",
+                "name": "Nome",
+                "email": "Email",
+                "phone": "Telefono / WhatsApp (facoltativo)",
+                "company": "Azienda o progetto (facoltativo)",
+                "pref": "Come preferisci essere contattato",
+                "whatsapp": "WhatsApp",
+                "call": "Telefonata",
+                "consent": "Accetto di essere contattato per questa richiesta e accetto la <privacy>privacy policy</privacy>.",
+                "send": "Invia la richiesta"
+            },
+            "doneTitle": "Richiesta ricevuta.",
+            "doneBody": "Grazie! La leggo personalmente e di solito rispondo entro 1–2 giorni lavorativi.",
+            "next1": "Leggo la tua richiesta e verifico che sia adatta.",
+            "next2": "Facciamo una call gratuita di 20 minuti per definire il progetto.",
+            "next3": "Ricevi un piano chiaro, le tempistiche e un preventivo fisso."
         }
     }
 }

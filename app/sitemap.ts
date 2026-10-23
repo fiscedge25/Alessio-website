@@ -5,7 +5,7 @@ import { prompts } from "@/lib/prompts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const locales = ["en", "it"];
-    const staticPaths = ["", "/notes", "/build-with-me", "/prompts"];
+    const staticPaths = ["", "/notes", "/build-with-me", "/start", "/prompts"];
     const entries: MetadataRoute.Sitemap = [];
 
     for (const locale of locales) {

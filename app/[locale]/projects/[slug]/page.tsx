@@ -172,7 +172,7 @@ export default async function ProjectPage({
                                 {t("ctaIntro")}
                             </p>
                             <Link
-                                href={`/${locale}/build-with-me`}
+                                href={`/${locale}/start?ref=project`}
                                 className="u-link mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--ink)]"
                             >
                                 {t("ctaLink")}

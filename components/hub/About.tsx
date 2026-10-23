@@ -103,7 +103,7 @@ export function BuildTogether({
                     <div className="border rule rounded-sm px-6 py-10 md:px-12 md:py-14 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-end bg-[color:var(--paper-elevated)]">
                         <div>
                             <p className="font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-4">
-                                09 — Collaboration
+                                11 — Collaboration
                             </p>
                             <h2
                                 className="font-display text-[color:var(--ink)] uppercase"
@@ -123,7 +123,7 @@ export function BuildTogether({
                         </div>
                         <div className="flex md:justify-end">
                             <Link
-                                href={`/${locale}/build-with-me`}
+                                href={`/${locale}/start?ref=together`}
                                 className="inline-flex items-center gap-2 rounded-full bg-[color:var(--ink)] text-[color:var(--paper)] px-7 py-3.5 text-sm font-medium hover:opacity-85 transition-opacity"
                             >
                                 {cta}

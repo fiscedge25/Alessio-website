@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { site } from "@/lib/site";
 import { track } from "@/lib/analytics";
 import BinaryPortrait from "./BinaryPortrait";
@@ -44,20 +44,17 @@ export default function Hero() {
                     </p>
 
                     <div className="mt-10 md:mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                        <Link href={`/${locale}#building`} className="btn btn-primary">
+                        <Link href={`/${locale}/start?ref=hero`} className="btn btn-primary">
+                            {t("ctaStart")}
+                            <ArrowRight size={16} className="arrow-shift" />
+                        </Link>
+                        <Link href={`/${locale}#building`} className="btn btn-secondary">
                             {t("ctaBuilding")}
                         </Link>
-                        <a
-                            href={site.github.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => track("github_click", { from: "hero" })}
-                            className="btn btn-secondary"
-                        >
-                            GitHub
-                            <ArrowUpRight size={16} className="arrow-shift" />
-                        </a>
                     </div>
+                    <p className="mt-5 font-mono-meta text-[11px] md:text-xs uppercase text-[color:var(--muted)]">
+                        {t("proof")}
+                    </p>
 
                     <a
                         href={site.linkedin.url}

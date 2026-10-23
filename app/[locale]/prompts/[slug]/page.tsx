@@ -298,7 +298,7 @@ export default async function PromptPage({ params }: { params: Params }) {
                         <div className="md:text-right">
                             <p className="font-display text-xl text-[color:var(--ink)]">{t("ctaTitle")}</p>
                             <Link
-                                href={`/${locale}/build-with-me`}
+                                href={`/${locale}/start?ref=prompt`}
                                 className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[color:var(--line)] px-5 py-2.5 font-mono-meta text-[12px] uppercase text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] transition-colors"
                             >
                                 {t("cta")} <ArrowUpRight size={13} />

@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import Reveal from "@/components/hub/Reveal";
-import ProjectForm from "@/components/hub/ProjectForm";
+import StartWizard from "@/components/hub/StartWizard";
 
 export async function generateStaticParams() {
     return [{ locale: "en" }, { locale: "it" }];
@@ -138,7 +138,7 @@ export default async function BuildWithMePage({
                             {t("formIntro")}
                         </p>
                         <div className="mt-8">
-                            <ProjectForm />
+                            <StartWizard />
                         </div>
                         <a
                             href={site.linkedin.url}

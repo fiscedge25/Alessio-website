@@ -49,7 +49,7 @@ export default function OpenTo({
                     </ul>
                     <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
                         <Link
-                            href={`/${locale}/build-with-me`}
+                            href={`/${locale}/start?ref=open`}
                             className="inline-flex items-center gap-2 rounded-full bg-[color:var(--ink)] text-[color:var(--paper)] px-7 py-3.5 text-sm font-medium hover:opacity-85 transition-opacity"
                         >
                             {cta}

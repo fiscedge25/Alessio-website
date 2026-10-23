@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/hub/Navbar";
 import Hero from "@/components/hub/Hero";
+import Services from "@/components/hub/Services";
 import NowBuilding from "@/components/hub/NowBuilding";
 import SelectedProjects from "@/components/hub/SelectedProjects";
 import Lab from "@/components/hub/Lab";
@@ -52,9 +53,10 @@ function Sections({ locale }: { locale: Locale }) {
             <Navbar />
             <main>
                 <Hero />
+                <Services locale={locale} index="01" />
                 <NowBuilding
                     locale={locale}
-                    index="01"
+                    index="02"
                     eyebrow={t("building.eyebrow")}
                     title={t("building.title")}
                     intro={t("building.intro")}
@@ -64,7 +66,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <SelectedProjects
                     locale={locale}
-                    index="02"
+                    index="03"
                     eyebrow={t("projects.eyebrow")}
                     title={t("projects.title")}
                     intro={t("projects.intro")}
@@ -72,7 +74,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <Lab
                     locale={locale}
-                    index="03"
+                    index="04"
                     eyebrow={t("lab.eyebrow")}
                     title={t("lab.title")}
                     intro={t("lab.intro")}
@@ -81,7 +83,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <BuildLog
                     locale={locale}
-                    index="04"
+                    index="05"
                     eyebrow={t("notes.eyebrow")}
                     title={t("notes.title")}
                     intro={t("notes.intro")}
@@ -90,7 +92,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <IdeaBox locale={locale} />
                 <GitHubSection
-                    index="06"
+                    index="07"
                     eyebrow={t("github.eyebrow")}
                     title={t("github.title")}
                     intro={t("github.intro")}
@@ -98,7 +100,7 @@ function Sections({ locale }: { locale: Locale }) {
                     updated={t("github.updated")}
                 />
                 <Ecosystem
-                    index="07"
+                    index="08"
                     eyebrow={t("ecosystem.eyebrow")}
                     title={t("ecosystem.title")}
                     intro={t("ecosystem.intro")}
@@ -107,7 +109,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <Interests
                     locale={locale}
-                    index="08"
+                    index="09"
                     eyebrow={t("interests.eyebrow")}
                     title={t("interests.title")}
                 />
@@ -121,7 +123,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <About
                     locale={locale}
-                    index="09"
+                    index="10"
                     eyebrow={t("about.eyebrow")}
                     title={t("about.title")}
                     paragraphs={aboutParas}
@@ -137,7 +139,7 @@ function Sections({ locale }: { locale: Locale }) {
                 />
                 <OpenTo
                     locale={locale}
-                    index="10"
+                    index="11"
                     eyebrow={t("open.eyebrow")}
                     title={t("open.title")}
                     intro={t("open.intro")}

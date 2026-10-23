@@ -200,19 +200,22 @@
             "menu": "Open menu",
             "close": "Close menu",
             "prompts": "Prompts",
-            "gifts": "Gifts"
+            "gifts": "Gifts",
+            "start": "Start a project"
         },
         "hero": {
             "aria": "Introduction",
-            "status": "Currently building",
-            "line1": "Building things",
-            "line2": "I wish existed.",
-            "sub1": "I'm Alessio Sabatino, a founder building AI products from idea to company.",
-            "sub2": "Here I share the work as it happens: what I ship, what I test, what I learn.",
-            "ctaBuilding": "See what I'm building",
+            "status": "Available for new projects",
+            "line1": "Your software,",
+            "line2": "built in weeks.",
+            "sub1": "I'm Alessio, a solo developer building MVPs, web apps and AI tools for founders and small businesses — with AI doing the work of a whole team.",
+            "sub2": "The result of a software house at around a tenth of the cost. You talk directly to the person writing the code.",
+            "ctaBuilding": "See what I've built",
             "linkedin": "Follow the journey on LinkedIn",
             "portraitCaption": "Me, in 0s and 1s. Hover it.",
-            "portraitCta": "Get the prompt"
+            "portraitCta": "Get the prompt",
+            "ctaStart": "Start your project",
+            "proof": "Free first call · Fixed quote · You own the code"
         },
         "creed": {
             "eyebrow": "Operating principle",
@@ -491,6 +494,136 @@
             "keepNote": "This page is your receipt: bookmark it or copy your link now. You can come back to this same page anytime to find it again.",
             "consent": "I want my dedication delivered immediately and understand that I lose my right of withdrawal. All sales are final, no refunds (<terms>Terms of Sale</terms>).",
             "consentMissing": "Please confirm the box above to continue."
+        },
+        "services": {
+            "eyebrow": "Work with me",
+            "title": "Software for small businesses, without the software-house bill.",
+            "intro": "You have an idea, a process eating your week, or a tool you wish existed. I turn it into working software — designed, built and shipped by one person, with AI as my team.",
+            "mvp": {
+                "title": "MVP & beta",
+                "body": "Test your idea with real users before spending big. A working first version, not a slide deck.",
+                "eg": "e.g. booking app, marketplace, SaaS beta"
+            },
+            "web": {
+                "title": "Websites & landing pages",
+                "body": "Fast, modern pages that explain what you do and turn visitors into requests.",
+                "eg": "e.g. launch page, portfolio, shop"
+            },
+            "tool": {
+                "title": "Internal tools",
+                "body": "Custom management software instead of spreadsheets and five subscriptions that don't talk.",
+                "eg": "e.g. CRM, orders, scheduling"
+            },
+            "ai": {
+                "title": "AI automations & agents",
+                "body": "Let AI handle the repetitive work: emails, documents, customer replies, data entry.",
+                "eg": "e.g. lead follow-up, document reader"
+            },
+            "vs": {
+                "agency": "Typical software house",
+                "me": "Me + AI",
+                "team": "Who builds it",
+                "teamAgency": "PM, designer, 3–5 developers, QA",
+                "teamMe": "One builder using AI for design, code and tests",
+                "time": "First working version",
+                "timeAgency": "3–6 months",
+                "timeMe": "2–6 weeks",
+                "cost": "Cost",
+                "costAgency": "Five-figure quotes, often €30k+",
+                "costMe": "A fraction — often 1/8 to 1/10 of that",
+                "talk": "Who you talk to",
+                "talkAgency": "An account manager",
+                "talkMe": "The person writing the code",
+                "note": "Indicative ranges. Every project gets a fixed quote after the first call."
+            },
+            "cta": "Start your project",
+            "ctaSub": "2 minutes, a few taps. The first call is free."
+        },
+        "start": {
+            "status": "Taking new projects",
+            "title": "Let's build your project",
+            "intro": "A few quick questions — just tap. I read every request personally and come back with next steps.",
+            "perk1": "Takes 2 minutes",
+            "perk2": "Free first call",
+            "perk3": "No commitment",
+            "next": "Continue",
+            "back": "Back",
+            "error": "Something went wrong. Try again, or write to me on LinkedIn.",
+            "need": {
+                "eyebrow": "Step 1 · The project",
+                "q": "What do you need?",
+                "mvp": "An MVP or beta",
+                "mvpSub": "Test my idea with real users",
+                "app": "A web or mobile app",
+                "appSub": "A product people log into",
+                "website": "A website or landing page",
+                "websiteSub": "Present my business, get requests",
+                "tool": "An internal tool",
+                "toolSub": "Management software for my team",
+                "ai": "AI automation or an agent",
+                "aiSub": "Take repetitive work off my plate",
+                "unsure": "I'm not sure yet",
+                "unsureSub": "Help me figure out what makes sense"
+            },
+            "who": {
+                "eyebrow": "Step 2 · You",
+                "q": "Which describes you best?",
+                "founder": "Founder with an idea",
+                "smallbiz": "Small business or shop",
+                "freelancer": "Professional or freelancer",
+                "company": "Company or team"
+            },
+            "stage": {
+                "eyebrow": "Step 3 · Starting point",
+                "q": "Where are you starting from?",
+                "idea": "Just an idea",
+                "ideaSub": "It's in my head (or my notes app)",
+                "notes": "Notes, sketches or designs",
+                "notesSub": "I've thought it through",
+                "existing": "Something already exists",
+                "existingSub": "It needs fixing, rebuilding or new features"
+            },
+            "timeline": {
+                "eyebrow": "Step 4 · Timing",
+                "q": "When would you like it live?",
+                "asap": "As soon as possible",
+                "month": "Within a month",
+                "quarter": "In 1–3 months",
+                "flexible": "I'm flexible"
+            },
+            "budget": {
+                "eyebrow": "Step 5 · Budget",
+                "q": "What budget do you have in mind?",
+                "lt2": "Under €2k",
+                "2to5": "€2k – €5k",
+                "5to10": "€5k – €10k",
+                "10plus": "€10k+",
+                "unsure": "Help me estimate it"
+            },
+            "describe": {
+                "eyebrow": "Step 6 · Details",
+                "q": "Tell me about it in a few lines.",
+                "ph": "What's the problem, who is it for, what should it do? Links are welcome.",
+                "hint": "No need to be technical — write it the way you'd explain it to a friend."
+            },
+            "contact": {
+                "eyebrow": "Last step",
+                "q": "Where can I reach you?",
+                "name": "Name",
+                "email": "Email",
+                "phone": "Phone / WhatsApp (optional)",
+                "company": "Company or project (optional)",
+                "pref": "Best way to reach you",
+                "whatsapp": "WhatsApp",
+                "call": "Phone call",
+                "consent": "I agree to be contacted about this request and accept the <privacy>privacy policy</privacy>.",
+                "send": "Send my request"
+            },
+            "doneTitle": "Request received.",
+            "doneBody": "Thanks! I'll read it personally and usually reply within 1–2 working days.",
+            "next1": "I review your request and check it's a good fit.",
+            "next2": "We have a free 20-minute call to shape the scope.",
+            "next3": "You get a clear plan, a timeline and a fixed quote."
         }
     }
 }
