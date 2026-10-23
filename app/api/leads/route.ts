@@ -83,7 +83,7 @@ async function notifyOwner(id: string, lead: Record<string, string | null>) {
         "",
         lead.description,
         "",
-        `Open: ${site.url}/en/admin/leads/${id}`,
+        `Open: ${site.url}/en/login/leads/${id}`,
     ].join("\n");
     try {
         await resend.emails.send({

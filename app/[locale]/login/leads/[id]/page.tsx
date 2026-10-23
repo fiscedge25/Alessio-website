@@ -28,7 +28,7 @@ const toLocalInput = (iso: string) =>
     new Date(iso).toLocaleString("sv-SE", { timeZone: "Europe/Rome" }).slice(0, 16).replace(" ", "T");
 
 export default async function LeadPage({ params, searchParams }: { params: Params; searchParams: Search }) {
-    if (!(await isAdmin())) redirect("/en/admin");
+    if (!(await isAdmin())) redirect("/en/login");
     const { id } = await params;
     const { saved, accepted } = await searchParams;
     if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
@@ -46,7 +46,7 @@ export default async function LeadPage({ params, searchParams }: { params: Param
 
     return (
         <AdminShell>
-            <Link href="/en/admin" className={`${label} inline-flex items-center gap-1.5 hover:text-[color:var(--ink)]`}>
+            <Link href="/en/login" className={`${label} inline-flex items-center gap-1.5 hover:text-[color:var(--ink)]`}>
                 <ArrowLeft size={14} /> All leads
             </Link>
 

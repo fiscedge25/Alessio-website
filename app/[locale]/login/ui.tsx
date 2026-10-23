@@ -30,7 +30,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="min-h-screen bg-[color:var(--surface)]">
             <header className="border-b rule bg-[color:var(--paper)]">
                 <div className="max-w-6xl mx-auto px-5 md:px-8 h-14 flex items-center justify-between">
-                    <Link href="/en/admin" className="font-display text-[15px] tracking-[0.18em] uppercase text-[color:var(--ink)]">
+                    <Link href="/en/login" className="font-display text-[15px] tracking-[0.18em] uppercase text-[color:var(--ink)]">
                         Sabba · Leads
                     </Link>
                     <form action={logout}>

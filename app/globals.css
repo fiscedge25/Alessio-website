@@ -41,8 +41,9 @@
   --font-dm: var(--font-sans);
   --font-cormorant: var(--font-sans);
 
-  /* Backdrop grid: barely there, revealed by the pointer spotlight. */
-  --grid-line: rgba(0, 0, 0, 0.07);
+  --ambient-blue: rgba(0, 113, 227, 0.085);
+  --ambient-violet: rgba(93, 75, 180, 0.055);
+  --dev-detail: rgba(29, 29, 31, 0.13);
 }
 
 [data-theme="dark"] {
@@ -75,7 +76,9 @@
   --accent-2: var(--accent-hover);
   --accent-rgb: 10, 132, 255;
   --accent-dim: rgba(10, 132, 255, 0.12);
-  --grid-line: rgba(255, 255, 255, 0.08);
+  --ambient-blue: rgba(10, 132, 255, 0.13);
+  --ambient-violet: rgba(120, 105, 220, 0.09);
+  --dev-detail: rgba(245, 245, 247, 0.15);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -431,34 +434,84 @@ button:hover .arrow-shift {
   position: fixed;
   inset: 0;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
   --mx: 50%;
   --my: 22%;
   background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  /* Before the pointer is seen, a wide static wash near the top; once
-     BackdropGrid.tsx attaches it becomes a tight travelling spotlight. */
-  -webkit-mask-image: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    #000 0%,
-    transparent 72%
-  );
-  mask-image: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    #000 0%,
-    transparent 72%
-  );
-  animation: grid-drift 26s linear infinite;
+    radial-gradient(620px circle at var(--mx) var(--my), var(--ambient-blue), transparent 68%),
+    radial-gradient(560px circle at 88% 72%, var(--ambient-violet), transparent 72%);
 }
 
 /* Constant, almost subliminal drift — keeps the surface alive on touch
    devices, where there is no pointer to follow. */
 @keyframes grid-drift {
   to {
-    background-position: 64px 64px;
+    opacity: 1;
   }
+}
+
+.dev-trace {
+  position: absolute;
+  width: min(42vw, 620px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dev-detail), transparent);
+  transform-origin: left center;
+}
+
+.dev-trace::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 46%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.dev-trace-a {
+  top: 26%;
+  right: -6%;
+  animation: trace-a-breathe 8s ease-in-out infinite;
+}
+
+.dev-trace-b {
+  bottom: 17%;
+  left: -8%;
+  animation: trace-b-breathe 10s 2s ease-in-out infinite;
+}
+
+.dev-token {
+  position: absolute;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(9px, 0.75vw, 11px);
+  letter-spacing: 0.07em;
+  color: var(--dev-detail);
+  white-space: nowrap;
+  opacity: 0;
+  animation: token-float 12s ease-in-out infinite;
+}
+
+.dev-token-a { top: 18%; left: 5%; }
+.dev-token-b { top: 58%; right: 4%; animation-delay: 4s; }
+.dev-token-c { bottom: 8%; left: 14%; animation-delay: 8s; }
+
+@keyframes trace-a-breathe {
+  0%, 100% { opacity: 0.22; transform: rotate(-9deg) scaleX(0.78); }
+  50% { opacity: 0.58; transform: rotate(-9deg) scaleX(1); }
+}
+
+@keyframes trace-b-breathe {
+  0%, 100% { opacity: 0.2; transform: rotate(7deg) scaleX(0.74); }
+  50% { opacity: 0.5; transform: rotate(7deg) scaleX(1); }
+}
+
+@keyframes token-float {
+  0%, 100% { opacity: 0; transform: translateY(10px); }
+  18%, 72% { opacity: 0.72; }
+  86% { opacity: 0; transform: translateY(-14px); }
 }
 
 /* ─── Hero recede on scroll ───────────────────────────────────────────────
@@ -522,6 +575,10 @@ button:hover .arrow-shift {
 
   .backdrop-grid {
     animation: none;
+  }
+
+  .dev-token {
+    opacity: 0.38;
   }
 
   *,

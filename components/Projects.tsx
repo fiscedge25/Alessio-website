@@ -35,6 +35,13 @@ export default function Projects() {
             stack: ["React", "Supabase", "Vercel"],
         },
         {
+            name: t("atlantos_name"),
+            url: "https://www.atlantos.eu/",
+            type: t("atlantos_type"),
+            description: t("atlantos_desc"),
+            stack: ["React", "TypeScript", "Vite"],
+        },
+        {
             name: t("giurimi_name"),
             url: "https://www.giurimi.com/",
             type: t("giurimi_type"),

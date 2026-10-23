@@ -48,13 +48,13 @@ export default async function AdminPage({ searchParams }: { searchParams: Search
     return (
         <AdminShell>
             <div className="flex flex-wrap gap-2">
-                <Link href="/en/admin" className="tag" style={!active ? { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" } : undefined}>
+                <Link href="/en/login" className="tag" style={!active ? { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" } : undefined}>
                     Open · {all.length - counts.lost - counts.declined}
                 </Link>
                 {LEAD_STATUSES.map((s) => (
                     <Link
                         key={s}
-                        href={`/en/admin?status=${s}`}
+                        href={`/en/login?status=${s}`}
                         className="tag"
                         style={active === s ? { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" } : undefined}
                     >
@@ -68,7 +68,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Search
                     {leads.length === 0 && <li className="card p-6 text-[color:var(--muted)]">No leads here yet.</li>}
                     {leads.map((l) => (
                         <li key={l.id}>
-                            <Link href={`/en/admin/leads/${l.id}`} className="card card-hover block p-5">
+                            <Link href={`/en/login/leads/${l.id}`} className="card card-hover block p-5">
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                     <p className="font-medium text-[color:var(--ink)]">
                                         {l.name}

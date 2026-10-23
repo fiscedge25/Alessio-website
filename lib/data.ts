@@ -139,6 +139,15 @@ export const projects = [
     role: "Concept, Design, Full Development, Deployment",
   },
   {
+    name: "Atlantos",
+    url: "https://www.atlantos.eu/",
+    type: "Export Intelligence Platform",
+    description:
+      "B2B export platform helping Italian companies identify UK importers and distributors through official trade and company data.",
+    stack: ["React", "TypeScript", "Vite"],
+    role: "Concept, Design, Full Development, Deployment",
+  },
+  {
     name: "The Italians",
     url: "https://the-italians.it/",
     type: "Digital Storytelling",

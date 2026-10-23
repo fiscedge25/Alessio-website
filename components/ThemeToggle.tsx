@@ -4,19 +4,24 @@ import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
-    // Read the no-flash script's decision lazily so no effect is needed.
-    const [isDark, setIsDark] = useState(
-        () =>
-            typeof document !== "undefined" &&
-            document.documentElement.getAttribute("data-theme") === "dark"
-    );
+    // The server and the client's first render must be identical. The inline
+    // script in layout.tsx already applies the saved theme before paint; after
+    // hydration we only synchronise this button's icon with that decision.
+    const [isDark, setIsDark] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
         document.documentElement.setAttribute(
             "data-theme",
             isDark ? "dark" : "light"
         );
-    }, [isDark]);
+    }, [isDark, mounted]);
 
     const toggle = () => {
         const next = !isDark;

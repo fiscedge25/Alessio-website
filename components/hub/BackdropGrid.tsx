@@ -41,7 +41,6 @@ export default function BackdropGrid() {
             if (!frame) frame = requestAnimationFrame(paint);
         };
 
-        el.style.setProperty("--reveal", "1");
         window.addEventListener("pointermove", onMove, { passive: true });
         return () => {
             window.removeEventListener("pointermove", onMove);
@@ -49,5 +48,13 @@ export default function BackdropGrid() {
         };
     }, []);
 
-    return <div ref={ref} className="backdrop-grid" aria-hidden="true" />;
+    return (
+        <div ref={ref} className="backdrop-grid" aria-hidden="true">
+            <span className="dev-trace dev-trace-a" />
+            <span className="dev-trace dev-trace-b" />
+            <span className="dev-token dev-token-a">const feeling = build();</span>
+            <span className="dev-token dev-token-b">&lt;made-with-care /&gt;</span>
+            <span className="dev-token dev-token-c">{`{ ship: true }`}</span>
+        </div>
+    );
 }

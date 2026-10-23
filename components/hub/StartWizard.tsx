@@ -1,7 +1,7 @@
 "use client";
 
 // Guided "Start a project" flow: one question per card, tap to answer and the
-// next card slides in. Ends with contact details and lands in /admin.
+// next card slides in. Ends with contact details and lands in the /login dashboard.
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";

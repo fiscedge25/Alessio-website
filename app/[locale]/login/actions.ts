@@ -11,7 +11,7 @@ import { LEAD_STATUSES, type Lead } from "@/lib/leads";
 
 export async function login(formData: FormData) {
     const value = checkPassword(String(formData.get("password") || ""));
-    if (!value) redirect("/en/admin?error=1");
+    if (!value) redirect("/en/login?error=1");
     (await cookies()).set(ADMIN_COOKIE, value, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -19,16 +19,16 @@ export async function login(formData: FormData) {
         path: "/",
         maxAge: 60 * 60 * 24 * 30,
     });
-    redirect("/en/admin");
+    redirect("/en/login");
 }
 
 export async function logout() {
     (await cookies()).delete(ADMIN_COOKIE);
-    redirect("/en/admin");
+    redirect("/en/login");
 }
 
 async function guard() {
-    if (!(await isAdmin())) redirect("/en/admin");
+    if (!(await isAdmin())) redirect("/en/login");
     const supabase = getSupabaseAdmin();
     if (!supabase) throw new Error("Supabase not configured");
     return supabase;
@@ -50,8 +50,8 @@ export async function updateLead(formData: FormData) {
         })
         .eq("id", id);
     if (error) throw new Error(error.message);
-    revalidatePath(`/en/admin/leads/${id}`);
-    redirect(`/en/admin/leads/${id}?saved=1`);
+    revalidatePath(`/en/login/leads/${id}`);
+    redirect(`/en/login/leads/${id}?saved=1`);
 }
 
 /** Accept a lead: mark it accepted and email them the booking link. */
@@ -91,8 +91,8 @@ export async function acceptLead(formData: FormData) {
         .from("leads")
         .update({ status: "accepted", updated_at: new Date().toISOString() })
         .eq("id", id);
-    revalidatePath(`/en/admin/leads/${id}`);
-    redirect(`/en/admin/leads/${id}?accepted=${sent ? "sent" : "nomail"}`);
+    revalidatePath(`/en/login/leads/${id}`);
+    redirect(`/en/login/leads/${id}?accepted=${sent ? "sent" : "nomail"}`);
 }
 
 /** "+01:00" or "+02:00" for a Rome wall-clock time, DST included. */

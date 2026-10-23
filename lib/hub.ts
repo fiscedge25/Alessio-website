@@ -107,6 +107,38 @@ export const projects: Project[] = [
         ),
     },
     {
+        title: "Atlantos",
+        slug: "atlantos",
+        description: L(
+            "An export intelligence platform that helps Italian companies find UK importers and distributors using official trade and company data.",
+            "Una piattaforma di export intelligence che aiuta le aziende italiane a trovare importatori e distributori nel Regno Unito attraverso dati commerciali e societari ufficiali."
+        ),
+        thesis: L(
+            "Export opportunities should be built on verifiable market signals, not generic lead lists. Atlantos turns official UK data into a practical path to the right buyers.",
+            "Le opportunità di export dovrebbero partire da segnali di mercato verificabili, non da liste generiche di contatti. Atlantos trasforma i dati ufficiali britannici in un percorso concreto verso i buyer giusti."
+        ),
+        category: L("ExportTech · B2B Platform", "ExportTech · Piattaforma B2B"),
+        status: "LIVE",
+        year: "2026",
+        tech: ["React", "TypeScript", "Vite", "Trade Data"],
+        website: "https://www.atlantos.eu/",
+        featured: true,
+        placement: ["project"],
+        type: "product",
+        problem: L(
+            "For an Italian company entering the UK, finding credible importers and distributors means navigating fragmented sources, unfamiliar classifications and contacts with little context.",
+            "Per un'azienda italiana che entra nel mercato britannico, trovare importatori e distributori affidabili significa orientarsi tra fonti frammentate, classificazioni poco familiari e contatti privi di contesto."
+        ),
+        built: L(
+            "A bilingual platform that combines HMRC trade data, the UK Trade Tariff and Companies House information to help exporters identify buyers and request qualified introductions.",
+            "Una piattaforma bilingue che combina dati commerciali HMRC, UK Trade Tariff e informazioni Companies House per aiutare gli esportatori a individuare buyer e richiedere presentazioni qualificate."
+        ),
+        learnings: L(
+            "In data-heavy B2B products, trust comes from provenance and clarity: users need to understand where a signal comes from before they can act on it.",
+            "Nei prodotti B2B basati sui dati, la fiducia nasce dalla provenienza e dalla chiarezza: prima di agire, gli utenti devono capire da dove arriva ogni segnale."
+        ),
+    },
+    {
         title: "Giurimi",
         slug: "giurimi",
         description: L(
