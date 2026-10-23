@@ -25,6 +25,11 @@ export default function GDPRConsent() {
 
     return (
         <CookieConsent
+            containerClasses="gdpr-banner"
+            contentClasses="gdpr-banner-content"
+            buttonWrapperClasses="gdpr-banner-actions"
+            buttonClasses="gdpr-banner-accept"
+            declineButtonClasses="gdpr-banner-decline"
             location="bottom"
             buttonText={t("gdpr_accept")}
             enableDeclineButton
@@ -60,7 +65,8 @@ export default function GDPRConsent() {
             }}
             expires={150}
         >
-            {t("gdpr_text")}
+            <span className="hidden sm:inline">{t("gdpr_text")}</span>
+            <span className="sm:hidden">{t("gdpr_text_short")}</span>
         </CookieConsent>
     );
 }

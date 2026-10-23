@@ -42,6 +42,7 @@ const ICONS: Partial<Record<string, LucideIcon>> = {
 
 const STEPS = [...CHOICE_STEPS, "describe", "contact"] as const;
 type Step = (typeof STEPS)[number];
+const STORAGE_KEY = "builtwithsabba-start-draft-v1";
 
 export default function StartWizard() {
     const t = useTranslations("hub.start");
@@ -54,6 +55,7 @@ export default function StartWizard() {
     const [consent, setConsent] = useState(false);
     const [source, setSource] = useState("");
     const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
+    const [draftReady, setDraftReady] = useState(false);
 
     // ?ref= from social links (reel-03, ig-bio…) tells which content brings clients.
     useEffect(() => {
@@ -67,7 +69,42 @@ export default function StartWizard() {
             /* ignore */
         }
         setSource((ref || external).slice(0, 80));
+
+        try {
+            const saved = sessionStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const draft = JSON.parse(saved) as {
+                    index?: number;
+                    answers?: Partial<Record<ChoiceStep, string>>;
+                    description?: string;
+                    contact?: typeof contact;
+                    consent?: boolean;
+                };
+                if (typeof draft.index === "number" && draft.index >= 0 && draft.index < STEPS.length) {
+                    setIndex(draft.index);
+                }
+                if (draft.answers) setAnswers(draft.answers);
+                if (typeof draft.description === "string") setDescription(draft.description);
+                if (draft.contact) setContact((current) => ({ ...current, ...draft.contact, website: "" }));
+                if (typeof draft.consent === "boolean") setConsent(draft.consent);
+            }
+        } catch {
+            /* A broken or unavailable session store should never block the form. */
+        }
+        setDraftReady(true);
     }, []);
+
+    useEffect(() => {
+        if (!draftReady || state === "done") return;
+        try {
+            sessionStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify({ index, answers, description, contact: { ...contact, website: "" }, consent })
+            );
+        } catch {
+            /* ignore */
+        }
+    }, [answers, consent, contact, description, draftReady, index, state]);
 
     const step: Step = STEPS[index];
     const go = (to: number) => {
@@ -79,7 +116,7 @@ export default function StartWizard() {
         setAnswers((a) => ({ ...a, [s]: value }));
         track("lead_step", { step: s, value });
         // Let the selection register visually before the next card slides in.
-        setTimeout(() => go(index + 1), 220);
+        setTimeout(() => go(index + 1), 380);
     };
 
     async function submit(e: React.FormEvent) {
@@ -94,6 +131,11 @@ export default function StartWizard() {
             });
             if (!res.ok) throw new Error();
             setState("done");
+            try {
+                sessionStorage.removeItem(STORAGE_KEY);
+            } catch {
+                /* ignore */
+            }
             track("lead_submit", { need: answers.need ?? "" });
             window.gtag?.("event", "generate_lead", { lead_source: source || "direct", need: answers.need });
         } catch {
@@ -141,23 +183,30 @@ export default function StartWizard() {
         );
     }
 
-    const progress = (index + 1) / STEPS.length;
+    const phase = index <= 1 ? 0 : index <= 4 ? 1 : index === 5 ? 2 : 3;
+    const phaseKeys = ["project", "scope", "details", "contact"] as const;
+    const progress = (phase + 1) / phaseKeys.length;
     const label = "font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-2 block";
 
     return (
         <div>
             {/* Progress */}
-            <div className="mb-6 flex items-center gap-4">
-                <div className="h-1 flex-1 overflow-hidden rounded-full bg-[color:var(--surface)]">
+            <div className="mb-6">
+                <div className="mb-3 flex items-center justify-between gap-4">
+                    <span className="font-mono-meta text-[11px] uppercase text-[color:var(--ink)]">
+                        {t(`phase.${phaseKeys[phase]}`)}
+                    </span>
+                    <span className="font-mono-meta text-[11px] text-[color:var(--muted)]">
+                        {phase + 1}/{phaseKeys.length}
+                    </span>
+                </div>
+                <div className="h-1 overflow-hidden rounded-full bg-[color:var(--surface)]">
                     <motion.div
                         className="h-full bg-[color:var(--accent)]"
                         animate={{ width: `${progress * 100}%` }}
                         transition={{ type: "spring", stiffness: 140, damping: 22 }}
                     />
                 </div>
-                <span className="font-mono-meta text-[11px] text-[color:var(--muted)]">
-                    {index + 1}/{STEPS.length}
-                </span>
             </div>
 
             <div className="relative">
@@ -205,8 +254,9 @@ export default function StartWizard() {
                                                 </span>
                                             )}
                                             <span>
-                                                <span className="block font-medium text-[color:var(--ink)]">
+                                                <span className="flex items-center gap-2 font-medium text-[color:var(--ink)]">
                                                     {t(`${step}.${v}`)}
+                                                    {selected && <Check size={15} className="text-[color:var(--accent)]" />}
                                                 </span>
                                                 {t.has(`${step}.${v}Sub`) && (
                                                     <span className="mt-1 block text-sm leading-snug text-[color:var(--muted)]">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Check } from "lucide-react";
 import { site } from "@/lib/site";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
@@ -34,29 +34,30 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <main className="px-5 md:px-8 pt-28 md:pt-36 pb-20">
                 <div className="max-w-3xl mx-auto">
                     <Reveal>
-                        <p className="status-pill font-mono-meta text-[11px] uppercase text-[color:var(--muted)] mb-6">
-                            <span className="status-dot" aria-hidden="true" />
-                            {t("status")}
+                        <p className="font-mono-meta text-[11px] uppercase text-[color:var(--accent)] mb-5">
+                            {t("eyebrow")}
                         </p>
                         <h1
-                            className="font-display text-[color:var(--ink)]"
-                            style={{ fontSize: "clamp(2.2rem, 6vw, 3.8rem)", lineHeight: 1.02 }}
+                            className="font-display max-w-2xl text-[color:var(--ink)]"
+                            style={{ fontSize: "clamp(2.5rem, 7vw, 4.8rem)", lineHeight: 0.98 }}
                         >
-                            {t("title")}
+                            {t("title")}<span className="start-cursor" aria-hidden="true">_</span>
                         </h1>
-                        <p className="mt-4 text-lg leading-relaxed text-[color:var(--muted)]">{t("intro")}</p>
-                        <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[color:var(--ink-2)]">
-                            {(["perk1", "perk2", "perk3"] as const).map((k) => (
-                                <li key={k} className="inline-flex items-center gap-1.5">
-                                    <Check size={15} className="text-[color:var(--accent)]" />
-                                    {t(k)}
-                                </li>
-                            ))}
-                        </ul>
+                        <p className="mt-5 max-w-xl text-base md:text-lg leading-relaxed text-[color:var(--muted)]">{t("intro")}</p>
                     </Reveal>
-                    <div className="mt-10">
+                    <div className="mt-8 md:mt-10">
                         <StartWizard />
                     </div>
+                    <Reveal className="mt-8">
+                        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-[color:var(--muted)]">
+                            <span>{t("proof")}</span>
+                            {[["Atlantos", "atlantos"], ["Fiscedge", "fiscedge"], ["Fiscedge Academy", "fiscedge-academy"], ["Giurimi", "giurimi"]].map(([name, slug]) => (
+                                <Link key={slug} href={`/${locale}/projects/${slug}`} className="u-link font-medium text-[color:var(--ink)]">
+                                    {name}
+                                </Link>
+                            ))}
+                        </div>
+                    </Reveal>
                 </div>
             </main>
             <Footer />

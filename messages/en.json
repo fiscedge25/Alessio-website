@@ -166,6 +166,7 @@
         "email_label": "Or send me an email",
         "gdpr_title": "Privacy Policy & Cookies",
         "gdpr_text": "We use technical cookies to make the site work and, only with your consent, analytics cookies (Google Tag Manager) to understand how it's used.",
+        "gdpr_text_short": "Allow analytics cookies to help improve the site?",
         "gdpr_accept": "Accept",
         "gdpr_decline": "Decline"
     },
@@ -545,13 +546,21 @@
         },
         "start": {
             "status": "Taking new projects",
-            "title": "Let's build your project",
-            "intro": "A few quick questions — just tap. I read every request personally and come back with next steps.",
+            "eyebrow": "Start a project",
+            "title": "Build something real.",
+            "intro": "Tell me what you need. I'll reply with a clear plan, timing and a fixed quote.",
+            "proof": "Products I've built:",
             "perk1": "Takes 2 minutes",
             "perk2": "Free first call",
             "perk3": "No commitment",
             "next": "Continue",
             "back": "Back",
+            "phase": {
+                "project": "Project",
+                "scope": "Scope",
+                "details": "Details",
+                "contact": "Contact"
+            },
             "error": "Something went wrong. Try again, or write to me on LinkedIn.",
             "need": {
                 "eyebrow": "Step 1 · The project",

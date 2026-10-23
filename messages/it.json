@@ -166,6 +166,7 @@
         "email_label": "Oppure inviami un'email",
         "gdpr_title": "Informativa sulla Privacy & Cookie",
         "gdpr_text": "Usiamo cookie tecnici per far funzionare il sito e, solo con il tuo consenso, cookie analitici (Google Tag Manager) per capire come viene usato.",
+        "gdpr_text_short": "Consenti i cookie analitici per aiutarci a migliorare il sito?",
         "gdpr_accept": "Accetta",
         "gdpr_decline": "Rifiuta"
     },
@@ -545,13 +546,21 @@
         },
         "start": {
             "status": "Accetto nuovi progetti",
-            "title": "Costruiamo il tuo progetto",
-            "intro": "Poche domande veloci, basta un tap. Leggo personalmente ogni richiesta e ti rispondo con i prossimi passi.",
+            "eyebrow": "Inizia un progetto",
+            "title": "Costruiamo qualcosa di reale.",
+            "intro": "Dimmi cosa ti serve. Ti risponderò con un piano chiaro, tempi e un preventivo fisso.",
+            "proof": "Prodotti che ho sviluppato:",
             "perk1": "Ci vogliono 2 minuti",
             "perk2": "Prima call gratuita",
             "perk3": "Nessun impegno",
             "next": "Continua",
             "back": "Indietro",
+            "phase": {
+                "project": "Progetto",
+                "scope": "Ambito",
+                "details": "Dettagli",
+                "contact": "Contatto"
+            },
             "error": "Qualcosa è andato storto. Riprova o scrivimi su LinkedIn.",
             "need": {
                 "eyebrow": "Passo 1 · Il progetto",

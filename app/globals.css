@@ -101,6 +101,33 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 640px) {
+  .gdpr-banner {
+    gap: 10px !important;
+    padding: 12px 16px !important;
+  }
+
+  .gdpr-banner-content {
+    flex: 1 1 100% !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  .gdpr-banner-actions {
+    display: flex !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+  }
+
+  .gdpr-banner-accept,
+  .gdpr-banner-decline {
+    margin: 0 !important;
+    padding: 7px 16px !important;
+    font-size: 12px !important;
+  }
+}
+
 ::selection {
   background: var(--selection-bg);
   color: var(--selection-fg);
@@ -249,6 +276,20 @@ button:hover .arrow-shift {
     opacity: 0.45;
     transform: scale(0.82);
   }
+}
+
+@keyframes start-cursor-blink {
+  0%, 42% { opacity: 1; }
+  43%, 100% { opacity: 0; }
+}
+
+.start-cursor {
+  display: inline-block;
+  margin-left: 0.08em;
+  color: var(--accent);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 400;
+  animation: start-cursor-blink 1.15s steps(1, end) infinite;
 }
 
 .status-dot {
