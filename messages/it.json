@@ -120,6 +120,9 @@
         "fiscedge_mvp_name": "FiscEdge MVP",
         "fiscedge_mvp_type": "MVP Startup",
         "fiscedge_mvp_desc": "Piattaforma core della startup, costruisce framework digitali strutturati per la creazione d'impresa, il decision-making e la pianificazione operativa.",
+        "atlantos_name": "Atlantos",
+        "atlantos_type": "Piattaforma di Export Intelligence",
+        "atlantos_desc": "Piattaforma B2B che aiuta le aziende italiane a trovare importatori e distributori nel Regno Unito attraverso dati commerciali e societari ufficiali.",
         "giurimi_name": "GIURIMI",
         "giurimi_type": "Piattaforma Educazione Legale",
         "giurimi_desc": "Piattaforma di educazione legale strutturata per la preparazione accademica in responsabilità civile e diritto tecnologico UE.",
@@ -192,6 +195,7 @@
     },
     "hub": {
         "nav": {
+            "home": "Home",
             "building": "In cantiere",
             "projects": "Progetti",
             "notes": "Note",

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { site } from "@/lib/site";
 import { track } from "@/lib/analytics";
 import ThemeToggle from "../ThemeToggle";
@@ -56,15 +56,27 @@ export default function Navbar() {
 
                 {/* Desktop */}
                 <div className="hidden md:flex items-center gap-5 lg:gap-7">
-                    {SECTION_LINKS.map((l) => (
-                        <Link
-                            key={l.key}
-                            href={`/${locale}${l.href}`}
-                            className="u-link whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
-                        >
-                            {t(l.key)}
-                        </Link>
-                    ))}
+                    <details className="group relative">
+                        <summary className="flex cursor-pointer list-none items-center gap-1 whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] transition-colors hover:text-[color:var(--ink)] focus-visible:text-[color:var(--ink)] [&::-webkit-details-marker]:hidden">
+                            {t("home")}
+                            <ChevronDown
+                                size={13}
+                                className="transition-transform duration-200 group-open:rotate-180"
+                            />
+                        </summary>
+                        <div className="absolute left-1/2 top-full z-50 mt-3 w-52 -translate-x-1/2 overflow-hidden rounded-2xl border rule bg-[color:var(--paper-elevated)] p-2 shadow-[var(--card-shadow-hover)]">
+                            {SECTION_LINKS.map((l) => (
+                                <Link
+                                    key={l.key}
+                                    href={`/${locale}${l.href}`}
+                                    onClick={(e) => e.currentTarget.closest("details")?.removeAttribute("open")}
+                                    className="block rounded-xl px-3 py-2.5 font-mono-meta text-[11px] uppercase text-[color:var(--muted)] transition-colors hover:bg-[color:var(--surface)] hover:text-[color:var(--ink)] focus-visible:bg-[color:var(--surface)]"
+                                >
+                                    {t(l.key)}
+                                </Link>
+                            ))}
+                        </div>
+                    </details>
                     <Link
                         href={`/${locale}/prompts`}
                         className="u-link whitespace-nowrap font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)] transition-colors"
@@ -128,16 +140,23 @@ export default function Navbar() {
                     className="md:hidden border-t rule px-5 py-4 flex flex-col gap-4"
                     style={{ backgroundColor: "var(--paper)" }}
                 >
-                    {SECTION_LINKS.map((l) => (
-                        <Link
-                            key={l.key}
-                            href={`/${locale}${l.href}`}
-                            onClick={() => setOpen(false)}
-                            className="font-mono-meta text-[13px] uppercase text-[color:var(--ink-2)]"
-                        >
-                            {t(l.key)}
-                        </Link>
-                    ))}
+                    <div>
+                        <p className="mb-2 font-mono-meta text-[11px] uppercase text-[color:var(--muted)]">
+                            {t("home")}
+                        </p>
+                        <div className="flex flex-col gap-3 border-l rule pl-4">
+                            {SECTION_LINKS.map((l) => (
+                                <Link
+                                    key={l.key}
+                                    href={`/${locale}${l.href}`}
+                                    onClick={() => setOpen(false)}
+                                    className="font-mono-meta text-[13px] uppercase text-[color:var(--ink-2)]"
+                                >
+                                    {t(l.key)}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
                     <Link
                         href={`/${locale}/prompts`}
                         onClick={() => setOpen(false)}
