@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 /** Prompt text, read at build time from content/prompts/<slug>.md */
-function readPrompt(slug: string) {
-    return fs.readFileSync(path.join(process.cwd(), "content", "prompts", `${slug}.md`), "utf8");
+function readPrompt(slug: string, suffix = "") {
+    return fs.readFileSync(path.join(process.cwd(), "content", "prompts", `${slug}${suffix}.md`), "utf8");
 }
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -67,6 +67,15 @@ export default async function PromptPage({ params }: { params: Params }) {
 
     const t = await getTranslations({ locale: raw, namespace: "hub.prompts" });
     const text = readPrompt(slug);
+    const example = p.example ? readPrompt(slug, ".example") : null;
+    // per-prompt copy wins over the generic hub.prompts strings
+    const c = (key: keyof NonNullable<typeof p.copy>) => p.copy?.[key]?.[locale] ?? t(key);
+    const lanes = [
+        { title: t("pathPrompt"), sub: t("pathPromptSub"), steps: p.steps, tag: "A" },
+        ...(p.templateSteps
+            ? [{ title: t("pathTemplate"), sub: t("pathTemplateSub"), steps: p.templateSteps, tag: "B" }]
+            : []),
+    ];
     const pageUrl = `${site.url}/${locale}/prompts/${slug}`;
 
     return (
@@ -115,14 +124,16 @@ export default async function PromptPage({ params }: { params: Params }) {
                                 <a href="#prompt" className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-5 py-2.5 font-mono-meta text-[12px] uppercase text-[color:var(--paper)] hover:opacity-85 transition-opacity">
                                     {t("promptTitle")} <ArrowDown size={13} />
                                 </a>
-                                <a
-                                    href={p.templateUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--line)] px-5 py-2.5 font-mono-meta text-[12px] uppercase text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] transition-colors"
-                                >
-                                    {t("useTemplate")} <ArrowUpRight size={13} />
-                                </a>
+                                {p.templateUrl && (
+                                    <a
+                                        href={p.templateUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--line)] px-5 py-2.5 font-mono-meta text-[12px] uppercase text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] transition-colors"
+                                    >
+                                        {t("useTemplate")} <ArrowUpRight size={13} />
+                                    </a>
+                                )}
                             </div>
 
                             <p className="mt-7 text-sm text-[color:var(--muted)]">
@@ -150,30 +161,52 @@ export default async function PromptPage({ params }: { params: Params }) {
                                 <span className="mx-2 opacity-40">—</span>
                                 {t("result")}
                             </Eyebrow>
-                            <p className="max-w-2xl text-[color:var(--muted)] leading-relaxed">{t("resultIntro")}</p>
+                            <p className="max-w-2xl text-[color:var(--muted)] leading-relaxed">{c("resultIntro")}</p>
                         </Reveal>
                         <Reveal className="mt-8">
-                            {/* eslint-disable-next-line @next/next/no-img-element -- animated SVG must stay an <img> */}
-                            <img
-                                src={p.preview.heatmap}
-                                alt="Contribution heatmap"
-                                className="block w-full h-auto rounded-xl"
-                            />
-                            {/* Same proportions as the README: equal heights at 345 : 505. */}
-                            <div className="mt-3 grid gap-3 sm:grid-cols-[345fr_505fr] items-start">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={p.preview.portrait} alt="ASCII portrait" className="block w-full h-auto rounded-xl" />
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={p.preview.card} alt="Info card" className="block w-full h-auto rounded-xl" />
-                            </div>
-                            <a
-                                href={p.exampleUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="u-link mt-5 inline-flex items-center gap-1 font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)]"
-                            >
-                                {t("seeLive")} <ArrowUpRight size={13} />
-                            </a>
+                            {p.preview && (
+                                <>
+                                    {/* eslint-disable-next-line @next/next/no-img-element -- animated SVG must stay an <img> */}
+                                    <img
+                                        src={p.preview.heatmap}
+                                        alt="Contribution heatmap"
+                                        className="block w-full h-auto rounded-xl"
+                                    />
+                                    {/* Same proportions as the README: equal heights at 345 : 505. */}
+                                    <div className="mt-3 grid gap-3 sm:grid-cols-[345fr_505fr] items-start">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={p.preview.portrait} alt="ASCII portrait" className="block w-full h-auto rounded-xl" />
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={p.preview.card} alt="Info card" className="block w-full h-auto rounded-xl" />
+                                    </div>
+                                </>
+                            )}
+                            {example && (
+                                <div className="rounded-xl border overflow-hidden" style={{ borderColor: "var(--line)" }}>
+                                    <div
+                                        className="flex items-center gap-2 px-4 py-3 border-b font-mono-meta text-[11px] uppercase text-[color:var(--muted)]"
+                                        style={{ borderColor: "var(--line)", background: "var(--surface)" }}
+                                    >
+                                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--line)" }} />
+                                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--line)" }} />
+                                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--line)" }} />
+                                        <span className="ml-2">{p.example!.filename}</span>
+                                    </div>
+                                    <pre className="overflow-x-auto p-5 md:p-7 text-[13px] leading-relaxed text-[color:var(--ink)] font-mono whitespace-pre-wrap">
+                                        {example}
+                                    </pre>
+                                </div>
+                            )}
+                            {p.exampleUrl && (
+                                <a
+                                    href={p.exampleUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="u-link mt-5 inline-flex items-center gap-1 font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                                >
+                                    {t("seeLive")} <ArrowUpRight size={13} />
+                                </a>
+                            )}
                         </Reveal>
                     </section>
 
@@ -183,16 +216,17 @@ export default async function PromptPage({ params }: { params: Params }) {
                             <Eyebrow>
                                 <span className="index-num">02</span>
                                 <span className="mx-2 opacity-40">—</span>
-                                {t("pathsTitle")}
+                                {c("pathsTitle")}
                             </Eyebrow>
                         </Reveal>
-                        <div className="grid gap-px border rule bg-[color:var(--line)] md:grid-cols-2 rounded-xl overflow-hidden">
-                            {[
-                                { title: t("pathPrompt"), sub: t("pathPromptSub"), steps: p.steps, tag: "A" },
-                                { title: t("pathTemplate"), sub: t("pathTemplateSub"), steps: p.templateSteps, tag: "B" },
-                            ].map((lane) => (
+                        <div
+                            className={`grid gap-px border rule bg-[color:var(--line)] rounded-xl overflow-hidden ${lanes.length > 1 ? "md:grid-cols-2" : ""}`}
+                        >
+                            {lanes.map((lane) => (
                                 <div key={lane.tag} className="bg-[color:var(--paper)] p-7 md:p-9">
-                                    <p className="font-mono-meta text-[11px] text-[color:var(--muted)]">{lane.tag}</p>
+                                    {lanes.length > 1 && (
+                                        <p className="font-mono-meta text-[11px] text-[color:var(--muted)]">{lane.tag}</p>
+                                    )}
                                     <h3 className="mt-2 font-display text-2xl uppercase text-[color:var(--ink)]">
                                         {lane.title}
                                     </h3>
@@ -215,7 +249,7 @@ export default async function PromptPage({ params }: { params: Params }) {
                                             </li>
                                         ))}
                                     </ol>
-                                    {lane.tag === "B" && (
+                                    {lane.tag === "B" && p.templateUrl && (
                                         <div className="mt-7 flex flex-wrap gap-3">
                                             <a
                                                 href={p.templateUrl}
@@ -225,14 +259,16 @@ export default async function PromptPage({ params }: { params: Params }) {
                                             >
                                                 {t("useTemplate")} <ArrowUpRight size={14} />
                                             </a>
-                                            <a
-                                                href={p.repo}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="u-link inline-flex items-center gap-1 self-center font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)]"
-                                            >
-                                                {t("viewRepo")} <ArrowUpRight size={13} />
-                                            </a>
+                                            {p.repo && (
+                                                <a
+                                                    href={p.repo}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="u-link inline-flex items-center gap-1 self-center font-mono-meta text-[12px] uppercase text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                                                >
+                                                    {t("viewRepo")} <ArrowUpRight size={13} />
+                                                </a>
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -248,7 +284,7 @@ export default async function PromptPage({ params }: { params: Params }) {
                                 <span className="mx-2 opacity-40">—</span>
                                 {t("promptTitle")}
                             </Eyebrow>
-                            <p className="max-w-2xl mb-8 text-[color:var(--muted)] leading-relaxed">{t("promptIntro")}</p>
+                            <p className="max-w-2xl mb-8 text-[color:var(--muted)] leading-relaxed">{c("promptIntro")}</p>
                         </Reveal>
                         <PromptBlock
                             slug={p.slug}
@@ -276,8 +312,8 @@ export default async function PromptPage({ params }: { params: Params }) {
                                 className="rounded-xl border p-6"
                                 style={{ borderColor: "var(--line)", background: "var(--surface)" }}
                             >
-                                <p className="font-semibold text-[color:var(--ink)]">{t("tipsTitle")}</p>
-                                <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)]">{t("tips")}</p>
+                                <p className="font-semibold text-[color:var(--ink)]">{c("tipsTitle")}</p>
+                                <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)]">{c("tips")}</p>
                             </div>
                         </Reveal>
                     </section>
@@ -287,7 +323,7 @@ export default async function PromptPage({ params }: { params: Params }) {
                         <ShareBar
                             url={pageUrl}
                             slug={p.slug}
-                            text={t("shareText")}
+                            text={c("shareText")}
                             labels={{
                                 title: t("shareTitle"),
                                 native: t("shareNative"),
