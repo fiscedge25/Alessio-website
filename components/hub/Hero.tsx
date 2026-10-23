@@ -1,15 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { site } from "@/lib/site";
-import { track } from "@/lib/analytics";
 import BinaryPortrait from "./BinaryPortrait";
 
 export default function Hero() {
     const t = useTranslations("hub.hero");
     const locale = useLocale();
+    const reduceMotion = useReducedMotion();
+    const [word, setWord] = useState(0);
+    const words = [t("word1"), t("word2"), t("word3")];
+
+    useEffect(() => {
+        if (reduceMotion) return;
+        const id = window.setInterval(() => setWord((current) => (current + 1) % words.length), 2200);
+        return () => window.clearInterval(id);
+    }, [reduceMotion, words.length]);
 
     return (
         <section
@@ -19,31 +28,40 @@ export default function Hero() {
         >
             <div className="max-w-6xl mx-auto w-full grid gap-14 lg:gap-12 lg:grid-cols-[1.2fr_0.8fr] items-center">
                 <div className="parallax-hero min-w-0 flex flex-col items-center text-center lg:items-start lg:text-left">
-                    <p className="status-pill font-mono-meta text-[11px] md:text-xs uppercase text-[color:var(--muted)] mb-9">
+                    <p className="status-pill font-mono-meta text-[11px] md:text-xs uppercase text-[color:var(--muted)] mb-8">
                         <span className="status-dot" aria-hidden="true" />
                         {t("status")}
                     </p>
 
                     <h1
-                        className="font-display text-[color:var(--ink)]"
+                        className="font-display text-[color:var(--ink)] max-w-3xl"
                         style={{
                             fontSize: "clamp(3rem, 7vw, 5.25rem)",
                             lineHeight: 0.98,
                         }}
                     >
-                        {t("line1")}
-                        <br />
-                        {t("line2")}
+                        <span className="block">{t("headlineLead")}</span>
+                        <span className="relative block min-h-[1.05em] overflow-hidden text-[color:var(--accent)]">
+                            <AnimatePresence mode="wait" initial={false}>
+                                <motion.span
+                                    key={word}
+                                    className="block"
+                                    initial={reduceMotion ? false : { y: "70%", opacity: 0, filter: "blur(8px)" }}
+                                    animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                                    exit={reduceMotion ? undefined : { y: "-70%", opacity: 0, filter: "blur(8px)" }}
+                                    transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                                >
+                                    {words[word]}
+                                </motion.span>
+                            </AnimatePresence>
+                        </span>
                     </h1>
 
-                    <p className="mt-7 md:mt-8 max-w-2xl text-lg md:text-2xl leading-relaxed text-[color:var(--muted)]">
+                    <p className="mt-7 md:mt-8 max-w-xl text-lg md:text-xl leading-relaxed text-[color:var(--muted)]">
                         {t("sub1")}
                     </p>
-                    <p className="mt-2 max-w-2xl text-base md:text-lg leading-relaxed text-[color:var(--muted)]">
-                        {t("sub2")}
-                    </p>
 
-                    <div className="mt-10 md:mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                    <div className="mt-9 md:mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-4">
                         <Link href={`/${locale}/start?ref=hero`} className="btn btn-primary">
                             {t("ctaStart")}
                             <ArrowRight size={16} className="arrow-shift" />
@@ -56,16 +74,6 @@ export default function Hero() {
                         {t("proof")}
                     </p>
 
-                    <a
-                        href={site.linkedin.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => track("linkedin_click", { from: "hero" })}
-                        className="link-blue mt-7 inline-flex items-center gap-1.5 text-[15px] md:text-base"
-                    >
-                        {t("linkedin")}
-                        <ArrowUpRight size={15} className="arrow-shift" />
-                    </a>
                 </div>
 
                 {/* Me, in 0s and 1s — and the way into the prompt that makes it. */}
