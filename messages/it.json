@@ -627,7 +627,9 @@
             "doneBody": "Grazie! La leggo personalmente e di solito rispondo entro 1–2 giorni lavorativi.",
             "next1": "Leggo la tua richiesta e verifico che sia adatta.",
             "next2": "Facciamo una call gratuita di 20 minuti per definire il progetto.",
-            "next3": "Ricevi un piano chiaro, le tempistiche e un preventivo fisso."
+            "next3": "Ricevi un piano chiaro, le tempistiche e un preventivo fisso.",
+            "book": "Non aspettare: prenota subito la call",
+            "bookSub": "20 minuti, gratis. Scegli tu l'orario."
         }
     }
 }

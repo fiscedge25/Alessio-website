@@ -627,7 +627,9 @@
             "doneBody": "Thanks! I'll read it personally and usually reply within 1–2 working days.",
             "next1": "I review your request and check it's a good fit.",
             "next2": "We have a free 20-minute call to shape the scope.",
-            "next3": "You get a clear plan, a timeline and a fixed quote."
+            "next3": "You get a clear plan, a timeline and a fixed quote.",
+            "book": "Skip the wait — book the call now",
+            "bookSub": "20 minutes, free. Pick the time that suits you."
         }
     }
 }

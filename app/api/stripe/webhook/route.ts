@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { fulfillGiftSession } from "@/lib/gift-store";
+import { fulfillQuoteSession } from "@/lib/quote-store";
 
 /**
- * Stripe → checkout.session.completed. The success page already unlocks the
- * gift when the buyer lands on it; this covers the ones who close the tab
- * before the redirect. Configure in Stripe → Developers → Webhooks with the
+ * Stripe → checkout.session.completed, for gifts and quote deposits. The
+ * success pages already fulfil when the buyer lands on them; this covers the
+ * ones who close the tab before the redirect. Configure in Stripe → Developers → Webhooks with the
  * URL https://<site>/api/stripe/webhook and put its signing secret in
  * STRIPE_WEBHOOK_SECRET.
  */
@@ -29,8 +30,14 @@ export async function POST(request: Request) {
         event.type === "checkout.session.completed" ||
         event.type === "checkout.session.async_payment_succeeded"
     ) {
-        const gift = await fulfillGiftSession(event.data.object);
-        if (!gift) console.warn("[stripe-webhook] no gift fulfilled for", event.data.object.id);
+        const session = event.data.object;
+        if (session.metadata?.kind === "quote") {
+            const quote = await fulfillQuoteSession(session);
+            if (!quote) console.warn("[stripe-webhook] no quote fulfilled for", session.id);
+        } else {
+            const gift = await fulfillGiftSession(session);
+            if (!gift) console.warn("[stripe-webhook] no gift fulfilled for", session.id);
+        }
     }
 
     return NextResponse.json({ received: true });

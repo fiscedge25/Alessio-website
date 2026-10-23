@@ -1,5 +1,5 @@
 -- BuiltWithSabba client leads: the guided "Start a project" flow on /start
--- writes here, the private dashboard at /en/admin reads and updates it.
+-- writes here, the private dashboard at /en/login reads and updates it.
 -- Run in the Supabase SQL editor. RLS on with no policies: only the
 -- service-role key used by the API routes and the dashboard can touch it.
 

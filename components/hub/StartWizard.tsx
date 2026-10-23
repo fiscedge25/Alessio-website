@@ -19,10 +19,12 @@ import {
     Smartphone,
     Store,
     Briefcase,
+    CalendarCheck,
     Wrench,
     type LucideIcon,
 } from "lucide-react";
 import { track } from "@/lib/analytics";
+import { site } from "@/lib/site";
 import { CHOICE_STEPS, CONTACT_PREFS, LEAD_STEPS, type ChoiceStep } from "@/lib/leads";
 
 const ICONS: Partial<Record<string, LucideIcon>> = {
@@ -119,6 +121,22 @@ export default function StartWizard() {
                         </li>
                     ))}
                 </ol>
+                {/* Booking right away beats waiting for a reply: they're most interested now. */}
+                {site.bookingUrl && (
+                    <div className="mt-8 rounded-2xl bg-[color:var(--accent-dim)] p-6">
+                        <a
+                            href={site.bookingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => track("lead_book", { need: answers.need ?? "" })}
+                            className="btn btn-primary"
+                        >
+                            <CalendarCheck size={16} />
+                            {t("book")}
+                        </a>
+                        <p className="mt-3 text-sm text-[color:var(--muted)]">{t("bookSub")}</p>
+                    </div>
+                )}
             </motion.div>
         );
     }

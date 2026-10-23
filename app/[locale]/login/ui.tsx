@@ -2,7 +2,7 @@ import Link from "next/link";
 import { STATUS_LABEL, type LeadStatus } from "@/lib/leads";
 import { logout } from "./actions";
 
-const STATUS_COLOR: Record<LeadStatus, string> = {
+export const STATUS_COLOR: Record<LeadStatus, string> = {
     new: "#0071e3",
     accepted: "#8e44ad",
     call: "#d97706",

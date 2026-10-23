@@ -21,7 +21,8 @@ export type AnalyticsEvent =
     | "gift_checkout"
     | "gift_share"
     | "lead_step"
-    | "lead_submit";
+    | "lead_submit"
+    | "lead_book";
 
 export function track(event: AnalyticsEvent, detail?: Record<string, string>) {
     if (typeof window === "undefined") return;

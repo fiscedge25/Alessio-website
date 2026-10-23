@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, Mail, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, ExternalLink, Mail, MessageCircle, Phone } from "lucide-react";
 import { isAdmin } from "@/lib/admin-auth";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { site } from "@/lib/site";
 import { CHOICE_STEPS, LEAD_STATUSES, OPTION_LABEL, STATUS_LABEL, type Lead } from "@/lib/leads";
-import { acceptLead, updateLead } from "../../actions";
+import { QUOTE_STATUS_LABEL, eur, isExpired, type Quote } from "@/lib/quotes";
+import { acceptLead, sendQuote, updateLead, voidQuote } from "../../actions";
 import { AdminShell, StatusPill, fmtDate } from "../../ui";
+import QuoteEditor from "../../QuoteEditor";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Lead — BuiltWithSabba", robots: { index: false, follow: false } };
 
 type Params = Promise<{ id: string }>;
-type Search = Promise<{ saved?: string; accepted?: string }>;
+type Search = Promise<{ saved?: string; accepted?: string; quote?: string; edit?: string; newquote?: string }>;
+
+const QUOTE_FLASH: Record<string, string> = {
+    saved: "Quote saved. Check the client page, then send it.",
+    sent: "Quote emailed — the lead moved to Proposal sent.",
+    nomail: "The email didn't go out (Resend not configured?). Copy the link and send it yourself.",
+    invalid: "A quote needs a title and at least one item.",
+};
 
 /** wa.me wants an international number with digits only. */
 function whatsappNumber(phone: string, locale: string | null): string {
@@ -30,13 +39,19 @@ const toLocalInput = (iso: string) =>
 export default async function LeadPage({ params, searchParams }: { params: Params; searchParams: Search }) {
     if (!(await isAdmin())) redirect("/en/login");
     const { id } = await params;
-    const { saved, accepted } = await searchParams;
+    const { saved, accepted, quote: quoteFlash, edit, newquote } = await searchParams;
     if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
 
     const supabase = getSupabaseAdmin();
     if (!supabase) return <AdminShell>Supabase is not configured.</AdminShell>;
-    const { data: lead } = await supabase.from("leads").select("*").eq("id", id).maybeSingle<Lead>();
+    const [{ data: lead }, { data: quoteRows }] = await Promise.all([
+        supabase.from("leads").select("*").eq("id", id).maybeSingle<Lead>(),
+        supabase.from("quotes").select("*").eq("lead_id", id).order("created_at", { ascending: false }),
+    ]);
     if (!lead) notFound();
+    const quotes = (quoteRows ?? []) as Quote[];
+    const editing = quotes.find((q) => q.id === edit && ["draft", "sent"].includes(q.status));
+    const showEditor = !!editing || !!newquote || quotes.every((q) => q.status === "void");
 
     const first = lead.name.split(" ")[0];
     const it = lead.locale === "it";
@@ -125,6 +140,101 @@ export default async function LeadPage({ params, searchParams }: { params: Param
                         </label>
                         <button className="btn btn-primary">Save</button>
                     </form>
+
+                    <section id="quote" className="card p-6 scroll-mt-6">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <p className="font-medium text-[color:var(--ink)]">Quote</p>
+                            {!showEditor && (
+                                <Link href={`/en/login/leads/${lead.id}?newquote=1#quote`} className={`${label} hover:text-[color:var(--ink)]`}>
+                                    + New quote
+                                </Link>
+                            )}
+                        </div>
+                        {quoteFlash && QUOTE_FLASH[quoteFlash] && (
+                            <p className="mt-4 rounded-xl bg-[color:var(--accent-dim)] px-4 py-3 text-sm text-[color:var(--ink)]">
+                                {QUOTE_FLASH[quoteFlash]}
+                            </p>
+                        )}
+
+                        {quotes.filter((q) => q.id !== editing?.id).length > 0 && (
+                            <ul className="mt-4 space-y-3">
+                                {quotes
+                                    .filter((q) => q.id !== editing?.id)
+                                    .map((q) => {
+                                        const url = `${site.url}/${q.locale === "en" ? "en" : "it"}/quote/${q.token}`;
+                                        const open = ["draft", "sent"].includes(q.status);
+                                        return (
+                                            <li key={q.id} className="rounded-xl border rule p-4" style={q.status === "void" ? { opacity: 0.55 } : undefined}>
+                                                <div className="flex flex-wrap items-start justify-between gap-2">
+                                                    <div>
+                                                        <p className="font-medium text-[color:var(--ink)]">{q.title}</p>
+                                                        <p className="mt-0.5 text-sm text-[color:var(--muted)]">
+                                                            {eur(q.total_cents)}
+                                                            {q.deposit_cents > 0 && ` · deposit ${eur(q.deposit_cents)}`}
+                                                            {q.delivery && ` · ${q.delivery}`}
+                                                        </p>
+                                                    </div>
+                                                    <span className={label}>
+                                                        {isExpired(q) ? "Expired" : QUOTE_STATUS_LABEL[q.status]}
+                                                    </span>
+                                                </div>
+                                                <p className={`${label} mt-3 normal-case`}>
+                                                    {[
+                                                        `created ${fmtDate(q.created_at)}`,
+                                                        q.sent_at && `sent ${fmtDate(q.sent_at)}`,
+                                                        q.viewed_at && `opened ${fmtDate(q.viewed_at)}`,
+                                                        q.accepted_at && `accepted ${fmtDate(q.accepted_at)}`,
+                                                        q.paid_at && `paid ${fmtDate(q.paid_at)}`,
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(" · ")}
+                                                </p>
+                                                {q.status !== "void" && (
+                                                    <div className="mt-4 flex flex-wrap gap-2">
+                                                        <a href={url} target="_blank" rel="noopener noreferrer" className="btn btn-secondary text-sm">
+                                                            <ExternalLink size={14} /> Client page
+                                                        </a>
+                                                        {open && (
+                                                            <>
+                                                                <form action={sendQuote}>
+                                                                    <input type="hidden" name="quote_id" value={q.id} />
+                                                                    <button className="btn btn-primary text-sm">
+                                                                        <Mail size={14} /> {q.status === "draft" ? "Send to " + first : "Send again"}
+                                                                    </button>
+                                                                </form>
+                                                                <Link href={`/en/login/leads/${lead.id}?edit=${q.id}#quote`} className="btn btn-secondary text-sm">
+                                                                    Edit
+                                                                </Link>
+                                                                <form action={voidQuote}>
+                                                                    <input type="hidden" name="quote_id" value={q.id} />
+                                                                    <input type="hidden" name="lead_id" value={lead.id} />
+                                                                    <button className="btn btn-secondary text-sm">Withdraw</button>
+                                                                </form>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
+                                                {q.status !== "void" && (
+                                                    <p className="mt-3 break-all text-xs text-[color:var(--muted)] select-all">{url}</p>
+                                                )}
+                                            </li>
+                                        );
+                                    })}
+                            </ul>
+                        )}
+
+                        {showEditor && (
+                            <div className="mt-5">
+                                <QuoteEditor
+                                    key={editing?.id ?? "new"}
+                                    leadId={lead.id}
+                                    leadLocale={lead.locale}
+                                    quote={editing}
+                                    onCancelHref={editing || newquote ? `/en/login/leads/${lead.id}#quote` : undefined}
+                                />
+                            </div>
+                        )}
+                    </section>
                 </div>
 
                 <aside className="space-y-4 lg:sticky lg:top-6">
