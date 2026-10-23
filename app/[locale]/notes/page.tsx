@@ -3,7 +3,7 @@ import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
 import { sortedNotes, getProject, formatNoteDate, type Locale } from "@/lib/hub";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import Reveal from "@/components/hub/Reveal";
@@ -33,6 +33,7 @@ export async function generateMetadata({
             url,
             type: "website",
             siteName: "BuiltWithSabba",
+            images: [shareImage(locale)],
         },
     };
 }

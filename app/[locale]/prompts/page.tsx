@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ArrowLeft, ArrowUpRight, Clock } from "lucide-react";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import { prompts } from "@/lib/prompts";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
@@ -28,7 +28,7 @@ export async function generateMetadata({
             canonical: url,
             languages: { en: `${site.url}/en/prompts`, it: `${site.url}/it/prompts` },
         },
-        openGraph: { title: t("eyebrow"), description: t("intro"), url, type: "website", siteName: "BuiltWithSabba" },
+        openGraph: { title: t("eyebrow"), description: t("intro"), url, type: "website", siteName: "BuiltWithSabba", images: [shareImage(locale)] },
     };
 }
 

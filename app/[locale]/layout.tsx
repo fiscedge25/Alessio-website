@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import GDPRConsent from "@/components/GDPRConsent";
 import BackdropGrid from "@/components/hub/BackdropGrid";
 import "../globals.css";
@@ -64,13 +64,19 @@ export async function generateMetadata({
             locale: isIt ? "it_IT" : "en_US",
             url: `${site.url}/${locale}`,
             siteName: "BuiltWithSabba",
+            images: [shareImage(locale)],
         },
         twitter: {
             card: "summary_large_image",
+            images: [shareImage(locale)],
             title,
             description,
         },
-        icons: { icon: "/favicon.ico" },
+        icons: {
+            // app/favicon.ico is picked up automatically; this adds the hi-res PNG
+            icon: [{ url: "/icon.png", type: "image/png", sizes: "512x512" }],
+            apple: "/apple-icon.png",
+        },
     };
 }
 

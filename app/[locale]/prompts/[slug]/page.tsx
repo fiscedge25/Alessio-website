@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ArrowDown, ArrowLeft, ArrowUpRight, Clock } from "lucide-react";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import { prompts, getPrompt } from "@/lib/prompts";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
@@ -42,8 +42,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             url,
             type: "article",
             siteName: "BuiltWithSabba",
+            images: [shareImage(locale)],
         },
-        twitter: { card: "summary_large_image", title: p.title[locale], description: p.tagline[locale] },
+        twitter: {
+            card: "summary_large_image",
+            title: p.title[locale],
+            description: p.tagline[locale],
+            images: [shareImage(locale)],
+        },
     };
 }
 

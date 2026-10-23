@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import Reveal from "@/components/hub/Reveal";
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: `${t("title")} — BuiltWithSabba`,
         description: t("intro"),
         alternates: { canonical: url, languages: { en: `${site.url}/en/start`, it: `${site.url}/it/start` } },
-        openGraph: { title: t("title"), description: t("intro"), url, type: "website", siteName: "BuiltWithSabba" },
+        openGraph: { title: t("title"), description: t("intro"), url, type: "website", siteName: "BuiltWithSabba", images: [shareImage(locale)] },
     };
 }
 

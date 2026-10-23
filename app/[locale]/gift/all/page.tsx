@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
-import { site } from "@/lib/site";
+import { shareImage, site } from "@/lib/site";
 import Navbar from "@/components/hub/Navbar";
 import Footer from "@/components/hub/Footer";
 import Reveal from "@/components/hub/Reveal";
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             canonical: url,
             languages: { en: `${site.url}/en/gift/all`, it: `${site.url}/it/gift/all` },
         },
-        openGraph: { title: t("bundleTitle"), description: t("bundleBody"), url, type: "website", siteName: "BuiltWithSabba" },
+        openGraph: { title: t("bundleTitle"), description: t("bundleBody"), url, type: "website", siteName: "BuiltWithSabba", images: [shareImage(locale)] },
     };
 }
 
