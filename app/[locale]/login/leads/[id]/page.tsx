@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, ExternalLink, Mail, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, CalendarClock, ExternalLink, Mail, MessageCircle, Phone, Video } from "lucide-react";
 import { isAdmin } from "@/lib/admin-auth";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { site } from "@/lib/site";
+import { getSetting, type LeadEmail } from "@/lib/lead-mail";
 import { CHOICE_STEPS, LEAD_STATUSES, OPTION_LABEL, STATUS_LABEL, type Lead } from "@/lib/leads";
 import { QUOTE_STATUS_LABEL, eur, isExpired, type Quote } from "@/lib/quotes";
-import { acceptLead, sendQuote, updateLead, voidQuote } from "../../actions";
+import { acceptLead, cancelCall, scheduleCall, sendQuote, updateLead, voidQuote } from "../../actions";
 import { AdminShell, StatusPill, fmtDate } from "../../ui";
 import QuoteEditor from "../../QuoteEditor";
 
@@ -15,7 +16,37 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Lead — BuiltWithSabba", robots: { index: false, follow: false } };
 
 type Params = Promise<{ id: string }>;
-type Search = Promise<{ saved?: string; accepted?: string; quote?: string; edit?: string; newquote?: string }>;
+type Search = Promise<{ saved?: string; accepted?: string; quote?: string; edit?: string; newquote?: string; call?: string }>;
+
+const CALL_FLASH: Record<string, string> = {
+    saved: "Call saved (no email sent).",
+    sent: "Invite sent with the calendar event — you got a copy for your calendar too.",
+    nomail: "Call saved, but the invite email didn't go out. Check the email log below.",
+    invalid: "Pick a date/time and a meeting link starting with https://",
+    cancelled: "Call cancelled.",
+};
+
+const EMAIL_KIND: Record<string, string> = {
+    confirmation: "Request confirmation",
+    accept: "Accepted · call invite",
+    call_invite: "Call invite",
+    call_update: "Call moved",
+    call_cancel: "Call cancelled",
+    call_reminder: "Call reminder",
+    quote: "Quote",
+};
+
+const EMAIL_STATUS_COLOR: Record<string, string> = {
+    sent: "#86868b",
+    delayed: "#d97706",
+    delivered: "#0071e3",
+    opened: "#1d8127",
+    clicked: "#1d8127",
+    bounced: "#e5484d",
+    complained: "#e5484d",
+    failed: "#e5484d",
+    suppressed: "#e5484d",
+};
 
 const QUOTE_FLASH: Record<string, string> = {
     saved: "Quote saved. Check the client page, then send it.",
@@ -23,6 +54,9 @@ const QUOTE_FLASH: Record<string, string> = {
     nomail: "The email didn't go out (Resend not configured?). Copy the link and send it yourself.",
     invalid: "A quote needs a title and at least one item.",
 };
+
+/** Still upcoming, or started less than an hour ago. */
+const notPast = (iso: string) => new Date(iso).getTime() > Date.now() - 3_600_000;
 
 /** wa.me wants an international number with digits only. */
 function whatsappNumber(phone: string, locale: string | null): string {
@@ -39,17 +73,21 @@ const toLocalInput = (iso: string) =>
 export default async function LeadPage({ params, searchParams }: { params: Params; searchParams: Search }) {
     if (!(await isAdmin())) redirect("/en/login");
     const { id } = await params;
-    const { saved, accepted, quote: quoteFlash, edit, newquote } = await searchParams;
+    const { saved, accepted, quote: quoteFlash, edit, newquote, call: callFlash } = await searchParams;
     if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
 
     const supabase = getSupabaseAdmin();
     if (!supabase) return <AdminShell>Supabase is not configured.</AdminShell>;
-    const [{ data: lead }, { data: quoteRows }] = await Promise.all([
+    const [{ data: lead }, { data: quoteRows }, { data: emailRows }, meetUrl] = await Promise.all([
         supabase.from("leads").select("*").eq("id", id).maybeSingle<Lead>(),
         supabase.from("quotes").select("*").eq("lead_id", id).order("created_at", { ascending: false }),
+        supabase.from("lead_emails").select("*").eq("lead_id", id).order("created_at", { ascending: false }),
+        getSetting("meet_url"),
     ]);
     if (!lead) notFound();
     const quotes = (quoteRows ?? []) as Quote[];
+    const emails = (emailRows ?? []) as LeadEmail[];
+    const upcoming = !!lead.call_at && notPast(lead.call_at);
     const editing = quotes.find((q) => q.id === edit && ["draft", "sent"].includes(q.status));
     const showEditor = !!editing || !!newquote || quotes.every((q) => q.status === "void");
 
@@ -105,29 +143,91 @@ export default async function LeadPage({ params, searchParams }: { params: Param
                         </p>
                     </section>
 
-                    <form action={updateLead} className="card p-6 space-y-5">
-                        <input type="hidden" name="id" value={lead.id} />
-                        <div className="grid gap-5 sm:grid-cols-2">
+                    <section id="call" className="card p-6 scroll-mt-6">
+                        <p className="flex items-center gap-2 font-medium text-[color:var(--ink)]">
+                            <Video size={17} className="text-[color:var(--accent)]" /> Intro call
+                        </p>
+                        {callFlash && CALL_FLASH[callFlash] && (
+                            <p className="mt-4 rounded-xl bg-[color:var(--accent-dim)] px-4 py-3 text-sm text-[color:var(--ink)]">
+                                {CALL_FLASH[callFlash]}
+                            </p>
+                        )}
+                        {upcoming && (
+                            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border rule p-4">
+                                <div>
+                                    <p className="flex items-center gap-2 text-[color:var(--ink)]">
+                                        <CalendarClock size={16} /> {fmtDate(lead.call_at!)} · {lead.call_minutes ?? 30} min
+                                    </p>
+                                    {lead.call_link && (
+                                        <a href={lead.call_link} target="_blank" rel="noopener noreferrer" className="link-blue mt-1 block break-all text-sm">
+                                            {lead.call_link}
+                                        </a>
+                                    )}
+                                </div>
+                                <form action={cancelCall} className="flex items-center gap-3">
+                                    <input type="hidden" name="id" value={lead.id} />
+                                    <label className="flex items-center gap-1.5 text-xs text-[color:var(--muted)]">
+                                        <input type="checkbox" name="notify" defaultChecked className="accent-[color:var(--accent)]" /> tell {first}
+                                    </label>
+                                    <button className="btn btn-secondary text-sm">Cancel call</button>
+                                </form>
+                            </div>
+                        )}
+                        <form action={scheduleCall} className="mt-4 space-y-4">
+                            <input type="hidden" name="id" value={lead.id} />
+                            <div className="grid gap-4 sm:grid-cols-[1fr_110px]">
+                                <label className="block">
+                                    <span className={label}>{upcoming ? "Move to (Rome time)" : "When (Rome time)"}</span>
+                                    <input
+                                        type="datetime-local"
+                                        name="call_at"
+                                        required
+                                        defaultValue={lead.call_at ? toLocalInput(lead.call_at) : ""}
+                                        className="field mt-1.5"
+                                    />
+                                </label>
+                                <label className="block">
+                                    <span className={label}>Minutes</span>
+                                    <select name="call_minutes" defaultValue={String(lead.call_minutes ?? 30)} className="field mt-1.5">
+                                        {[15, 20, 30, 45, 60].map((m) => (
+                                            <option key={m}>{m}</option>
+                                        ))}
+                                    </select>
+                                </label>
+                            </div>
                             <label className="block">
-                                <span className={label}>Status</span>
-                                <select name="status" defaultValue={lead.status} className="field mt-1.5">
-                                    {LEAD_STATUSES.map((s) => (
-                                        <option key={s} value={s}>
-                                            {STATUS_LABEL[s]}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                            <label className="block">
-                                <span className={label}>Call (Rome time)</span>
+                                <span className={label}>Meeting link</span>
                                 <input
-                                    type="datetime-local"
-                                    name="call_at"
-                                    defaultValue={lead.call_at ? toLocalInput(lead.call_at) : ""}
+                                    type="url"
+                                    name="call_link"
+                                    required
+                                    defaultValue={lead.call_link ?? meetUrl ?? ""}
+                                    placeholder="https://meet.google.com/…"
                                     className="field mt-1.5"
                                 />
                             </label>
-                        </div>
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                <label className="flex items-center gap-2 text-sm text-[color:var(--ink-2)]">
+                                    <input type="checkbox" name="notify" defaultChecked className="h-4 w-4 accent-[color:var(--accent)]" />
+                                    Email {first} the invite + calendar event ({it ? "Italian" : "English"})
+                                </label>
+                                <button className="btn btn-primary">{upcoming ? "Move call" : "Book call"}</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <form action={updateLead} className="card p-6 space-y-5">
+                        <input type="hidden" name="id" value={lead.id} />
+                        <label className="block max-w-xs">
+                            <span className={label}>Status</span>
+                            <select name="status" defaultValue={lead.status} className="field mt-1.5">
+                                {LEAD_STATUSES.map((s) => (
+                                    <option key={s} value={s}>
+                                        {STATUS_LABEL[s]}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
                         <label className="block">
                             <span className={label}>Private notes</span>
                             <textarea
@@ -272,6 +372,39 @@ export default async function LeadPage({ params, searchParams }: { params: Param
                                 </a>
                             </>
                         )}
+                    </div>
+                    <div className="card p-5">
+                        <p className={label}>Emails to {first}</p>
+                        {emails.length === 0 ? (
+                            <p className="mt-3 text-sm text-[color:var(--muted)]">None logged yet.</p>
+                        ) : (
+                            <ul className="mt-3 space-y-3">
+                                {emails.map((e) => (
+                                    <li key={e.id} className="text-sm">
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-[color:var(--ink)]">{EMAIL_KIND[e.kind] ?? e.kind}</span>
+                                            <span
+                                                className="rounded-full px-2 py-0.5 font-mono-meta text-[10px] uppercase"
+                                                style={{
+                                                    color: EMAIL_STATUS_COLOR[e.status] ?? "#86868b",
+                                                    background: `color-mix(in srgb, ${EMAIL_STATUS_COLOR[e.status] ?? "#86868b"} 12%, transparent)`,
+                                                }}
+                                            >
+                                                {e.status}
+                                            </span>
+                                        </div>
+                                        <p className="mt-0.5 text-xs text-[color:var(--muted)]">
+                                            {fmtDate(e.created_at)}
+                                            {e.status !== "sent" && e.updated_at !== e.created_at && ` · ${e.status} ${fmtDate(e.updated_at)}`}
+                                        </p>
+                                        {e.detail && <p className="mt-1 text-xs text-red-500">{e.detail}</p>}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        <p className="mt-4 text-xs leading-relaxed text-[color:var(--muted)]">
+                            “Opened” needs open tracking on in Resend; Apple Mail can show opens that didn’t happen.
+                        </p>
                     </div>
                 </aside>
             </div>

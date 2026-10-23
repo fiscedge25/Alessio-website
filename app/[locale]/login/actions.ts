@@ -18,6 +18,7 @@ import {
 } from "@/lib/admin-auth";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getNewsletterFrom, getResend } from "@/lib/resend";
+import { callInvite, callWhen, sendLeadEmail, setSetting } from "@/lib/lead-mail";
 import { site } from "@/lib/site";
 import { LEAD_STATUSES, type Lead } from "@/lib/leads";
 import { depositFor, eur, type Quote, type QuoteItem } from "@/lib/quotes";
@@ -76,14 +77,11 @@ export async function updateLead(formData: FormData) {
     const supabase = await guard();
     const id = String(formData.get("id"));
     const status = String(formData.get("status"));
-    const callAt = String(formData.get("call_at") || "");
     const { error } = await supabase
         .from("leads")
         .update({
             status: isStatus(status) ? status : "new",
             notes: String(formData.get("notes") || "").slice(0, 10000) || null,
-            // datetime-local has no zone: it's the owner's local time (Europe/Rome).
-            call_at: callAt ? new Date(`${callAt}:00${romeOffset(callAt)}`).toISOString() : null,
             updated_at: new Date().toISOString(),
         })
         .eq("id", id);
@@ -122,7 +120,8 @@ export async function acceptLead(formData: FormData) {
           ? "Rispondi a questa email con due o tre orari che ti vanno bene per una call di 20 minuti."
           : "Reply to this email with two or three times that work for a 20-minute call.";
     const sent = await mailLead(
-        lead.email,
+        lead,
+        "accept",
         it ? "La tua richiesta — parliamone" : "Your project request — let's talk",
         it
             ? `Ciao ${first},\n\ngrazie per la richiesta su BuiltWithSabba: l'ho letta e mi piacerebbe approfondire.\n\n${booking}\n\nA presto,\nAlessio`
@@ -135,6 +134,121 @@ export async function acceptLead(formData: FormData) {
         .eq("id", id);
     revalidatePath(`/en/login/leads/${id}`);
     redirect(`/en/login/leads/${id}?accepted=${sent ? "sent" : "nomail"}`);
+}
+
+// ─── Intro call ─────────────────────────────────────────────────────────────
+
+/**
+ * Book (or move) the intro call: saves time and link, moves the lead to
+ * "Call booked" and emails them the invite with a calendar event. Alessio gets
+ * the same event to drop into his own calendar.
+ */
+export async function scheduleCall(formData: FormData) {
+    const supabase = await guard();
+    const id = String(formData.get("id"));
+    const local = String(formData.get("call_at") || "");
+    const link = String(formData.get("call_link") || "").trim().slice(0, 300);
+    const minutes = [15, 20, 30, 45, 60].includes(Number(formData.get("call_minutes"))) ? Number(formData.get("call_minutes")) : 30;
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(local) || !/^https:\/\/\S+$/.test(link)) {
+        redirect(`/en/login/leads/${id}?call=invalid#call`);
+    }
+    // datetime-local has no zone: it's the owner's local time (Europe/Rome).
+    const start = new Date(`${local}:00${romeOffset(local)}`);
+
+    const { data: lead } = await supabase.from("leads").select("*").eq("id", id).single<Lead>();
+    if (!lead) throw new Error("lead not found");
+    const moved = !!lead.call_at && lead.call_at !== start.toISOString();
+
+    await supabase
+        .from("leads")
+        .update({
+            call_at: start.toISOString(),
+            call_minutes: minutes,
+            call_link: link,
+            call_reminded_at: null,
+            status: ["new", "accepted"].includes(lead.status) ? "call" : lead.status,
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+    await setSetting("meet_url", link);
+
+    let flag = "saved";
+    if (formData.get("notify") === "on") {
+        const it = lead.locale !== "en";
+        const first = lead.name.split(" ")[0];
+        const when = callWhen(start, lead.locale);
+        const sent = await sendLeadEmail({
+            leadId: lead.id,
+            kind: moved ? "call_update" : "call_invite",
+            to: lead.email,
+            subject: it
+                ? moved
+                    ? `Call spostata: ${when}`
+                    : `La nostra call: ${when}`
+                : moved
+                  ? `Call moved: ${when}`
+                  : `Our call: ${when}`,
+            text: it
+                ? `Ciao ${first},\n\n${moved ? "ho spostato la nostra call a" : "ci sentiamo"} ${when} (ora italiana), ${minutes} minuti su Google Meet:\n${link}\n\nTi ho allegato l'invito per il calendario. Per arrivare preparati bastano 2 minuti: pensa a chi userà il prodotto, cosa deve fare per prima cosa e se hai esempi che ti piacciono.\n\nSe l'orario non va più, rispondi a questa email e lo cambiamo.\n\nA presto,\nAlessio`
+                : `Hi ${first},\n\n${moved ? "I've moved our call to" : "we're talking on"} ${when} (Rome time), ${minutes} minutes on Google Meet:\n${link}\n\nThe calendar invite is attached. Two minutes of prep is plenty: who will use the product, the first thing it must do, and any examples you like.\n\nIf the time no longer works, just reply and we'll change it.\n\nTalk soon,\nAlessio`,
+            attachments: [callInvite(lead, start, minutes, link, "REQUEST")],
+        });
+        flag = sent ? "sent" : "nomail";
+        // Same event for Alessio's own calendar (PUBLISH: no RSVP loop with himself).
+        await sendOwnerEvent(lead, start, minutes, link);
+    }
+    revalidatePath(`/en/login/leads/${id}`);
+    redirect(`/en/login/leads/${id}?call=${flag}#call`);
+}
+
+export async function cancelCall(formData: FormData) {
+    const supabase = await guard();
+    const id = String(formData.get("id"));
+    const { data: lead } = await supabase.from("leads").select("*").eq("id", id).single<Lead>();
+    if (!lead?.call_at) redirect(`/en/login/leads/${id}#call`);
+
+    if (formData.get("notify") === "on") {
+        const it = lead.locale !== "en";
+        const start = new Date(lead.call_at);
+        const when = callWhen(start, lead.locale);
+        await sendLeadEmail({
+            leadId: lead.id,
+            kind: "call_cancel",
+            to: lead.email,
+            subject: it ? `Call annullata: ${when}` : `Call cancelled: ${when}`,
+            text: it
+                ? `Ciao ${lead.name.split(" ")[0]},\n\nho dovuto annullare la call di ${when}. Rispondi a questa email con un paio di orari che ti vanno bene e la rifissiamo.\n\nScusa per il cambio,\nAlessio`
+                : `Hi ${lead.name.split(" ")[0]},\n\nI had to cancel our call on ${when}. Reply with a couple of times that work and we'll set a new one.\n\nSorry for the change,\nAlessio`,
+            attachments: [callInvite(lead, start, lead.call_minutes ?? 30, lead.call_link ?? "", "CANCEL")],
+        });
+    }
+    await supabase
+        .from("leads")
+        .update({
+            call_at: null,
+            call_reminded_at: null,
+            status: lead.status === "call" ? "accepted" : lead.status,
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+    revalidatePath(`/en/login/leads/${id}`);
+    redirect(`/en/login/leads/${id}?call=cancelled#call`);
+}
+
+async function sendOwnerEvent(lead: Lead, start: Date, minutes: number, link: string) {
+    const resend = getResend();
+    if (!resend) return;
+    try {
+        await resend.emails.send({
+            from: getNewsletterFrom(),
+            to: site.email,
+            subject: `Call: ${lead.name} — ${callWhen(start, "it")}`,
+            text: `${lead.name} <${lead.email}>${lead.phone ? ` · ${lead.phone}` : ""}\n${link}\n\n${lead.description}\n\n${site.url}/en/login/leads/${lead.id}`,
+            attachments: [callInvite(lead, start, minutes, link, "PUBLISH")],
+        });
+    } catch (err) {
+        console.error("[admin] owner event failed:", (err as Error).message);
+    }
 }
 
 // ─── Quotes ─────────────────────────────────────────────────────────────────
@@ -212,11 +326,13 @@ export async function sendQuote(formData: FormData) {
     const link = `${site.url}/${it ? "it" : "en"}/quote/${quote.token}`;
     const total = eur(quote.total_cents, it ? "it" : "en");
     const sent = await mailLead(
-        lead.email,
+        lead,
+        "quote",
         it ? `Il tuo preventivo — ${quote.title}` : `Your quote — ${quote.title}`,
         it
             ? `Ciao ${first},\n\ncome promesso, ecco il preventivo per "${quote.title}" (${total}).\n\n${link}\n\nDalla pagina puoi accettarlo${quote.deposit_cents ? " e versare l'acconto per partire" : ""}. Per qualsiasi dubbio rispondi pure a questa email.\n\nA presto,\nAlessio`
             : `Hi ${first},\n\nas promised, here's the quote for "${quote.title}" (${total}).\n\n${link}\n\nYou can accept it from that page${quote.deposit_cents ? " and pay the deposit to get started" : ""}. Any questions, just reply to this email.\n\nTalk soon,\nAlessio`,
+        quote.id,
     );
     if (!sent) redirect(`/en/login/leads/${quote.lead_id}?quote=nomail#quote`);
 
@@ -244,13 +360,8 @@ export async function voidQuote(formData: FormData) {
     redirect(`/en/login/leads/${leadId}#quote`);
 }
 
-async function mailLead(to: string, subject: string, text: string): Promise<boolean> {
-    const resend = getResend();
-    if (!resend) return false;
-    const { error } = await resend.emails.send({ from: getNewsletterFrom(), to, replyTo: site.email, subject, text });
-    if (error) console.error("[admin] email failed:", error.message);
-    return !error;
-}
+const mailLead = (lead: Pick<Lead, "id" | "email">, kind: "accept" | "quote", subject: string, text: string, quoteId?: string) =>
+    sendLeadEmail({ leadId: lead.id, kind, to: lead.email, subject, text, quoteId });
 
 /** "+01:00" or "+02:00" for a Rome wall-clock time, DST included. */
 function romeOffset(local: string): string {

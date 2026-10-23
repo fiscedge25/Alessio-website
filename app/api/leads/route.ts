@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getNewsletterFrom, getResend } from "@/lib/resend";
 import { site } from "@/lib/site";
+import { sendLeadEmail } from "@/lib/lead-mail";
 import { CHOICE_STEPS, CONTACT_PREFS, LEAD_STEPS, OPTION_LABEL, type ChoiceStep } from "@/lib/leads";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "server_error" }, { status: 500 });
     }
 
-    await Promise.all([notifyOwner(data.id, lead), confirmToLead(lead)]);
+    await Promise.all([notifyOwner(data.id, lead), confirmToLead(data.id, lead)]);
     return NextResponse.json({ ok: true });
 }
 
@@ -99,9 +100,7 @@ async function notifyOwner(id: string, lead: Record<string, string | null>) {
 }
 
 /** "Got it, here's what happens next" — so the request doesn't feel lost. Best-effort. */
-async function confirmToLead(lead: Record<string, string | null>) {
-    const resend = getResend();
-    if (!resend) return;
+async function confirmToLead(leadId: string, lead: Record<string, string | null>) {
     const it = lead.locale === "it";
     const first = lead.name!.split(" ")[0];
     const booking = site.bookingUrl
@@ -112,15 +111,11 @@ async function confirmToLead(lead: Record<string, string | null>) {
     const text = it
         ? `Ciao ${first},\n\nho ricevuto la tua richiesta su BuiltWithSabba, grazie!\n\nCosa succede ora:\n1. La leggo personalmente (niente bot, niente commerciali).\n2. Entro 1–2 giorni lavorativi ti rispondo con domande o una proposta di call.\n3. Dopo la call ricevi un piano chiaro, i tempi e un preventivo fisso.\n${booking}\nSe vuoi aggiungere dettagli, link o file, rispondi pure a questa email.\n\nA presto,\nAlessio Sabatino\n${site.url}`
         : `Hi ${first},\n\nI've received your request on BuiltWithSabba — thank you!\n\nWhat happens next:\n1. I read it personally (no bots, no sales team).\n2. Within 1–2 working days I reply with questions or a call proposal.\n3. After the call you get a clear plan, a timeline and a fixed quote.\n${booking}\nTo add details, links or files, just reply to this email.\n\nTalk soon,\nAlessio Sabatino\n${site.url}`;
-    try {
-        await resend.emails.send({
-            from: getNewsletterFrom(),
-            to: lead.email!,
-            replyTo: site.email,
-            subject: it ? "Ho ricevuto la tua richiesta" : "I've got your request",
-            text,
-        });
-    } catch (err) {
-        console.error("[leads] confirmation failed:", (err as Error).message);
-    }
+    await sendLeadEmail({
+        leadId,
+        kind: "confirmation",
+        to: lead.email!,
+        subject: it ? "Ho ricevuto la tua richiesta" : "I've got your request",
+        text,
+    });
 }

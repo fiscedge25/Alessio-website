@@ -76,5 +76,9 @@ export interface Lead {
     consent_at: string;
     status: LeadStatus;
     call_at: string | null;
+    call_minutes: number | null;
+    call_link: string | null;
+    call_reminded_at: string | null;
+    reminded_at: string | null;
     notes: string | null;
 }
